@@ -1,0 +1,3 @@
+let BaseUrl = '';
+
+export {BaseUrl};
