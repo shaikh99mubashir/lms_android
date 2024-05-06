@@ -7,7 +7,7 @@ const CustomButton = ({onPress,btnTitle, color, backgroundColor,height }:any) =>
     <TouchableOpacity
     onPress={onPress}
     activeOpacity={0.8}
-    style={[styles.btn, { marginVertical: 0,backgroundColor: backgroundColor ? backgroundColor :'#000',  }]}
+    style={[styles.btn, { marginVertical: 0,backgroundColor: backgroundColor ? backgroundColor : Color.Primary,  }]}
   >
     <Text style={[styles.textType1,{color:color ? color : Color.white,textAlign:'center' }]}>{btnTitle}</Text>
   </TouchableOpacity>
@@ -20,7 +20,7 @@ export default CustomButton
 const styles = StyleSheet.create({
     btn: {
       height: 50,
-      borderRadius: 12,
+      borderRadius: 30,
       flexShrink: 0,
       backgroundColor: '#000',
       justifyContent: 'center',

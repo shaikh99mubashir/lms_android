@@ -23,16 +23,16 @@ const CustomTabView = (Props: any): any => {
 
   return (
     <View>
-    <View style={{ marginBottom: 40, alignItems: 'center' }}>
+    <View style={{ marginBottom: 10, alignItems: 'center' }}>
       <View
         style={{
           width:'100%',
           alignItems: 'center',
           flexDirection: 'row',
           gap:6,
-          borderRadius:30,
+          borderRadius:50,
           backgroundColor:Color.liteGrey,
-          paddingHorizontal:8,
+          paddingHorizontal:6,
           paddingVertical:5
         }}>
         <TouchableOpacity
@@ -42,8 +42,8 @@ const CustomTabView = (Props: any): any => {
             width: 
             currentTab &&
                 currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
-                ? '50%'
-                : '50%'
+                ? '53%'
+                : '45%'
             ,
             borderRadius:30,
             
@@ -70,12 +70,12 @@ const CustomTabView = (Props: any): any => {
                     )
                     ? Color.IronsideGrey
                     : Color.IronsideGrey,
-                fontFamily: 'Circular Std Bold',
+                fontFamily: 'Circular Std Medium',
                 fontSize:
                 currentTab &&
                 currentTab.some((e: any, i: any) => e.index == 1 && e.selected)
-                ? 18
-                : 20,
+                ? 16
+                : 16,
               },
             ]}>
             {firstRouteTitle}
@@ -88,8 +88,8 @@ const CustomTabView = (Props: any): any => {
             width: 
             currentTab &&
                 currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
-                ? '50%'
-                : '50%'
+                ? '45%'
+                : '53%'
             ,
             borderRadius: 50,
             paddingVertical: 
@@ -119,12 +119,12 @@ const CustomTabView = (Props: any): any => {
                     )
                     ? Color.IronsideGrey
                     : Color.IronsideGrey,
-                fontFamily: 'Circular Std Bold',
+                fontFamily: 'Circular Std Book',
                 fontSize:
                 currentTab &&
                 currentTab.some((e: any, i: any) => e.index == 1 && e.selected)
-                ? 20
-                : 18,
+                ? 16
+                : 16,
                 borderBottomColor:
                   currentTab &&
                     currentTab.some((e: any, i: any) => e.index == 1 && e.selected)

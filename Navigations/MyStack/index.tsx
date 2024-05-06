@@ -14,7 +14,7 @@ const MyStack = () => {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
-      <Stack.Navigator  screenOptions={{headerShown: true, }}>
+      <Stack.Navigator  screenOptions={{headerShown: false, }}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="MyDrawer" component={MyDrawer} />
         <Stack.Screen name="SignUp" component={SignUp} />
