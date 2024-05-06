@@ -30,7 +30,10 @@ const CustomTabView = (Props: any): any => {
           alignItems: 'center',
           flexDirection: 'row',
           gap:6,
-          borderRadius:10,
+          borderRadius:30,
+          backgroundColor:Color.liteGrey,
+          paddingHorizontal:8,
+          paddingVertical:5
         }}>
         <TouchableOpacity
         activeOpacity={0.8}
@@ -39,28 +42,22 @@ const CustomTabView = (Props: any): any => {
             width: 
             currentTab &&
                 currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
-                ? '53%'
-                : '45%'
+                ? '50%'
+                : '50%'
             ,
             borderRadius:30,
             
             paddingVertical: 
             currentTab &&
             currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
-            ? 15
-            : 15,
-            
-            paddingHorizontal: 
-            currentTab &&
-            currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
-            ? 15
-            : 15,
-            borderColor: Color.Primary,
+            ? 8
+            : 8,
+            borderColor: Color.white,
             backgroundColor:
               currentTab &&
                 currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
-                ? Color.Primary
-                : Color.shinyGrey,
+                ? Color.white
+                : Color.liteGrey,
           }}>
           <Text
             style={[
@@ -71,8 +68,8 @@ const CustomTabView = (Props: any): any => {
                     currentTab.some(
                       (e: any, i: any) => e.index == 0 && e.selected,
                     )
-                    ? 'white'
-                    : Color.Dune,
+                    ? Color.IronsideGrey
+                    : Color.IronsideGrey,
                 fontFamily: 'Circular Std Bold',
                 fontSize:
                 currentTab &&
@@ -91,25 +88,25 @@ const CustomTabView = (Props: any): any => {
             width: 
             currentTab &&
                 currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
-                ? '45%'
-                : '53%'
+                ? '50%'
+                : '50%'
             ,
             borderRadius: 50,
             paddingVertical: 
             currentTab &&
             currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
-            ? 15
-            : 15,
-            paddingHorizontal: 
-            currentTab &&
-            currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
-            ? 15
-            : 15,
+            ? 8
+            : 8,
+            // paddingHorizontal: 
+            // currentTab &&
+            // currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
+            // ? 15
+            // : 15,
             backgroundColor:
               currentTab &&
                 currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
-                ? Color.shinyGrey
-                : Color.Primary,
+                ? Color.liteGrey
+                : Color.white,
           }}>
           <Text
             style={[
@@ -120,8 +117,8 @@ const CustomTabView = (Props: any): any => {
                     currentTab.some(
                       (e: any, i: any) => e.index == 1 && e.selected,
                     )
-                    ? 'white'
-                    : Color.Dune,
+                    ? Color.IronsideGrey
+                    : Color.IronsideGrey,
                 fontFamily: 'Circular Std Bold',
                 fontSize:
                 currentTab &&
@@ -131,8 +128,8 @@ const CustomTabView = (Props: any): any => {
                 borderBottomColor:
                   currentTab &&
                     currentTab.some((e: any, i: any) => e.index == 1 && e.selected)
-                    ? Color.Primary
-                    : 'white',
+                    ? Color.white
+                    : Color.IronsideGrey,
               },
             ]}>
             {secondRouteTitle}
@@ -158,7 +155,7 @@ export default CustomTabView;
 
 const styles = StyleSheet.create({
   text: {
-    color: Color.Dune,
+    color: Color.IronsideGrey,
     fontSize: 18,
     // fontWeight: '400',
     textAlign: 'center',
