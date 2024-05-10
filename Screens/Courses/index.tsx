@@ -6,12 +6,22 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {Color} from '../../Constant';
 import SearchBar from '../../Components/SearchBar';
 import CustomButton from '../../Components/CustomButton';
+import Header from '../../Components/Header';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { BaseUrl } from '../../Constant/BaseUrl';
 
-const Courses = ({navigation}: any) => {
+const Courses = ({navigation,route}: any) => {
+  const subjectData = route.params;
+  let subjectId = subjectData.id
+  const [courses, setCourses] = useState([]);
+  // console.log('subjectData',subjectData.id);
+    console.log('courses============>',courses);
+    
   const coursesData = [
     {
       id: 1,
@@ -65,10 +75,57 @@ const Courses = ({navigation}: any) => {
       description: 'Study of formal systems and symbolic reasoning.',
     },
   ];
+
+  const getSubjectData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('studentAuth');
+      if (jsonValue !== null) {
+        const data = JSON.parse(jsonValue);
+        console.log('Retrieved data:', data.token);
+        const formData = new FormData();
+        formData.append('subject_id', subjectId);
+        axios.get(`${BaseUrl}courses`, {
+          params: formData, 
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${data.token}`
+          }
+        })
+        .then((response)=>{
+          // console.log('response COurses',response.data);
+          let courses = response.data
+          setCourses(courses)
+        })
+        .catch((error)=>{
+          console.log('error',error);
+          if (error.response) {
+            console.log('Courses Server responded with data:', error.response.data.message);
+            console.log('Courses Status code:', error.response.status);
+            console.log('Courses Headers:', error.response.headers);
+          } else if (error.request) {
+            console.log('Courses No response received:', error.request);
+          } else {
+            console.log('Error setting up the request: Courses', error.message);
+          }
+          
+        })
+      } else {
+        console.log('No data found in AsyncStorage for key studentAuth');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error retrieving data from AsyncStorage:', error);
+      return null;
+    }
+  };
+
+  useEffect(()=>{
+    getSubjectData()
+  },[])
   const renderItem = ({item}: any) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('CourseDetail')}
+        onPress={() => navigation.navigate('CourseDetail', item)}
         style={{justifyContent: 'center', alignItems: 'center'}}>
         <View
           style={[
@@ -109,15 +166,16 @@ const Courses = ({navigation}: any) => {
         height: '100%',
         paddingHorizontal: 25,
       }}>
+        <Header goBack title='Courses' navigation={navigation}/>
       <ScrollView>
         <View style={{marginTop: 20}}></View>
         <SearchBar />
         <View style={{marginTop: 20}}></View>
 
         <FlatList
-          data={coursesData}
+          data={courses}
           renderItem={renderItem}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={(item:any) => item.id}
         />
       </ScrollView>
     </View>

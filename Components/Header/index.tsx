@@ -80,14 +80,14 @@ const Header = ({navigation, goBack, title, filter, tab, addClass,needHelp,delet
             style={{flexDirection:'row', gap:3, alignItems:'center'}}
             >
               <Text style={{color:Color.Black,fontFamily: 'Circular Std Book'}}>Need Help</Text>
-            <Image source={require('../../Images/HelpIcon.png')}/>
+            {/* <Image source={require('../../Images/HelpIcon.png')}/> */}
           </View>
         )}
         {deleteBtn && (
           <>
           <TouchableOpacity onPress={handleLogoutPress}
             style={{flexDirection:'row', gap:5, alignItems:'center'}}>
-            <Image source={require('../../Images/deleteB.png')}/>
+            {/* <Image source={require('../../Images/deleteB.png')}/> */}
           </TouchableOpacity>
           <RemovePopup
           modalVisible={modalVisible}

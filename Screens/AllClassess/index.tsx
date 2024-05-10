@@ -6,30 +6,72 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Color} from '../../Constant';
 import SearchBar from '../../Components/SearchBar';
 import CustomButton from '../../Components/CustomButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {BaseUrl} from '../../Constant/BaseUrl';
+import Header from '../../Components/Header';
 
 const AllClassess = ({navigation}: any) => {
-  const data = [
-    {key: 'Class One'},
-    {key: 'Class Two'},
-    {key: 'Class Three'},
-    {key: 'Class Four'},
-    {key: 'Class Five'},
-    {key: 'Class Six'},
-    {key: 'Class Seven'},
-    {key: 'Class Eight'},
-    {key: 'Class Nine'},
-    {key: 'Class Ten'},
-  ];
+  // const data = [
+  //   {key: 'Class One'},
+  //   {key: 'Class Two'},
+  //   {key: 'Class Three'},
+  //   {key: 'Class Four'},
+  //   {key: 'Class Five'},
+  //   {key: 'Class Six'},
+  //   {key: 'Class Seven'},
+  //   {key: 'Class Eight'},
+  //   {key: 'Class Nine'},
+  //   {key: 'Class Ten'},
+  // ];
+
+  const [classes, setClasses] = useState([]);
+
+  const getClassesData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('studentAuth');
+      if (jsonValue !== null) {
+        const data = JSON.parse(jsonValue);
+        console.log('Retrieved data:', data.token);
+        axios
+          .get(`${BaseUrl}classes`, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${data.token}`,
+            },
+          })
+          .then(response => {
+            console.log('response', response.data);
+            setClasses(response.data);
+          })
+          .catch(error => {
+            console.log('error', error);
+          });
+      } else {
+        console.log('No data found in AsyncStorage for key studentAuth');
+       navigation.replace('Login')
+      }
+    } catch (error) {
+      console.error('Error retrieving data from AsyncStorage:', error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    getClassesData();
+  }, []);
 
   const renderItem = ({item}: any) => {
+    console.log('item', item);
+
     return (
       <TouchableOpacity
         activeOpacity={0.8}
-        onPress={() => navigation.navigate('Subjects')}
+        onPress={() => navigation.navigate('Subjects', item)}
         style={{justifyContent: 'center', alignItems: 'center'}}>
         <View
           style={[
@@ -49,7 +91,7 @@ const AllClassess = ({navigation}: any) => {
               fontFamily: 'Circular Std Book',
               fontSize: 18,
             }}>
-            {item.key}
+            {item.name}
           </Text>
         </View>
       </TouchableOpacity>
@@ -62,6 +104,7 @@ const AllClassess = ({navigation}: any) => {
         height: '100%',
         paddingHorizontal: 25,
       }}>
+      {/* <Header goBack title="Classess" navigation={navigation} /> */}
       <ScrollView>
         <View style={{marginTop: 20}}></View>
         <SearchBar />
@@ -90,9 +133,9 @@ const AllClassess = ({navigation}: any) => {
           </View>
         </View> */}
         <FlatList
-          data={data}
+          data={classes}
           renderItem={renderItem}
-          keyExtractor={item => item.key}
+          keyExtractor={(item: any) => item.id}
         />
       </ScrollView>
     </View>

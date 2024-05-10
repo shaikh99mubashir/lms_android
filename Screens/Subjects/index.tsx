@@ -6,12 +6,22 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {Color} from '../../Constant';
 import SearchBar from '../../Components/SearchBar';
 import CustomButton from '../../Components/CustomButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { BaseUrl } from '../../Constant/BaseUrl';
+import Header from '../../Components/Header';
 
-const Subjects = ({navigation}: any) => {
+const Subjects = ({navigation, route}: any) => {
+
+  const classData = route.params;
+  const [subjects, setSubjects] = useState([])
+  console.log('classData', classData.id);
+  console.log('subjects====>', subjects);
+  
   const subjectsData = [
     {key: 'Maths'},
     {key: 'English'},
@@ -24,12 +34,50 @@ const Subjects = ({navigation}: any) => {
     {key: 'Art'},
     {key: 'Physical Education'},
   ];
+  const getSubjectData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('studentAuth');
+      if (jsonValue !== null) {
+        const data = JSON.parse(jsonValue);
+        console.log('Retrieved data:', data.token);
+
+
+        axios
+        .get(`${BaseUrl}subjects/${classData.id}`,  {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${data.token}`
+          },
+        })
+        .then((response)=>{
+          console.log('response',response.data);
+          let subject = response.data
+          setSubjects(subject)
+        })
+        .catch((error)=>{
+          console.log('error',error);
+          
+        })
+      } else {
+        console.log('No data found in AsyncStorage for key studentAuth');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error retrieving data from AsyncStorage:', error);
+      return null;
+    }
+  };
+
+  useEffect(()=>{
+    getSubjectData()
+  },[])
+
 
   const renderItem = ({item}: any) => {
     return (
       <TouchableOpacity
       activeOpacity={0.8}
-        onPress={() => navigation.navigate('Courses')}
+        onPress={() => navigation.navigate('Courses', item)}
         style={{justifyContent: 'center', alignItems: 'center'}}>
         <View
           style={[
@@ -49,7 +97,7 @@ const Subjects = ({navigation}: any) => {
               fontFamily: 'Circular Std Book',
               fontSize: 18,
             }}>
-            {item.key}
+            {item.name}
           </Text>
         </View>
       </TouchableOpacity>
@@ -62,15 +110,16 @@ const Subjects = ({navigation}: any) => {
         height: '100%',
         paddingHorizontal: 25,
       }}>
+      <Header goBack title='Subjects' navigation={navigation}/>
       <ScrollView>
         <View style={{marginTop: 20}}></View>
         <SearchBar />
         <View style={{marginTop: 20}}></View>
 
         <FlatList
-          data={subjectsData}
+          data={subjects}
           renderItem={renderItem}
-          keyExtractor={item => item.key}
+          keyExtractor={(item:any) => item.id}
         />
       </ScrollView>
     </View>

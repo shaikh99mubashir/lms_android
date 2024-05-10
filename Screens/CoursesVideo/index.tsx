@@ -6,19 +6,25 @@ import { BaseUrl } from '../../Constant/BaseUrl';
 import { Color } from '../../Constant';
 import Header from '../../Components/Header';
 import SearchBar from '../../Components/SearchBar';
+import CustomButton from '../../Components/CustomButton';
 
-const StudentCourses = ({navigation}:any) => {
-  const [studentCourses, setStudentCourses] =useState([])
-  console.log('studentCourses========>',studentCourses);
+const CoursesVideos = ({navigation, route}:any) => {
+    let courseVideos = route.params
+    let courseId = courseVideos.id
+    let isEligibleForQuiz = courseVideos.completed
+    console.log('courseVideos',courseVideos);
+    
+  const [studentCoursesDetail, setStudentCoursesDetail] =useState([])
+  console.log('studentCoursesDetail',studentCoursesDetail);
   
-  const getStudentCourses = async () => {
+  const getStudentCoursesVideos = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('studentAuth');
       if (jsonValue !== null) {
         const data = JSON.parse(jsonValue);
         console.log('Retrieved data:', data.token);
         axios
-          .get(`${BaseUrl}my-courses`, {
+          .get(`${BaseUrl}videos/${courseId}`, {
             headers: {
               'Content-Type': 'multipart/form-data',
               Authorization: `Bearer ${data.token}`,
@@ -26,8 +32,8 @@ const StudentCourses = ({navigation}:any) => {
           })
           .then(response => {
             console.log('response', response.data);
-            let studentCourses = response.data
-            setStudentCourses(studentCourses);
+            let coursesDetail = response.data
+            setStudentCoursesDetail(coursesDetail);
           })
           .catch(error => {
             console.log('error', error);
@@ -43,12 +49,46 @@ const StudentCourses = ({navigation}:any) => {
   };
 
   useEffect(() => {
-    getStudentCourses();
+    getStudentCoursesVideos();
   }, []);
+  const handelTrackVideo = async (item:any) => {
+    console.log('item',item.id);
+    try {
+      const jsonValue = await AsyncStorage.getItem('studentAuth');
+      if (jsonValue !== null) {
+        const data = JSON.parse(jsonValue);
+        console.log('Retrieved data:', data.token);
+        const formData = new FormData();
+        formData.append('video_id', item.id);
+        axios
+          .post(`${BaseUrl}videos/track-view`,formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${data.token}`,
+            },
+          })
+          .then(response => {
+            console.log('response', response.data);
+            getStudentCoursesVideos();
+          })
+          .catch(error => {
+            console.log('error', error);
+          });
+      } else {
+        console.log('No data found in AsyncStorage for key studentAuth');
+
+      }
+    } catch (error) {
+      console.error('Error retrieving data from AsyncStorage:', error);
+      return null;
+    }
+    
+   
+  };
   const renderItem = ({item}: any) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('CoursesVideos', item)}
+        onPress={() => handelTrackVideo(item)}
         style={{justifyContent: 'center', alignItems: 'center'}}>
         <View
           style={[
@@ -68,7 +108,7 @@ const StudentCourses = ({navigation}:any) => {
               fontFamily: 'Circular Std Book',
               fontSize: 18,
             }}>
-            {item.name}
+            {item.title} {item.viewed && <Text>isView: {item.viewed}</Text>}
           </Text>
           {/* <Text
             style={{
@@ -89,23 +129,26 @@ const StudentCourses = ({navigation}:any) => {
         height: '100%',
         paddingHorizontal: 25,
       }}>
-        {/* <Header goBack title='' navigation={navigation}/> */}
+        <Header goBack title='Courses Video' navigation={navigation}/>
       <ScrollView>
         <View style={{marginTop: 20}}></View>
         <SearchBar />
         <View style={{marginTop: 20}}></View>
 
         <FlatList
-          data={studentCourses}
+          data={studentCoursesDetail}
           renderItem={renderItem}
           keyExtractor={(item:any) => item.id}
         />
+        {isEligibleForQuiz &&
+        <CustomButton btnTitle='Attemp Quiz' onPress={()=> navigation.navigate('Quizes', courseId)}/>
+        }
       </ScrollView>
     </View>
   )
 }
 
-export default StudentCourses
+export default CoursesVideos
 
 const styles = StyleSheet.create({
   BoxContainer: {

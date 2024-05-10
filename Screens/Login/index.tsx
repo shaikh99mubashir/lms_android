@@ -3,10 +3,11 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Color} from '../../Constant';
 import InputText from '../../Components/InputText';
 import CustomButton from '../../Components/CustomButton';
@@ -14,6 +15,11 @@ import PasswordInput from '../../Components/PasswordInput';
 import GoogleSignInButton from '../../Components/GoogleSignInButton';
 import FacebookSigninButton from '../../Components/FacebookSigninButton';
 import CustomTabView from '../../Components/CustomTabView';
+import CustomDropDown from '../../Components/CustomDropDown';
+import axios from 'axios';
+import {BaseUrl} from '../../Constant/BaseUrl';
+import CustomLoader from '../../Components/CustomLoader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ({navigation}: any) => {
   const [emailOrPhone, setEmailOrPhone] = useState('');
@@ -21,6 +27,7 @@ const Login = ({navigation}: any) => {
   const [emailOrPhoneError, setEmailOrPhoneError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [userInfo, setUserInfo] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = () => {
     navigation.replace('MyDrawer');
@@ -45,24 +52,102 @@ const Login = ({navigation}: any) => {
     setCurrentTab(newTabs);
   };
 
+  const [login, setLogin] = useState<any>({
+    emailOrPhone: '',
+    password: '',
+  });
+  const [errors, setErrors] = useState({
+    emailOrPhone: '',
+    password: '',
+  });
   const firstRoute = useCallback(() => {
+    const handelSignin = () => {
+      let newErrors = { emailOrPhone: '', password: ''};
+      let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const phoneRegex = /^[0-9]{6}$/;
+
+      if (!login.emailOrPhone) {
+        newErrors.emailOrPhone = 'Email is required';
+      } else if (!emailRegex.test(login.emailOrPhone)) {
+        newErrors.emailOrPhone = 'Invalid Email';
+      }
+      if (!login.password) {
+        newErrors.password = 'Password is required';
+      }
+
+      setErrors(newErrors);
+
+      if (Object.values(newErrors).some(error => error !== '')) {
+        return;
+      }
+      setLoading(true)
+      const formData = new FormData();
+      formData.append('email', login.emailOrPhone);
+      formData.append('password', login.password);
+      axios
+        .post(`${BaseUrl}login`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((response:any)=>{
+          let studentData = response.data
+          console.log('response',response.data);
+          setLoading(false)
+          if(response.data){
+            ToastAndroid.show(
+              `${response.message}`,
+               ToastAndroid.SHORT,
+             );
+             setLogin({
+               emailOrPhone: '',
+               password: '',
+             });
+             let mydata = JSON.stringify(studentData);
+             AsyncStorage.setItem('studentAuth', mydata);
+             navigation.replace('MyDrawer')
+          }
+        })
+        .catch((error)=>{
+          if (error.response) {
+            console.log('register Server responded with data:', error.response.data);
+            console.log('register Status code:', error.response.status);
+            console.log('register Headers:', error.response.headers);
+          } else if (error.request) {
+            console.log('register No response received:', error.request);
+          } else {
+            console.log('Error setting up the request: register', error.message);
+          }
+          setLoading(false)
+        })
+    };
     return (
       <View style={{width: '100%'}}>
         <View style={{marginTop: 20}} />
         <InputText
           label="Enter Email"
           placeholder="your.email@example.com"
-          onChangeText={(text: any) => setEmailOrPhone(text)}
-          value={emailOrPhone}
-          error={emailOrPhoneError}
+          onChangeText={(text: any) =>
+            setLogin((prevState: any) => ({
+              ...prevState,
+              emailOrPhone: text,
+            }))
+          }
+          value={login.emailOrPhone}
+          error={errors.emailOrPhone}
         />
         <View style={{marginTop: 20}} />
         <PasswordInput
           label="Password"
           placeholder="***************"
-          onChangeText={(text: any) => setPassword(text)}
-          value={password}
-          error={passwordError}
+          onChangeText={(text: any) =>
+            setLogin((prevState: any) => ({
+              ...prevState,
+              password: text,
+            }))
+          }
+          value={login.password}
+          error={errors.password}
         />
         <View>
           <TouchableOpacity
@@ -79,62 +164,171 @@ const Login = ({navigation}: any) => {
         </View>
         <View style={{margin: 8}}></View>
         <View style={{marginVertical: 20}}>
-          <CustomButton onPress={handleLogin} btnTitle="Sign in" />
+          <CustomButton onPress={handelSignin} btnTitle="Sign in" />
         </View>
       </View>
     );
-  }, [emailOrPhone, password]);
+  }, [login, errors]);
+
   const secondRoute = useCallback(() => {
+    const [classesData, setClassesData] = useState('');
+    const [selectedClass, setSelectedClass] = useState<any>('');
+    const [registerData, setRegisterData] = useState<any>({
+      name: '',
+      emailOrPhone: '',
+      password: '',
+    });
+    const [errors, setErrors] = useState({
+      name: '',
+      emailOrPhone: '',
+      password: '',
+    });
+
+    const handelSignup = () => {
+      let newErrors = {name: '', emailOrPhone: '', password: ''};
+      let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const phoneRegex = /^[0-9]{6}$/;
+
+      if (!registerData.name) {
+        newErrors.name = 'Name is required';
+      }
+      if (!registerData.emailOrPhone) {
+        newErrors.emailOrPhone = 'Email is required';
+      } else if (!emailRegex.test(registerData.emailOrPhone)) {
+        newErrors.emailOrPhone = 'Invalid email or phone';
+      }
+      if (!registerData.password) {
+        newErrors.password = 'Password is required';
+      }
+
+      setErrors(newErrors);
+
+      if (Object.values(newErrors).some(error => error !== '')) {
+        return;
+      }
+      setLoading(true);
+      const formData = new FormData();
+      formData.append('name', registerData.name);
+      formData.append('email', registerData.emailOrPhone);
+      formData.append('password', registerData.password);
+      axios
+        .post(`${BaseUrl}register`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((response: any) => {
+          console.log('response', response.data);
+          setLoading(false);
+          if (response.data) {
+            ToastAndroid.show(`${response.message}`, ToastAndroid.SHORT);
+            setRegisterData({
+              name: '',
+              emailOrPhone: '',
+              password: '',
+            });
+            activateTab(0);
+          }
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(
+              'register Server responded with data:',
+              error.response.data,
+            );
+            console.log('register Status code:', error.response.status);
+            console.log('register Headers:', error.response.headers);
+          } else if (error.request) {
+            console.log('register No response received:', error.request);
+          } else {
+            console.log(
+              'Error setting up the request: register',
+              error.message,
+            );
+          }
+          setLoading(false);
+        });
+    };
+
+    // const getClassess = () => {
+    //   axios
+    //     .get(`${BaseUrl}classes`)
+    //     .then(response => {
+    //       let classes = response.data;
+    //       console.log('classess====>0',classes);
+
+    //       const updatedData = classes.map((item: any) => {
+
+    //         return {
+    //           ...item,
+    //           subject: item.name,
+    //         };
+    //       });
+    //       setClassesData(updatedData);
+    //       console.log(updatedData);
+    //     })
+    //     .catch(error => {
+    //       console.error('There was a problem with the axios request:', error);
+    //     });
+    // };
+    // useEffect(() => {
+    //   getClassess();
+    // }, []);
+
     return (
       <View style={{width: '100%'}}>
         <View style={{marginTop: 20}} />
         <InputText
           label="Name"
-          placeholder="Hello world"
-          onChangeText={(text: any) => setEmailOrPhone(text)}
-          value={emailOrPhone}
-          error={emailOrPhoneError}
+          placeholder="John Deo"
+          required
+          onChangeText={(text: any) =>
+            setRegisterData((prevState: any) => ({
+              ...prevState,
+              name: text,
+            }))
+          }
+          value={registerData.name}
+          error={errors.name}
         />
-          <View style={{marginTop: 20}} />
+        <View style={{marginTop: 20}} />
         <InputText
           label="Enter Email"
           placeholder="your.email@example.com"
-          onChangeText={(text: any) => setEmailOrPhone(text)}
-          value={emailOrPhone}
-          error={emailOrPhoneError}
+          onChangeText={(text: any) =>
+            setRegisterData((prevState: any) => ({
+              ...prevState,
+              emailOrPhone: text,
+            }))
+          }
+          value={registerData.emailOrPhone}
+          error={errors.emailOrPhone}
         />
         <View style={{marginTop: 20}} />
+        {/* <CustomDropDown
+          setSelectedSubject={setSelectedClass}
+          selectedSubject={selectedClass}
+          ddTitle="Select Classes"
+          dropdownPlace={'Select Subject'}
+          subject={classesData}
+          categoryShow={'subject'}
+        />
+        <View style={{marginTop: 10}} /> */}
         <PasswordInput
           label="Password"
           placeholder="***************"
-          onChangeText={(text: any) => setPassword(text)}
-          value={password}
-          error={passwordError}
+          onChangeText={(text: any) =>
+            setRegisterData((prevState: any) => ({
+              ...prevState,
+              password: text,
+            }))
+          }
+          value={registerData.password}
+          error={errors.password}
         />
-        {/* <View style={{marginTop: 20}} />
-        <PasswordInput
-          label="Confirm Password"
-          placeholder="***************"
-          onChangeText={(text: any) => setPassword(text)}
-          value={password}
-          error={passwordError}
-        /> */}
-        <View>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('ForgotPassword')}
-            activeOpacity={0.8}
-            style={{
-              alignItems: 'flex-end',
-              position: 'relative',
-              marginVertical: 5,
-              top: 12,
-            }}>
-            <Text style={styles.textType2}>Forgot Password?</Text>
-          </TouchableOpacity>
-        </View>
         <View style={{margin: 8}}></View>
         <View style={{marginVertical: 20}}>
-          <CustomButton onPress={handleLogin} btnTitle="Sign in" />
+          <CustomButton onPress={() => handelSignup()} btnTitle="Sign up" />
         </View>
       </View>
     );
@@ -147,7 +341,7 @@ const Login = ({navigation}: any) => {
         backgroundColor: Color.white,
         height: '100%',
       }}>
-      <ScrollView showsHorizontalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             justifyContent: 'center',
@@ -215,8 +409,8 @@ const Login = ({navigation}: any) => {
               paddingVertical: 10,
               borderRadius: 30,
               borderColor: Color.liteGrey,
-              alignItems:'center',
-              justifyContent:'center'
+              alignItems: 'center',
+              justifyContent: 'center',
             }}>
             <Image source={require('../../Images/google.png')} />
             <Text style={styles.textType2}>Google</Text>
@@ -231,21 +425,23 @@ const Login = ({navigation}: any) => {
               paddingVertical: 10,
               borderRadius: 30,
               borderColor: Color.liteGrey,
-              alignItems:'center',
-              justifyContent:'center'
+              alignItems: 'center',
+              justifyContent: 'center',
             }}>
             <Image source={require('../../Images/facebook.png')} />
             <Text style={styles.textType2}>Facebook</Text>
           </TouchableOpacity>
         </View>
         <View style={{marginTop: 10}}></View>
-        <TouchableOpacity
-         activeOpacity={0.8}
-         onPress={() => {
-           const currentIndex = currentTab.findIndex((tab:any) => tab.selected);
-           const nextIndex = currentIndex === 0 ? 1 : 0;
-           activateTab(nextIndex);
-         }}
+        {/* <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => {
+            const currentIndex = currentTab.findIndex(
+              (tab: any) => tab.selected,
+            );
+            const nextIndex = currentIndex === 0 ? 1 : 0;
+            activateTab(nextIndex);
+          }}
           style={{
             alignItems: 'center',
             justifyContent: 'center',
@@ -259,11 +455,11 @@ const Login = ({navigation}: any) => {
               fontFamily: 'Circular Std Medium',
               fontSize: 16,
             }}>
-           {currentTab[1].selected ? "Already have an Account?" : "Don’t have an Account?"}
+            {currentTab[1].selected
+              ? 'Already have an Account?'
+              : 'Don’t have an Account?'}
           </Text>
-          <View
-            style={{flexDirection: 'row', gap: 4}}
-           >
+          <View style={{flexDirection: 'row', gap: 4}}>
             <Text
               style={{
                 color: Color.IronsideGrey,
@@ -280,11 +476,12 @@ const Login = ({navigation}: any) => {
                 borderBottomColor: Color.Primary,
                 fontFamily: 'Circular Std Medium',
               }}>
-             {currentTab[1].selected ? "Sign in" : "Sign up"}
+              {currentTab[1].selected ? 'Sign in' : 'Sign up'}
             </Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </ScrollView>
+      <CustomLoader visible={loading} />
     </View>
   );
 };

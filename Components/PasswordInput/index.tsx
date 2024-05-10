@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     shadowRadius: 20,
     padding: 15,
     fontFamily: 'Circular Std Medium',
-    color: 'black',
+    color: Color.DustyGrey,
     fontSize: 16,
     width: '90%',
   },

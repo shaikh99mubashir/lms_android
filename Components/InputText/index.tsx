@@ -13,7 +13,7 @@ const InputText = ({
   return (
     <View style={{gap: 5, marginTop: 10}}>
       <View style={styles.labelContainer}>
-      <Text style={styles.label}>{label}</Text>
+        <Text style={styles.label}>{label}</Text>
       </View>
       <View style={styles.inputContainer}>
         <TextInput
@@ -28,7 +28,7 @@ const InputText = ({
           keyboardType={keyboardType}
         />
       </View>
-      {error && <Text style={{color: 'red'}}> {error}</Text>}
+      {error && <Text style={{color: 'red', marginLeft:15}}> {error}</Text>}
     </View>
   );
 };
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-
   },
   input: {
     height: 55,
@@ -52,23 +51,22 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
     fontFamily: 'Circular Std Book',
-    color: 'black',
+    color: Color.DustyGrey,
     fontSize: 18,
     borderColor: Color.liteGrey,
     borderWidth: 1,
-
   },
   labelContainer: {
-    backgroundColor:'white',position: 'absolute',
+    backgroundColor: 'white',
+    position: 'absolute',
     top: -10,
     left: 25,
-    paddingHorizontal:10,zIndex:1
-    
+    paddingHorizontal: 10,
+    zIndex: 1,
   },
   label: {
     color: Color.Dune,
     fontFamily: 'Circular Std Medium',
     fontSize: 16,
-    
   },
 });

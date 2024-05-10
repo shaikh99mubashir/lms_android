@@ -9,6 +9,11 @@ import MyDrawer from '../MyDrawer';
 import Subjects from '../../Screens/Subjects';
 import Courses from '../../Screens/Courses';
 import CourseDetail from '../../Screens/CourseDetail';
+import CoursesVideos from '../../Screens/CoursesVideo';
+import ForgotPassword from '../../Screens/ForgotPassword';
+import Profile from '../../Screens/Profile';
+import ChangePassword from '../../Screens/ChangePassword';
+import Quizes from '../../Screens/Quizes';
 
 const MyStack = () => {
   const Stack = createStackNavigator();
@@ -17,10 +22,15 @@ const MyStack = () => {
       <Stack.Navigator  screenOptions={{headerShown: false, }}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="MyDrawer" component={MyDrawer} />
-        <Stack.Screen name="SignUp" component={SignUp} />
+        {/* <Stack.Screen name="SignUp" component={SignUp} /> */}
+        <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="Subjects" component={Subjects} />
+        <Stack.Screen name="CoursesVideos" component={CoursesVideos} />
         <Stack.Screen name="Courses" component={Courses} />
         <Stack.Screen name="CourseDetail" component={CourseDetail} />
+        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="ChangePassword" component={ChangePassword} />
+        <Stack.Screen name="Quizes" component={Quizes} />
       </Stack.Navigator>
     </NavigationContainer>
   );
