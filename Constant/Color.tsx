@@ -24,6 +24,7 @@ export default {
     SantaGray:'#A0A4AB',
     shinyGrey:"#E9F1FE",
     lineColor:'rgba(195, 213, 226, 0.70)',
-    liteGrey:'#f4f5f5'
+    liteGrey:'#f4f5f5',
+    background:'white'
     
 };

@@ -85,9 +85,9 @@ const Profile = ({navigation}: any) => {
           />
           <View style={{margin: 5}}></View>
           <Text style={[styles.textType1, {lineHeight: 35}]}>
-           {profileData.name}
+           {profileData?.name}
           </Text>
-          <Text style={[styles.textType3]}>{profileData.email}</Text>
+          <Text style={[styles.textType3]}>{profileData?.email}</Text>
         </View>
         <View style={{gap: 5, marginTop: 15}}>
           <InputText label="Full Name*" placeholder="Full Name" />

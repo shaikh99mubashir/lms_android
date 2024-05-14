@@ -14,14 +14,15 @@ import ForgotPassword from '../../Screens/ForgotPassword';
 import Profile from '../../Screens/Profile';
 import ChangePassword from '../../Screens/ChangePassword';
 import Quizes from '../../Screens/Quizes';
+import QuizResult from '../../Screens/QuizResult';
 
 const MyStack = () => {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
       <Stack.Navigator  screenOptions={{headerShown: false, }}>
-        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="MyDrawer" component={MyDrawer} />
+        <Stack.Screen name="Login" component={Login} />
         {/* <Stack.Screen name="SignUp" component={SignUp} /> */}
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="Subjects" component={Subjects} />
@@ -31,6 +32,7 @@ const MyStack = () => {
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="ChangePassword" component={ChangePassword} />
         <Stack.Screen name="Quizes" component={Quizes} />
+        <Stack.Screen name="QuizResult" component={QuizResult} />
       </Stack.Navigator>
     </NavigationContainer>
   );

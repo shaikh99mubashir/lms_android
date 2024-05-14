@@ -15,16 +15,19 @@ const SearchBar = ({
     <View style={{}}>
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
         <View
-          style={[styles.input,{
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingVertical:0,
-          }]}>
-            <View>
-          <EvilIcons name="search" size={28} color={Color.Black} />
-            </View>
+          style={[
+            styles.input,
+            {
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingVertical: 0,
+            },
+          ]}>
+          <View>
+            <EvilIcons name="search" size={28} color={Color.Black} />
+          </View>
 
           <TextInput
             placeholder="Search"
