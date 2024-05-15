@@ -25,6 +25,8 @@ export default {
     shinyGrey:"#E9F1FE",
     lineColor:'rgba(195, 213, 226, 0.70)',
     liteGrey:'#f4f5f5',
-    background:'white'
+    background:'white',
+    purple:'#271254',
+    purpleLite:'rgba(39, 18, 84, 0.5)',
     
 };

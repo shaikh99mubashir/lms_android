@@ -21,9 +21,9 @@ const MyStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator  screenOptions={{headerShown: false, }}>
-        <Stack.Screen name="MyDrawer" component={MyDrawer} />
         <Stack.Screen name="Login" component={Login} />
-        {/* <Stack.Screen name="SignUp" component={SignUp} /> */}
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="MyDrawer" component={MyDrawer} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="Subjects" component={Subjects} />
         <Stack.Screen name="CoursesVideos" component={CoursesVideos} />

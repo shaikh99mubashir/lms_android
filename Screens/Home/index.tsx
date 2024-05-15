@@ -256,7 +256,7 @@ const Home = ({navigation}: any) => {
         <SearchBar />
         <View style={{marginTop: 20}}></View>
         <View
-          style={{
+          style={{  
             justifyContent: 'space-between',
             flexDirection: 'row',
             marginHorizontal: 10,
