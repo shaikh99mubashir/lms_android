@@ -5,6 +5,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Color} from '../../Constant';
@@ -16,18 +17,18 @@ import {BaseUrl} from '../../Constant/BaseUrl';
 import Header from '../../Components/Header';
 
 const AllClassess = ({navigation}: any) => {
-  // const data = [
-  //   {key: 'Class One'},
-  //   {key: 'Class Two'},
-  //   {key: 'Class Three'},
-  //   {key: 'Class Four'},
-  //   {key: 'Class Five'},
-  //   {key: 'Class Six'},
-  //   {key: 'Class Seven'},
-  //   {key: 'Class Eight'},
-  //   {key: 'Class Nine'},
-  //   {key: 'Class Ten'},
-  // ];
+  const data = [
+    {name: 'Class One'},
+    {name: 'Class Two'},
+    {name: 'Class Three'},
+    {name: 'Class Four'},
+    {name: 'Class Five'},
+    {name: 'Class Six'},
+    {name: 'Class Seven'},
+    {name: 'Class Eight'},
+    {name: 'Class Nine'},
+    {name: 'Class Ten'},
+  ];
 
   const [classes, setClasses] = useState([]);
 
@@ -45,15 +46,30 @@ const AllClassess = ({navigation}: any) => {
             },
           })
           .then(response => {
-            console.log('response', response.data);
+            console.log('response=====?', response.data);
             setClasses(response.data);
           })
           .catch(error => {
-            console.log('error', error);
+            if (error.response) {
+              console.log(
+                'register Server responded with data:',
+                error.response.data,
+              );
+              navigation.replace('Login');
+              console.log('register Status code:', error.response.status);
+              console.log('register Headers:', error.response.headers);
+            } else if (error.request) {
+              console.log('register No response received:', error.request);
+            } else {
+              console.log(
+                'Error setting up the request: register',
+                error.message,
+              );
+            }
           });
       } else {
         console.log('No data found in AsyncStorage for key studentAuth');
-       navigation.replace('Login')
+        navigation.replace('Login');
       }
     } catch (error) {
       console.error('Error retrieving data from AsyncStorage:', error);
@@ -61,9 +77,9 @@ const AllClassess = ({navigation}: any) => {
     }
   };
 
-  useEffect(() => {
-    getClassesData();
-  }, []);
+  // useEffect(() => {
+  //   getClassesData();
+  // }, []);
 
   const renderItem = ({item}: any) => {
     console.log('item', item);
@@ -100,11 +116,11 @@ const AllClassess = ({navigation}: any) => {
   return (
     <View
       style={{
-        backgroundColor: Color.PattensBlue,
+        backgroundColor: Color.GhostWhite,
         height: '100%',
         paddingHorizontal: 25,
       }}>
-      {/* <Header goBack title="Classess" navigation={navigation} /> */}
+      <Header goBack title="Classess" navigation={navigation} />
       <ScrollView>
         <View style={{marginTop: 20}}></View>
         <SearchBar />
@@ -132,11 +148,50 @@ const AllClassess = ({navigation}: any) => {
             </Text>
           </View>
         </View> */}
-        <FlatList
-          data={classes}
+        {/* <FlatList
+          data={data}
           renderItem={renderItem}
           keyExtractor={(item: any) => item.id}
-        />
+        /> */}
+        <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+          {data &&
+            data.map((item, i) => {
+              return (
+                <TouchableOpacity
+                onPress={()=>navigation.navigate('Subjects')}
+                activeOpacity={0.8}
+                  key={i}
+                  style={{
+                    width: '48%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 10,
+                    marginBottom: 25,
+                  }}>
+                  <Image source={require('../../Images/ICON.png')} />
+                  <Text
+                    style={{
+                      color: 'black',
+                      fontFamily: 'Circular Std Book',
+                      fontSize: 18,
+                    }}>
+                    {item.name}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+        </View>
+        {/* <TouchableOpacity style={{backgroundColor:'red', width:'48%', alignItems:'center', justifyContent:"center"}}>
+          <Image source={require('../../Images/ICON.png')}/>
+          <Text
+            style={{
+              color: 'black',
+              fontFamily: 'Circular Std Book',
+              fontSize: 18,
+            }}>
+              Hello
+          </Text>
+        </TouchableOpacity> */}
       </ScrollView>
     </View>
   );

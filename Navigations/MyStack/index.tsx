@@ -15,12 +15,19 @@ import Profile from '../../Screens/Profile';
 import ChangePassword from '../../Screens/ChangePassword';
 import Quizes from '../../Screens/Quizes';
 import QuizResult from '../../Screens/QuizResult';
+import Splash from '../../Screens/Splash';
+import OnBoarding from '../../Screens/OnBoarding';
+import GetStarted from '../../Screens/GetStarted';
+import OngoingDetail from '../../Screens/OngoingDetail';
 
 const MyStack = () => {
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
       <Stack.Navigator  screenOptions={{headerShown: false, }}>
+        <Stack.Screen name="Splash" component={Splash} />
+        <Stack.Screen name="OnBoarding" component={OnBoarding} />
+        <Stack.Screen name="GetStarted" component={GetStarted} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="MyDrawer" component={MyDrawer} />
@@ -33,6 +40,7 @@ const MyStack = () => {
         <Stack.Screen name="ChangePassword" component={ChangePassword} />
         <Stack.Screen name="Quizes" component={Quizes} />
         <Stack.Screen name="QuizResult" component={QuizResult} />
+        <Stack.Screen name="OngoingDetail" component={OngoingDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   );

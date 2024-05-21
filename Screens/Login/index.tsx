@@ -19,6 +19,8 @@ import PasswordInput2 from '../../Components/PasswordInput2';
 import CustomButton from '../../Components/CustomButton';
 import CustomButton2 from '../../Components/CustomButton2';
 import LinearGradient from 'react-native-linear-gradient';
+import CustomButton3 from '../../Components/CustomButton3';
+import MyDrawer from '../../Navigations/MyDrawer';
 
 const Login = ({navigation}: any) => {
   const [login, setLogin] = useState<any>({
@@ -173,7 +175,8 @@ const Login = ({navigation}: any) => {
           </View>
           <View style={{margin: 5}}></View>
           <View style={{marginVertical: 15}}>
-            <CustomButton2 onPress={handelSignin} btnTitle="PROCEED" />
+            {/* <CustomButton3 onPress={handelSignin} btnTitle="PROCEED" /> */}
+            <CustomButton3 onPress={()=>navigation.navigate('MyDrawer')} btnTitle="PROCEED" />
           </View>
           {/* <View style={{margin: 5}}></View> */}
           <Text style={[styles.textType2, {textAlign: 'center'}]}>

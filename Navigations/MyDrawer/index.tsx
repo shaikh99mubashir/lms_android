@@ -40,7 +40,7 @@ const MyDrawer = ({navigation}: any) => {
           });
       } else {
         console.log('No data found in AsyncStorage for key studentAuth');
-        navigation.replace('Login');
+        // navigation.replace('Login');
       }
     } catch (error) {
       console.error('Error retrieving data from AsyncStorage:', error);
@@ -70,9 +70,10 @@ const MyDrawer = ({navigation}: any) => {
       <Drawer.Screen name="StudentCourses" component={StudentCourses} />
       <Drawer.Screen name="Settings" component={Settings} />
       <Drawer.Screen name="Subscriptions" component={Subscriptions} />
-      {isSessionIsALlow == true ? (
+      <Drawer.Screen name="LiveSessions" component={LiveSessions} />
+      {/* {isSessionIsALlow == true ? (
         <Drawer.Screen name="LiveSessions" component={LiveSessions} />
-      ) : null}
+      ) : null} */}
     </Drawer.Navigator>
   );
 };

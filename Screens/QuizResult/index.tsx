@@ -1,14 +1,21 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import Header from '../../Components/Header'
+import { Color } from '../../Constant'
 
-const QuizResult = ({route}:any) => {
-    const result = route.params
-    console.log('result',result);
+const QuizResult = ({route,navigation}:any) => {
+    // const result = route.params
+    // console.log('result',result);
     
   return (
-    <View>
-      <Text>score : {result.score}</Text>
-      <Text>percentage : {result.percentage}</Text>
+    <View
+      style={{
+        backgroundColor: Color.GhostWhite,
+        height: '100%',
+        paddingHorizontal: 25,
+      }}>
+          <Header goBack title="Qui" navigation={navigation} />
+      <Text>percentage :0</Text>
     </View>
   )
 }

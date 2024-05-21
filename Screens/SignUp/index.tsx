@@ -19,6 +19,7 @@ import PasswordInput2 from '../../Components/PasswordInput2';
 import CustomButton from '../../Components/CustomButton';
 import CustomButton2 from '../../Components/CustomButton2';
 import LinearGradient from 'react-native-linear-gradient';
+import CustomButton3 from '../../Components/CustomButton3';
 
 const SignUp = ({navigation}: any) => {
   let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -30,6 +31,8 @@ const SignUp = ({navigation}: any) => {
     emailOrPhone: '',
     password: '',
   });
+  console.log('registerData',registerData);
+  
   const verifyEmail = emailRegex.test(registerData.emailOrPhone);
   const verifyName = registerData.name.length > 4
   const [errors, setErrors] = useState({
@@ -65,6 +68,8 @@ const SignUp = ({navigation}: any) => {
         formData.append('name', registerData.name);
         formData.append('email', registerData.emailOrPhone);
         formData.append('password', registerData.password);
+        console.log('formData',formData);
+        
         axios
           .post(`${BaseUrl}register`, formData, {
             headers: {
@@ -76,6 +81,7 @@ const SignUp = ({navigation}: any) => {
             setLoading(false);
             if (response.data) {
               ToastAndroid.show(`${response.message}`, ToastAndroid.SHORT);
+              navigation.navigate('Login')
               setRegisterData({
                 name: '',
                 emailOrPhone: '',
@@ -83,7 +89,7 @@ const SignUp = ({navigation}: any) => {
               });
             }
           })
-          .catch(error => {
+          .catch((error:any) => {
             if (error.response) {
               console.log(
                 'register Server responded with data:',
@@ -195,7 +201,7 @@ const SignUp = ({navigation}: any) => {
           </View>
           <View style={{margin: 5}}></View>
           <View style={{marginVertical: 15}}>
-            <CustomButton2 onPress={handelSignup} btnTitle="PROCEED" />
+            <CustomButton3 onPress={handelSignup} btnTitle="PROCEED" />
           </View>
           {/* <View style={{margin: 5}}></View> */}
           <Text style={[styles.textType2, {textAlign: 'center'}]}>

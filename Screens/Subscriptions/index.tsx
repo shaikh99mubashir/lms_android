@@ -13,11 +13,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {BaseUrl} from '../../Constant/BaseUrl';
 import CustomButton from '../../Components/CustomButton';
+import Header from '../../Components/Header';
+import CustomButton3 from '../../Components/CustomButton3';
 
 const Subscriptions = ({navigation}: any) => {
-  const [getSubscriptions, setGetSubscriptions] = useState([]);
+  // const [getSubscriptions, setGetSubscriptions] = useState([]);
 
-  console.log('getSubscriptions', getSubscriptions);
+  // console.log('getSubscriptions', getSubscriptions);
 
   const getSubscriptionsData = async () => {
     try {
@@ -35,7 +37,7 @@ const Subscriptions = ({navigation}: any) => {
           .then(response => {
             //   console.log('response', response.data.subscriptions);
             let subscriptions = response.data.subscriptions;
-            setGetSubscriptions(subscriptions);
+            // setGetSubscriptions(subscriptions);
           })
           .catch(error => {
             console.log('error', error);
@@ -50,9 +52,9 @@ const Subscriptions = ({navigation}: any) => {
     }
   };
 
-  useEffect(() => {
-    getSubscriptionsData();
-  }, []);
+  // useEffect(() => {
+  //   getSubscriptionsData();
+  // }, []);
   const handelSubscriptions = async (item: any) => {
     console.log('item', item.id);
     try {
@@ -85,15 +87,39 @@ const Subscriptions = ({navigation}: any) => {
       return null;
     }
   };
+
+  const getSubscriptions = [
+    {
+      id: 1,
+      name: "Basic Subscription",
+      description: "Basic subscription plan with limited features",
+      price: "$10",
+      purchased: true,
+    },
+    {
+      id: 2,
+      name: "Standard Subscription",
+      description: "Standard subscription plan with moderate features",
+      price: "$20",
+      purchased: true,
+    },
+    {
+      id: 3,
+      name: "Premium Subscription",
+      description: "Premium subscription plan with full features",
+      price: "$30",
+      purchased: true,
+    },
+  ];
   return (
     <View
       style={{
-        backgroundColor: Color.white,
+        backgroundColor: Color.GhostWhite,
         height: '100%',
         paddingHorizontal: 25,
       }}>
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        {/* <Header title={'Settings'} goBack navigation={navigation} /> */}
+        <Header title={'Subscription'} goBack navigation={navigation} />
         <View style={{marginVertical: 10}}></View>
         {/* <View
         style={{
@@ -126,7 +152,7 @@ const Subscriptions = ({navigation}: any) => {
           renderItem={({item}: any) => (
             <View
               style={{
-                backgroundColor: Color.PattensBlue,
+                backgroundColor: Color.white,
                 // height: 60,
                 borderRadius: 12,
                 justifyContent: 'center',
@@ -134,15 +160,17 @@ const Subscriptions = ({navigation}: any) => {
                 paddingVertical: 20,
                 marginBottom: 10,
               }}>
-              <Text style={[styles.textType3]}>Name: {item.name}</Text>
-              <Text style={[styles.textType3]}>
-                Description: {item.description}
+              <Text style={styles.textType1}>{item.name}</Text>
+              <View style={{margin:5}}/>
+              <Text style={[styles.textType3,{color:Color.IronsideGrey}]}>
+                {item.description}
               </Text>
-              <Text style={[styles.textType3]}>Price: {item.price}</Text>
+              {/* <View style={{margin:5}}/>
+              <Text style={[styles.textType3,{fontSize:18}]}>Price: {item.price}</Text> */}
               <View style={{margin: 10}}></View>
               {item.purchased &&
-              <CustomButton
-              btnTitle="Buy"
+              <CustomButton3
+              btnTitle={`Buy Now ${item.price}`} 
               onPress={() => handelSubscriptions(item)}
               />
             }

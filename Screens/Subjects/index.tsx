@@ -6,33 +6,33 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {Color} from '../../Constant';
 import SearchBar from '../../Components/SearchBar';
 import CustomButton from '../../Components/CustomButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { BaseUrl } from '../../Constant/BaseUrl';
+import {BaseUrl} from '../../Constant/BaseUrl';
 import Header from '../../Components/Header';
+import {Image} from 'react-native';
 
 const Subjects = ({navigation, route}: any) => {
+  // const classData = route.params;
+  // const [subjects, setSubjects] = useState([])
+  // console.log('classData', classData.id);
+  // console.log('subjects====>', subjects);
 
-  const classData = route.params;
-  const [subjects, setSubjects] = useState([])
-  console.log('classData', classData.id);
-  console.log('subjects====>', subjects);
-  
   const subjectsData = [
-    {key: 'Maths'},
-    {key: 'English'},
-    {key: 'Chemistry'},
-    {key: 'Physics'},
-    {key: 'Biology'},
-    {key: 'History'},
-    {key: 'Geography'},
-    {key: 'Computer Science'},
-    {key: 'Art'},
-    {key: 'Physical Education'},
+    {name: 'Maths'},
+    {name: 'English'},
+    {name: 'Chemistry'},
+    {name: 'Physics'},
+    {name: 'Biology'},
+    {name: 'History'},
+    {name: 'Geography'},
+    {name: 'Computer Science'},
+    {name: 'Art'},
+    {name: 'Physical Education'},
   ];
   const getSubjectData = async () => {
     try {
@@ -41,23 +41,21 @@ const Subjects = ({navigation, route}: any) => {
         const data = JSON.parse(jsonValue);
         console.log('Retrieved data:', data.token);
 
-
         axios
-        .get(`${BaseUrl}subjects/${classData.id}`,  {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${data.token}`
-          },
-        })
-        .then((response)=>{
-          console.log('response',response.data);
-          let subject = response.data
-          setSubjects(subject)
-        })
-        .catch((error)=>{
-          console.log('error',error);
-          
-        })
+          .get(`${BaseUrl}subjects/${classData.id}`, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${data.token}`,
+            },
+          })
+          .then(response => {
+            console.log('response', response.data);
+            let subject = response.data;
+            setSubjects(subject);
+          })
+          .catch(error => {
+            console.log('error', error);
+          });
       } else {
         console.log('No data found in AsyncStorage for key studentAuth');
         return null;
@@ -68,37 +66,61 @@ const Subjects = ({navigation, route}: any) => {
     }
   };
 
-  useEffect(()=>{
-    getSubjectData()
-  },[])
-
+  // useEffect(()=>{
+  //   getSubjectData()
+  // },[])
 
   const renderItem = ({item}: any) => {
     return (
       <TouchableOpacity
-      activeOpacity={0.8}
-        onPress={() => navigation.navigate('Courses', item)}
-        style={{justifyContent: 'center', alignItems: 'center'}}>
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate('Courses')}>
         <View
-          style={[
-            styles.Box,
-            {
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingVertical: 0,
-              marginBottom: 10,
-            },
-          ]}>
-          <Text
+          style={{
+            backgroundColor: Color.white,
+            borderRadius: 16,
+            flexDirection: 'row',
+            gap: 10,
+            marginBottom: 10,
+          }}>
+          <Image
+            source={require('../../Images/login.png')}
             style={{
-              color: 'black',
-              fontFamily: 'Circular Std Book',
-              fontSize: 18,
-            }}>
-            {item.name}
-          </Text>
+              width: 150,
+              height: 150,
+              borderTopLeftRadius: 16,
+              borderBottomLeftRadius: 16,
+            }}
+          />
+          <View style={{flexDirection: 'column', paddingVertical: 10}}>
+            <Text style={[styles.textType3, {color: '#ff6b00', fontSize: 16}]}>
+              Tending
+            </Text>
+            <View style={{margin: 3}} />
+            <Text style={[styles.textType3, {fontSize: 18}]}>{item.name}</Text>
+            <View style={{margin: 3}} />
+            <Text style={[styles.textType3, {fontSize: 18}]}>100+ Courses</Text>
+            <TouchableOpacity
+            activeOpacity={0.8}
+             onPress={() => navigation.navigate('Courses')}
+              style={{
+                paddingHorizontal: 15,
+                height: 30,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: 20,
+                backgroundColor: Color.Primary,
+                borderRadius: 16,
+              }}>
+              <Text
+                style={[
+                  styles.textType3,
+                  {color: Color.white, fontSize: 18}, // Make sure Color.white is defined or replace it with a color value
+                ]}>
+                View Courses
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </TouchableOpacity>
     );
@@ -110,16 +132,16 @@ const Subjects = ({navigation, route}: any) => {
         height: '100%',
         paddingHorizontal: 25,
       }}>
-      <Header goBack title='Subjects' navigation={navigation}/>
-      <ScrollView>
+      <Header goBack title="Subjects" navigation={navigation} />
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{marginTop: 20}}></View>
         <SearchBar />
         <View style={{marginTop: 20}}></View>
 
         <FlatList
-          data={subjects}
+          data={subjectsData}
           renderItem={renderItem}
-          keyExtractor={(item:any) => item.id}
+          keyExtractor={(item: any) => item.id}
         />
       </ScrollView>
     </View>
@@ -129,23 +151,33 @@ const Subjects = ({navigation, route}: any) => {
 export default Subjects;
 
 const styles = StyleSheet.create({
+  textType3: {
+    color: Color.Dune,
+    fontWeight: '500',
+    fontSize: 16,
+    fontFamily: 'Circular Std Medium',
+    fontStyle: 'normal',
+  },
+  textType1: {
+    fontWeight: '500',
+    fontSize: 26,
+    color: Color.Black,
+    fontFamily: 'Circular Std Medium',
+    lineHeight: 24,
+    fontStyle: 'normal',
+  },
   BoxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   Box: {
     backgroundColor: 'white',
-    height: 60,
-    borderRadius: 12,
+    borderRadius: 16,
     elevation: 4, // for Android
-    shadowColor: 'rgba(213, 226, 245, 0.40)', // for iOS
+    shadowColor: 'rgba(213, 226, 245, 0.80)', // for iOS
     shadowOffset: {width: 0, height: 4}, // for iOS
     shadowOpacity: 1, // for iOS
     shadowRadius: 20,
-    flex: 1,
-    padding: 15,
     fontFamily: 'Circular Std Book',
-    color: 'black',
-    fontSize: 18,
   },
 });

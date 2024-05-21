@@ -45,11 +45,11 @@ const CustomTabView2 = (Props: any): any => {
             onPress={() => activateTab(0)}
             style={{
               width: '50%',
-              borderBottomColor:
+              backgroundColor:
                 currentTab &&
                 currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
-                  ? Color.Primary
-                  : 'white',
+                  ? '#E8F1FF'
+                  : Color.GhostWhite,
             }}>
             <Text
               style={[
@@ -62,15 +62,16 @@ const CustomTabView2 = (Props: any): any => {
                     )
                       ? 'black'
                       : Color.Black,
-                  borderBottomWidth: 3,
+                  borderBottomWidth:1,
                   paddingVertical: 15,
-                  borderBottomColor:
-                    currentTab &&
-                    currentTab.some(
-                      (e: any, i: any) => e.index == 0 && e.selected,
-                    )
-                      ? Color.Primary
-                      : Color.lineColor,
+                  borderBottomColor:Color.lineColor
+                  // borderBottomColor:
+                  //   currentTab &&
+                  //   currentTab.some(
+                  //     (e: any, i: any) => e.index == 0 && e.selected,
+                  //   )
+                  //     ? Color.Primary
+                  //     : Color.lineColor,
                 },
               ]}>
               {firstRouteTitle}
@@ -81,6 +82,11 @@ const CustomTabView2 = (Props: any): any => {
             onPress={() => activateTab(1)}
             style={{
               width: '50%',
+              backgroundColor:
+                currentTab &&
+                currentTab.some((e: any, i: any) => e.index == 1 && e.selected)
+                  ? '#E8F1FF'
+                  : Color.GhostWhite,
             }}>
             <Text
               style={[
@@ -93,15 +99,16 @@ const CustomTabView2 = (Props: any): any => {
                     )
                       ? 'black'
                       : Color.Black,
-                  borderBottomWidth: 3,
+                  borderBottomWidth: 1,
+                  borderBottomColor:Color.lineColor,
                   paddingVertical: 15,
-                  borderBottomColor:
-                    currentTab &&
-                    currentTab.some(
-                      (e: any, i: any) => e.index == 1 && e.selected,
-                    )
-                      ? Color.Primary
-                      : Color.lineColor,
+                  // borderBottomColor:
+                  //   currentTab &&
+                  //   currentTab.some(
+                  //     (e: any, i: any) => e.index == 1 && e.selected,
+                  //   )
+                  //     ? Color.Primary
+                  //     : Color.lineColor,
                 },
               ]}>
               {secondRouteTitle}

@@ -33,9 +33,9 @@ const Home = ({navigation}: any) => {
     }
   };
 
-  useEffect(() => {
-    getDataFromStorage();
-  }, []);
+  // useEffect(() => {
+  //   getDataFromStorage();
+  // }, []);
 
   const data = [
     {id: '1', title: 'Most Enroll Classes', jtuid: 'J9003428', mode: 'online'},
@@ -56,7 +56,7 @@ const Home = ({navigation}: any) => {
   };
 
   const [selectedItem, setSelectedItem] = useState(data[0].id);
-  const [selectedClass, setSelectedClass] = useState('');
+  const [selectedClass, setSelectedClass] = useState('Most Enroll Classes');
   console.log('selectedClass', selectedClass);
   const renderSubject = ({item}: any) => {
     const isSelected = selectedItem === item.id;
@@ -240,7 +240,7 @@ const Home = ({navigation}: any) => {
     <View
       style={{
         paddingHorizontal: 25,
-        backgroundColor: Color.PattensBlue,
+        backgroundColor: Color.GhostWhite,
         height: '100%',
       }}>
       <Header navigation={navigation} drawerBtn notification />
@@ -252,9 +252,11 @@ const Home = ({navigation}: any) => {
         Let's Found your favorite {'\n'}Courses
       </Text>
       <ScrollView showsVerticalScrollIndicator={false}>
+        
         <View style={{marginTop: 20}}></View>
         <SearchBar />
         <View style={{marginTop: 20}}></View>
+        <Image source={require('../../Images/OFFER.png')}/>
         <View
           style={{  
             justifyContent: 'space-between',

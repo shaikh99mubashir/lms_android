@@ -2,8 +2,8 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {Color} from '../../Constant';
 import LinearGradient from 'react-native-linear-gradient';
-
-const CustomButton2 = ({
+import AntDesign from 'react-native-vector-icons/AntDesign';
+const CustomButton3 = ({
   onPress,
   btnTitle,
   color,
@@ -18,33 +18,44 @@ const CustomButton2 = ({
         useAngle={true}
         angle={45}
         style={{
-          borderTopRightRadius: 8,
-          borderTopLeftRadius: 8,
-          borderBottomLeftRadius: 8,
+          borderRadius: 30,
         }}>
         <TouchableOpacity
           onPress={onPress}
           activeOpacity={0.8}
-          style={[styles.btn]}>
+          style={[styles.btn, {flexDirection: 'row',
+          justifyContent:'space-between',
+           paddingLeft: 15,gap:10,paddingRight:5}]}>
           <Text
             style={[
               styles.textType1,
               {
                 color: color ? color : Color.white,
                 textAlign: 'center',
-                fontSize: fontSize ? fontSize : 22,
+                fontSize: fontSize ? fontSize : 18,
               },
             ]}>
             {' '}
             {btnTitle}{' '}
           </Text>
+          <View
+            style={{
+              backgroundColor: Color.white,
+              borderRadius: 100,
+              width: 50,
+              height: 50,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <AntDesign name="arrowright" size={25} color={Color.Primary} />
+          </View>
         </TouchableOpacity>
       </LinearGradient>
     </View>
   );
 };
 
-export default CustomButton2;
+export default CustomButton3;
 
 const styles = StyleSheet.create({
   btn: {
