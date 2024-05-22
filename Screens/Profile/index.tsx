@@ -1,67 +1,70 @@
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from '../../Components/Header';
 import {Color} from '../../Constant';
 import InputText from '../../Components/InputText';
 import CustomButton from '../../Components/CustomButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BaseUrl } from '../../Constant/BaseUrl';
+import {BaseUrl} from '../../Constant/BaseUrl';
 import axios from 'axios';
+import InputText2 from '../../Components/InputText2';
+import CustomButton3 from '../../Components/CustomButton3';
 
 const Profile = ({navigation}: any) => {
+  const [profileData, setProfileData] = useState<any>();
 
-    const [profileData, setProfileData] = useState<any>()
+  const getProfileData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('studentAuth');
+      if (jsonValue !== null) {
+        const data = JSON.parse(jsonValue);
+        console.log('Retrieved data:', data.token);
 
-    const getProfileData = async () => {
-        try {
-          const jsonValue = await AsyncStorage.getItem('studentAuth');
-          if (jsonValue !== null) {
-            const data = JSON.parse(jsonValue);
-            console.log('Retrieved data:', data.token);
+        axios
+          .get(`${BaseUrl}users`, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${data.token}`,
+            },
+          })
+          .then(response => {
+            // console.log('profile',response.data);
+            let profile = response.data.user;
+            setProfileData(profile);
+          })
+          .catch(error => {
+            console.log('error', error);
+            if (error.response) {
+              console.log(
+                'users Server responded with data:',
+                error.response.data.message,
+              );
+              console.log('users Status code:', error.response.status);
+              console.log('users Headers:', error.response.headers);
+            } else if (error.request) {
+              console.log('users No response received:', error.request);
+            } else {
+              console.log('Error setting up the request: users', error.message);
+            }
+          });
+      } else {
+        console.log('No data found in AsyncStorage for key studentAuth');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error retrieving data from AsyncStorage:', error);
+      return null;
+    }
+  };
 
-            axios.get(`${BaseUrl}users`, {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': `Bearer ${data.token}`
-              }
-            })
-            .then((response)=>{
-                // console.log('profile',response.data);
-                let profile = response.data.user
-                setProfileData(profile)
-            })
-            .catch((error)=>{
-              console.log('error',error);
-              if (error.response) {
-                console.log('users Server responded with data:', error.response.data.message);
-                console.log('users Status code:', error.response.status);
-                console.log('users Headers:', error.response.headers);
-              } else if (error.request) {
-                console.log('users No response received:', error.request);
-              } else {
-                console.log('Error setting up the request: users', error.message);
-              }
-              
-            })
-          } else {
-            console.log('No data found in AsyncStorage for key studentAuth');
-            return null;
-          }
-        } catch (error) {
-          console.error('Error retrieving data from AsyncStorage:', error);
-          return null;
-        }
-      };
-    
-      useEffect(()=>{
-        getProfileData()
-      },[])
-      console.log('profileData',profileData);
-      
+  useEffect(() => {
+    getProfileData();
+  }, []);
+
   return (
     <View
       style={{
-        backgroundColor: 'white',
+        backgroundColor: Color.GhostWhite,
         height: '100%',
         paddingHorizontal: 25,
       }}>
@@ -80,31 +83,31 @@ const Profile = ({navigation}: any) => {
             }}
           />
           <Image
-            source={require('../../Images/Plusicon.png')}
+            source={require('../../Images/gallery.png')}
             style={{position: 'absolute', top: 60, right: 130}}
           />
-          <View style={{margin: 5}}></View>
+          <View style={{margin: 8}}></View>
           <Text style={[styles.textType1, {lineHeight: 35}]}>
-           {profileData?.name}
+            {profileData?.name}
           </Text>
           <Text style={[styles.textType3]}>{profileData?.email}</Text>
         </View>
-        <View style={{gap: 5, marginTop: 15}}>
-          <InputText label="Full Name*" placeholder="Full Name" />
+        <View style={{gap: 5, marginTop: 25}}>
+          <InputText2 label="Full Name*" placeholder={profileData?.name} editable={false}/>
         </View>
+        <View style={{margin: 5}}></View>
         <View>
-          <InputText label="Email*" placeholder="your.email@example.com" />
+          <InputText2 label="Email*" placeholder={profileData?.email} editable={false}/>
         </View>
+        <View style={{margin: 8}}></View>
         <View>
-          <InputText label="Mobile Phone*" placeholder="+60 2168-5000-6789" />
+          <InputText2 label="Mobile Phone*" placeholder="+60 2168-5000-6789" editable={false}/>
         </View>
-        <View>
-          <InputText label="Date of Birth*" placeholder="25 June 1985" />
-        </View>
-        {/* <View style={{marginBottom:40,marginTop:30}}>
-          <CustomButton btnTitle='Save'/>
-        </View> */}
+       
       </ScrollView>
+        <View style={{marginBottom:40,marginTop:30}}>
+          <CustomButton3 btnTitle='Save'/>
+        </View>
     </View>
   );
 };

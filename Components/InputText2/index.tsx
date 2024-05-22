@@ -9,24 +9,26 @@ const InputText2 = ({
   value,
   error,
   keyboardType,
-  isCorrect
+  isCorrect,
+  editable
 }: any) => {
   return (
     <View style={{gap: 5, marginTop: 10,}}>
       <View style={styles.labelContainer}>
         <Text style={styles.label}>{label}</Text>
       </View>
-      <View style={styles.inputContainer}>
+      <View style={[styles.inputContainer, error && {borderWidth: 1, borderColor: 'red'},]}>
         <TextInput
           style={[
             styles.input,
-            error && {borderWidth: 1, borderColor: 'red'}, // Apply red border if there is an error
+            // Apply red border if there is an error
           ]}
           placeholder={placeholder}
           placeholderTextColor="#A9A9A9"
           value={value}
           onChangeText={onChangeText}
           keyboardType={keyboardType}
+          editable={editable}
         />
         <View style={{position:'absolute', right:8}}>
           {isCorrect &&
@@ -34,7 +36,7 @@ const InputText2 = ({
           }
         </View>
       </View>
-      {error && <Text style={{color: 'red', marginLeft: 15}}> {error}</Text>}
+      {error && <Text style={{color: 'red'}}> {error}</Text>}
     </View>
   );
 };

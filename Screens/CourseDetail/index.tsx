@@ -19,18 +19,21 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomTabView2 from '../../Components/CustomTabView2';
 import CustomButton3 from '../../Components/CustomButton3';
+import CustomLoader from '../../Components/CustomLoader';
 const CourseDetail = ({navigation, route}: any) => {
   const courseDetail = route.params;
-  // let courseId = courseDetail.id
+  let courseId = courseDetail.id
   console.log('route================>', courseDetail);
+  const [loading, setLoading] = useState(false);
   const handelEnrollNow = async () => {
+    setLoading(true);
     try {
       const jsonValue = await AsyncStorage.getItem('studentAuth');
       if (jsonValue !== null) {
         const data = JSON.parse(jsonValue);
         console.log('Retrieved data:', data.token);
         const formData = new FormData();
-        // formData.append('course_id', courseId);
+        formData.append('course_id', courseId);
 
         axios
           .post(`${BaseUrl}enroll`, formData, {
@@ -41,6 +44,7 @@ const CourseDetail = ({navigation, route}: any) => {
           })
           .then(response => {
             console.log('response', response.data);
+            setLoading(false);
             ToastAndroid.show(`${response.data.message}`, ToastAndroid.SHORT);
             navigation.replace('MyDrawer', {
               screen: 'StudentCourses',
@@ -53,10 +57,12 @@ const CourseDetail = ({navigation, route}: any) => {
           });
       } else {
         console.log('No data found in AsyncStorage for key studentAuth');
+        setLoading(false);
         navigation.replace('Login');
       }
     } catch (error) {
       console.error('Error retrieving data from AsyncStorage:', error);
+      setLoading(false);
       return null;
     }
   };
@@ -346,7 +352,7 @@ const CourseDetail = ({navigation, route}: any) => {
           </View>
           <View style={{margin: 3}} />
           <Text style={[styles.textType3, {fontSize: 22}]}>
-            Design Principles: Organizing ..
+           {courseDetail.name}
           </Text>
           <View style={{margin: 10}} />
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -433,10 +439,11 @@ const CourseDetail = ({navigation, route}: any) => {
           paddingVertical: 40,
         }}>
         <CustomButton3 btnTitle="Enroll Now" 
-        // onPress={() => handelEnrollNow()} 
-        onPress={() => navigation.replace('MyDrawer')} 
+        onPress={() => handelEnrollNow()} 
+        // onPress={() => navigation.replace('MyDrawer')} 
         />
       </View>
+      <CustomLoader visible={loading} />
     </View>
   );
 };

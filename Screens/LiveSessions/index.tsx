@@ -6,13 +6,16 @@ import {BaseUrl} from '../../Constant/BaseUrl';
 import {FlatList} from 'react-native';
 import Header from '../../Components/Header';
 import {Color} from '../../Constant';
+import CustomLoader from '../../Components/CustomLoader';
 
 const LiveSessions = ({navigation}: any) => {
-  // const [getLiveSession, setLiveSession] = useState<any>([]);
-  // console.log('getLiveSession', getLiveSession);
+  const [getLiveSession, setLiveSession] = useState<any>([]);
+  const [loading, setLoading] = useState(false);
+  console.log('getLiveSession', getLiveSession);
   // console.log('getLiveSession===>', getLiveSession.videos);
 
   const getLiveSessionData = async () => {
+    setLoading(true);
     try {
       const jsonValue = await AsyncStorage.getItem('studentAuth');
       if (jsonValue !== null) {
@@ -28,54 +31,58 @@ const LiveSessions = ({navigation}: any) => {
           .then(response => {
             console.log('response', response.data);
             let LiveSessions = response.data.live_sessions;
-            // setLiveSession(LiveSessions);
+            setLiveSession(LiveSessions);
+            setLoading(false);
           })
           .catch(error => {
             console.log('error', error);
+            setLoading(false);
           });
       } else {
         console.log('No data found in AsyncStorage for key studentAuth');
         navigation.replace('Login');
+        setLoading(false);
       }
     } catch (error) {
       console.error('Error retrieving data from AsyncStorage:', error);
+      setLoading(false);
       return null;
     }
   };
 
-  // useEffect(() => {
-  //   getLiveSessionData();
-  // }, []);
-  const getLiveSession = [
-    {
-      id: 1,
-      title: 'Session 1',
-      description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
-      scheduled_at: '2024-05-20T10:00:00',
-      completed_at: '2024-05-20T11:30:00',
-      videos: [
-        {id: 3, video_url: 'https://example.com/video3'},
-      ],
-    },
-    {
-      id: 2,
-      title: 'Session 2',
-      description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
-      scheduled_at: '2024-05-21T10:00:00',
-      completed_at: '2024-05-21T11:30:00',
-      videos: [
-        {id: 5, video_url: 'https://example.com/video5'},
-      ],
-    },
-    {
-      id: 3,
-      title: 'Session 3',
-      description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
-      scheduled_at: '2024-05-22T10:00:00',
-      completed_at: null,
-      videos: [{id: 6, video_url: 'https://example.com/video6'}],
-    },
-  ];
+  useEffect(() => {
+    getLiveSessionData();
+  }, []);
+  // const getLiveSession = [
+  //   {
+  //     id: 1,
+  //     title: 'Session 1',
+  //     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
+  //     scheduled_at: '2024-05-20T10:00:00',
+  //     completed_at: '2024-05-20T11:30:00',
+  //     videos: [
+  //       {id: 3, video_url: 'https://example.com/video3'},
+  //     ],
+  //   },
+  //   {
+  //     id: 2,
+  //     title: 'Session 2',
+  //     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
+  //     scheduled_at: '2024-05-21T10:00:00',
+  //     completed_at: '2024-05-21T11:30:00',
+  //     videos: [
+  //       {id: 5, video_url: 'https://example.com/video5'},
+  //     ],
+  //   },
+  //   {
+  //     id: 3,
+  //     title: 'Session 3',
+  //     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
+  //     scheduled_at: '2024-05-22T10:00:00',
+  //     completed_at: null,
+  //     videos: [{id: 6, video_url: 'https://example.com/video6'}],
+  //   },
+  // ];
 
   return (
     <View
@@ -115,6 +122,7 @@ const LiveSessions = ({navigation}: any) => {
         }}
         keyExtractor={item => item.id.toString()}
       />
+      <CustomLoader visible={loading} />
     </View>
   );
 };

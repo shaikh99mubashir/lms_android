@@ -32,7 +32,7 @@ const CustomButton3 = ({
               {
                 color: color ? color : Color.white,
                 textAlign: 'center',
-                fontSize: fontSize ? fontSize : 18,
+                fontSize: fontSize ? fontSize : 20,
               },
             ]}>
             {' '}

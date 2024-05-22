@@ -50,7 +50,7 @@ import {
             </Text>
           </TouchableOpacity>
         </View>
-        {error && <Text style={{color: 'red', marginLeft: 10}}> {error}</Text>}
+        {error && <Text style={{color: 'red',  }}> {error}</Text>}
       </View>
     );
   };

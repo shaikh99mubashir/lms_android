@@ -1,18 +1,109 @@
-import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {FlatList, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
 import {Color} from '../../Constant';
 import Header from '../../Components/Header';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SearchBar from '../../Components/SearchBar';
 import CustomButton3 from '../../Components/CustomButton3';
-const OngoingDetail = ({navigation}: any) => {
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { BaseUrl } from '../../Constant/BaseUrl';
+const OngoingDetail = ({navigation,route}: any) => {
+  let courseVideos = route.params
+  let courseId = courseVideos.id
+  let isEligibleForQuiz = courseVideos.completed
+  console.log('courseVideos',isEligibleForQuiz);
+  
+const [studentCoursesDetail, setStudentCoursesDetail] =useState([])
+console.log('studentCoursesDetail',studentCoursesDetail);
+
+const getStudentCoursesVideos = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('studentAuth');
+    if (jsonValue !== null) {
+      const data = JSON.parse(jsonValue);
+      console.log('Retrieved data:', data.token);
+      axios
+        .get(`${BaseUrl}videos/${courseId}`, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${data.token}`,
+          },
+        })
+        .then(response => {
+          console.log('response', response.data);
+          let coursesDetail = response.data
+          setStudentCoursesDetail(coursesDetail);
+        })
+        .catch(error => {
+          console.log('error', error);
+        });
+    } else {
+      console.log('No data found in AsyncStorage for key studentAuth');
+
+    }
+  } catch (error) {
+    console.error('Error retrieving data from AsyncStorage:', error);
+    return null;
+  }
+};
+
+useEffect(() => {
+  getStudentCoursesVideos();
+}, []);
+const handelTrackVideo = async (item:any) => {
+  console.log('item',item.id);
+  try {
+    const jsonValue = await AsyncStorage.getItem('studentAuth');
+    if (jsonValue !== null) {
+      const data = JSON.parse(jsonValue);
+      console.log('Retrieved data:', data.token);
+      const formData = new FormData();
+      formData.append('video_id', item.id);
+      console.log('formdata',formData);
+      
+      axios
+        .post(`${BaseUrl}videos/track-view`,formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${data.token}`,
+          },
+        })
+        .then(response => {
+          console.log('response', response.data);
+          const url = item.url;
+          Linking.openURL(url).catch((err:any) => console.error('An error occurred', err));
+          getStudentCoursesVideos();
+        })
+        .catch(error => {
+          console.log('error', error);
+        });
+    } else {
+      console.log('No data found in AsyncStorage for key studentAuth');
+
+    }
+  } catch (error) {
+    console.error('Error retrieving data from AsyncStorage:', error);
+    return null;
+  }
+  
+ 
+};
+
+const handleVideoPress = (item:any) =>{
+  console.log('item',item.url);
+  
+  
+}
+  
   const data = [
     {id: 1, title: 'Why Using Graphic De..'},
     {id: 2, title: 'Setup Your Graphic De..'},
     {id: 3, title: 'Why Using Graphic De..'},
   ];
   const renderItem = ({item, index}: any) => (
-    <View
+    <TouchableOpacity
+      onPress={() => handelTrackVideo(item)}
       style={[
         styles.studentBox,
         {
@@ -35,13 +126,16 @@ const OngoingDetail = ({navigation}: any) => {
         </View>
         <View>
           <Text style={[styles.textType3, {fontSize: 18}]}>{item.title}</Text>
+          <View style={{flexDirection:"row", gap:10}}>
           <Text style={[styles.textType3]}>15 min</Text>
+          <Text style={[styles.textType3]}>{item.viewed != null ? 'Viewed' : 'Not Viewed'}</Text>
+          </View>
         </View>
       </View>
-      <View>
+      <TouchableOpacity onPress={()=>handleVideoPress(item)}>
         <FontAwesome name="play-circle" size={25} color={Color.BrightBlue} />
-      </View>
-    </View>
+      </TouchableOpacity>
+    </TouchableOpacity>
   );
   return (
     <View
@@ -55,18 +149,20 @@ const OngoingDetail = ({navigation}: any) => {
         <SearchBar />
         <View style={{paddingVertical: 15}}></View>
         <FlatList
-          data={data}
+          data={studentCoursesDetail}
           renderItem={renderItem}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={(item:any) => item.id.toString()}
           nestedScrollEnabled={true}
         />
       </ScrollView>
+      {/* {!isEligibleForQuiz && */}
       <View style={{paddingVertical:30}}>
         <CustomButton3
           btnTitle="Attemp Quiz"
-          onPress={() => navigation.navigate('Quizes')}
+          onPress={() => navigation.navigate('Quizes', courseId)}
         />
       </View>
+      {/* } */}
     </View>
   );
 };

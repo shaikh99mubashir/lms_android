@@ -8,14 +8,20 @@ const Splash = ({navigation}:any) => {
     try {
       const jsonValue = await AsyncStorage.getItem('studentAuth');
       if (jsonValue !== null) {
+        console.log("running");
         const data = JSON.parse(jsonValue);
         console.log('Retrieved data:', data.token);
+        console.log('data.token',data.token);
         setTimeout(() => {
-          // if (data.token) {
-          //   navigation.replace('MyDrawer');
-          // } else {
-          // }
-            navigation.replace('OnBoarding');
+          if (data.token) {
+            console.log('data.token',data.token);
+            navigation.replace('MyDrawer');
+          } 
+        }, 3000);
+      }
+      else{
+        setTimeout(() => {
+          navigation.replace('OnBoarding');
         }, 3000);
       }
     } catch (error) {
@@ -25,10 +31,10 @@ const Splash = ({navigation}:any) => {
   };
 
   useEffect(() => {
-    // check();
-    setTimeout(() => {
-        navigation.replace('OnBoarding');
-    }, 3000);
+    check();
+    // setTimeout(() => {
+    //     navigation.replace('OnBoarding');
+    // }, 3000);
   }, []);
   return (
     <View>

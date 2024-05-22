@@ -17,8 +17,11 @@ import {
   } from '@react-navigation/drawer';
   import Icon from 'react-native-vector-icons/Ionicons';
 import { Color } from '../../Constant';
+import AsyncStorage from '@react-native-async-storage/async-storage';
   
   const CustomDrawer = (props: any) => {
+    console.log("props",props);
+    
     const height = Dimensions.get('window').height;
     const width = Dimensions.get('window').width;
     // const share = async () => {
@@ -53,6 +56,8 @@ import { Color } from '../../Constant';
   
     const ApplyButton = () => {
       handleCloseModal();
+      AsyncStorage.removeItem('studentAuth');
+      props.navigation.replace('Login');
     };
     const CancelButton = () => {
       handleCloseModal();
@@ -61,7 +66,7 @@ import { Color } from '../../Constant';
       <View style={{flex: 1}}>
         <DrawerContentScrollView
           contentContainerStyle={{
-            backgroundColor: Color.PattensBlue,
+            backgroundColor: Color.GhostWhite,
             height:'100%'
           }}>
           <View style={{alignItems: 'center', marginTop: 10}}>
@@ -83,7 +88,7 @@ import { Color } from '../../Constant';
           <View
             style={{
               flex: 1,
-              backgroundColor: Color.PattensBlue,
+              backgroundColor: Color.GhostWhite,
               paddingTop: 10,
               paddingBottom: 20,
               borderTopWidth: 1,
@@ -116,7 +121,7 @@ import { Color } from '../../Constant';
           style={{
             padding: 5,
             paddingLeft: 15,
-            backgroundColor: Color.PattensBlue,
+            backgroundColor: Color.GhostWhite,
             borderTopWidth: 1,
             borderTopColor: '#ccc',
           }}>
@@ -192,13 +197,13 @@ import { Color } from '../../Constant';
                       borderColor: Color.textColor,
                       alignItems: 'center',
                       width: 100,
-                      backgroundColor: cancel ? Color.mainColor : 'white',
+                      backgroundColor: cancel ? Color.Primary : 'white',
                     }}>
                     <Text
                       style={{
                         fontSize: 16,
                         fontFamily: 'Poppins-SemiBold',
-                        color: cancel ? 'white' : Color.mainColor,
+                        color: cancel ? 'white' : Color.Primary,
                       }}>
                       No
                     </Text>
@@ -215,11 +220,11 @@ import { Color } from '../../Constant';
                       borderColor: Color.textColor,
                       alignItems: 'center',
                       width: 100,
-                      backgroundColor: apply ? 'white' : Color.mainColor,
+                      backgroundColor: apply ? 'white' : Color.Primary,
                     }}>
                     <Text
                       style={{
-                        color: apply ? Color.mainColor : 'white',
+                        color: apply ? Color.Primary : 'white',
   
                         fontSize: 16,
                         fontFamily: 'Poppins-SemiBold',

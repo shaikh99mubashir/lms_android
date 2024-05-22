@@ -15,8 +15,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {BaseUrl} from '../../Constant/BaseUrl';
 import Header from '../../Components/Header';
+import CustomLoader from '../../Components/CustomLoader';
 
 const AllClassess = ({navigation}: any) => {
+  const [loading, setLoading] = useState(false);
   const data = [
     {name: 'Class One'},
     {name: 'Class Two'},
@@ -31,8 +33,10 @@ const AllClassess = ({navigation}: any) => {
   ];
 
   const [classes, setClasses] = useState([]);
-
+  console.log("classes",classes);
+  
   const getClassesData = async () => {
+    setLoading(true);
     try {
       const jsonValue = await AsyncStorage.getItem('studentAuth');
       if (jsonValue !== null) {
@@ -48,8 +52,10 @@ const AllClassess = ({navigation}: any) => {
           .then(response => {
             console.log('response=====?', response.data);
             setClasses(response.data);
+            setLoading(false);
           })
           .catch(error => {
+            setLoading(false);
             if (error.response) {
               console.log(
                 'register Server responded with data:',
@@ -77,42 +83,11 @@ const AllClassess = ({navigation}: any) => {
     }
   };
 
-  // useEffect(() => {
-  //   getClassesData();
-  // }, []);
+  useEffect(() => {
+    getClassesData();
+  }, []);
 
-  const renderItem = ({item}: any) => {
-    console.log('item', item);
 
-    return (
-      <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={() => navigation.navigate('Subjects', item)}
-        style={{justifyContent: 'center', alignItems: 'center'}}>
-        <View
-          style={[
-            styles.Box,
-            {
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingVertical: 0,
-              marginBottom: 10,
-            },
-          ]}>
-          <Text
-            style={{
-              color: 'black',
-              fontFamily: 'Circular Std Book',
-              fontSize: 18,
-            }}>
-            {item.name}
-          </Text>
-        </View>
-      </TouchableOpacity>
-    );
-  };
   return (
     <View
       style={{
@@ -125,40 +100,12 @@ const AllClassess = ({navigation}: any) => {
         <View style={{marginTop: 20}}></View>
         <SearchBar />
         <View style={{marginTop: 20}}></View>
-
-        {/* <View style={{justifyContent: 'center', alignItems: 'center'}}>
-          <View
-            style={[
-              styles.Box,
-              {
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingVertical: 0,
-              },
-            ]}>
-            <Text
-              style={{
-                color: 'black',
-                fontFamily: 'Circular Std Book',
-                fontSize: 18,
-              }}>
-              Class One
-            </Text>
-          </View>
-        </View> */}
-        {/* <FlatList
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={(item: any) => item.id}
-        /> */}
         <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-          {data &&
-            data.map((item, i) => {
+          {classes.length > 0 ?
+            classes.map((item:any, i:number) => {
               return (
                 <TouchableOpacity
-                onPress={()=>navigation.navigate('Subjects')}
+                onPress={()=>navigation.navigate('Subjects',item)}
                 activeOpacity={0.8}
                   key={i}
                   style={{
@@ -175,11 +122,21 @@ const AllClassess = ({navigation}: any) => {
                       fontFamily: 'Circular Std Book',
                       fontSize: 18,
                     }}>
-                    {item.name}
+                    {item?.name}
                   </Text>
                 </TouchableOpacity>
               );
-            })}
+            })
+          :
+          <View
+              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+              <Image
+                source={require('../../Images/nodatafound.png')}
+                resizeMode="cover"
+                style={{width: 350, height: 350}}
+              />
+            </View>
+          }
         </View>
         {/* <TouchableOpacity style={{backgroundColor:'red', width:'48%', alignItems:'center', justifyContent:"center"}}>
           <Image source={require('../../Images/ICON.png')}/>
@@ -193,6 +150,7 @@ const AllClassess = ({navigation}: any) => {
           </Text>
         </TouchableOpacity> */}
       </ScrollView>
+      <CustomLoader visible={loading} />
     </View>
   );
 };

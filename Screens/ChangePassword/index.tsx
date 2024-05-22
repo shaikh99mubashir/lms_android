@@ -7,6 +7,8 @@ import CustomButton from '../../Components/CustomButton';
 import axios from 'axios';
 import { BaseUrl } from '../../Constant/BaseUrl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import PasswordInput2 from '../../Components/PasswordInput2';
+import CustomButton3 from '../../Components/CustomButton3';
 
 const ChangePassword = ({navigation}: any) => {
     const [updatePassword, setupdatePassword] = useState<any>({
@@ -82,7 +84,7 @@ const ChangePassword = ({navigation}: any) => {
         Your password must be at least 8 characters long and includes a mix of upper and lowercase letters, numbers, and symbols.
         </Text>
         <View style={{margin: 15}}></View>
-        <PasswordInput
+        <PasswordInput2
           label="Current Password*"
           placeholder="***************"
           onChangeText={(text: any) =>
@@ -93,7 +95,7 @@ const ChangePassword = ({navigation}: any) => {
           }
           value={updatePassword.currentPassword}
         />
-        <PasswordInput
+        <PasswordInput2
           label="New Password*"
           placeholder="***************"
           onChangeText={(text: any) =>
@@ -109,7 +111,7 @@ const ChangePassword = ({navigation}: any) => {
           placeholder="***************"
         /> */}
         <View style={{marginVertical:40}}>
-        <CustomButton btnTitle='Update' onPress={()=> handelUpdate()}/>
+        <CustomButton3 btnTitle='Update' onPress={()=> handelUpdate()}/>
         </View>
       </ScrollView>
     </View>

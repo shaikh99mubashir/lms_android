@@ -5,6 +5,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Color} from '../../Constant';
@@ -15,12 +16,15 @@ import axios from 'axios';
 import {BaseUrl} from '../../Constant/BaseUrl';
 import Header from '../../Components/Header';
 import {Image} from 'react-native';
+import CustomLoader from '../../Components/CustomLoader';
 
 const Subjects = ({navigation, route}: any) => {
-  // const classData = route.params;
-  // const [subjects, setSubjects] = useState([])
+  const classData = route.params;
+  const [subjects, setSubjects] = useState([]);
+  const [loading, setLoading] = useState(false);
   // console.log('classData', classData.id);
   // console.log('subjects====>', subjects);
+  // console.log('subjects', subjects);
 
   const subjectsData = [
     {name: 'Maths'},
@@ -35,12 +39,11 @@ const Subjects = ({navigation, route}: any) => {
     {name: 'Physical Education'},
   ];
   const getSubjectData = async () => {
+    setLoading(true);
     try {
       const jsonValue = await AsyncStorage.getItem('studentAuth');
       if (jsonValue !== null) {
         const data = JSON.parse(jsonValue);
-        console.log('Retrieved data:', data.token);
-
         axios
           .get(`${BaseUrl}subjects/${classData.id}`, {
             headers: {
@@ -49,32 +52,37 @@ const Subjects = ({navigation, route}: any) => {
             },
           })
           .then(response => {
-            console.log('response', response.data);
+            setLoading(false);
             let subject = response.data;
             setSubjects(subject);
           })
           .catch(error => {
+            setLoading(false);
             console.log('error', error);
+            ToastAndroid.show(`${error}`, ToastAndroid.SHORT);
           });
       } else {
+        setLoading(false);
         console.log('No data found in AsyncStorage for key studentAuth');
+        ToastAndroid.show(`No data in async`, ToastAndroid.SHORT);
         return null;
       }
     } catch (error) {
+      setLoading(false);
       console.error('Error retrieving data from AsyncStorage:', error);
       return null;
     }
   };
 
-  // useEffect(()=>{
-  //   getSubjectData()
-  // },[])
+  useEffect(() => {
+    getSubjectData();
+  }, []);
 
   const renderItem = ({item}: any) => {
     return (
       <TouchableOpacity
         activeOpacity={0.8}
-        onPress={() => navigation.navigate('Courses')}>
+        onPress={() => navigation.navigate('Courses', item)}>
         <View
           style={{
             backgroundColor: Color.white,
@@ -97,12 +105,13 @@ const Subjects = ({navigation, route}: any) => {
               Tending
             </Text>
             <View style={{margin: 3}} />
-            <Text style={[styles.textType3, {fontSize: 18}]}>{item.name}</Text>
+            <Text style={[styles.textType3, {fontSize: 18}]}>{item? item.name : '-'}</Text>
+
             <View style={{margin: 3}} />
             <Text style={[styles.textType3, {fontSize: 18}]}>100+ Courses</Text>
             <TouchableOpacity
-            activeOpacity={0.8}
-             onPress={() => navigation.navigate('Courses')}
+              activeOpacity={0.8}
+              onPress={() => navigation.navigate('Courses', item)}
               style={{
                 paddingHorizontal: 15,
                 height: 30,
@@ -128,7 +137,7 @@ const Subjects = ({navigation, route}: any) => {
   return (
     <View
       style={{
-        backgroundColor: Color.PattensBlue,
+        backgroundColor: Color.GhostWhite,
         height: '100%',
         paddingHorizontal: 25,
       }}>
@@ -137,13 +146,24 @@ const Subjects = ({navigation, route}: any) => {
         <View style={{marginTop: 20}}></View>
         <SearchBar />
         <View style={{marginTop: 20}}></View>
-
-        <FlatList
-          data={subjectsData}
-          renderItem={renderItem}
-          keyExtractor={(item: any) => item.id}
-        />
+        {subjects.length > 0 ? (
+          <FlatList
+            data={subjects}
+            renderItem={renderItem}
+            keyExtractor={(item: any) => item.id}
+          />
+        ) : (
+          <View
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Image
+              source={require('../../Images/nodatafound.png')}
+              resizeMode="cover"
+              style={{width: 350, height: 350}}
+            />
+          </View>
+        )}
       </ScrollView>
+      <CustomLoader visible={loading} />
     </View>
   );
 };

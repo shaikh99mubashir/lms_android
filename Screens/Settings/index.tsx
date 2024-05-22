@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View ,ScrollView, TouchableOpacity, Image} from 'react-native'
 import React from 'react'
 import { Color } from '../../Constant'
+import Header from '../../Components/Header'
 
 const Settings = ({navigation}:any) => {
   return (
@@ -11,7 +12,7 @@ const Settings = ({navigation}:any) => {
       paddingHorizontal: 25,
     }}>
     <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-      {/* <Header title={'Settings'} goBack navigation={navigation} /> */}
+      <Header title={'Settings'} goBack navigation={navigation} />
       <View style={{marginVertical: 10}}></View>
       <View
         style={{

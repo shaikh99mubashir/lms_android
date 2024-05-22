@@ -66,14 +66,14 @@ const MyDrawer = ({navigation}: any) => {
         },
       }}>
       <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="Classess" component={AllClassess} />
-      <Drawer.Screen name="StudentCourses" component={StudentCourses} />
+      <Drawer.Screen name="Classes" component={AllClassess} />
+      <Drawer.Screen name="My Courses" component={StudentCourses} />
       <Drawer.Screen name="Settings" component={Settings} />
       <Drawer.Screen name="Subscriptions" component={Subscriptions} />
-      <Drawer.Screen name="LiveSessions" component={LiveSessions} />
-      {/* {isSessionIsALlow == true ? (
+      {/* <Drawer.Screen name="LiveSessions" component={LiveSessions} /> */}
+      {isSessionIsALlow == true ? (
         <Drawer.Screen name="LiveSessions" component={LiveSessions} />
-      ) : null} */}
+      ) : null}
     </Drawer.Navigator>
   );
 };

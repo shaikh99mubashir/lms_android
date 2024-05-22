@@ -14,14 +14,17 @@ import {Color} from '../../Constant';
 import SearchBar from '../../Components/SearchBar';
 import CustomButton from '../../Components/CustomButton';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Carousel2 from '../../Components/Carousel2';
 
 const Home = ({navigation}: any) => {
+  const [userInfo, setUserInfo] = useState<any>();
   const getDataFromStorage = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('studentAuth');
       if (jsonValue !== null) {
         const data = JSON.parse(jsonValue);
         console.log('Retrieved data:', data);
+        setUserInfo(data);
         return data;
       } else {
         console.log('No data found in AsyncStorage for key studentAuth');
@@ -33,9 +36,9 @@ const Home = ({navigation}: any) => {
     }
   };
 
-  // useEffect(() => {
-  //   getDataFromStorage();
-  // }, []);
+  useEffect(() => {
+    getDataFromStorage();
+  }, []);
 
   const data = [
     {id: '1', title: 'Most Enroll Classes', jtuid: 'J9003428', mode: 'online'},
@@ -202,13 +205,14 @@ const Home = ({navigation}: any) => {
         </View>
         <TouchableOpacity
           style={{
-            paddingHorizontal: 15,
+            // paddingHorizontal: 15,
             height: 30,
             alignItems: 'center',
             justifyContent: 'center',
             marginTop: 20,
             backgroundColor: Color.Primary,
             borderRadius: 8,
+            width: 130,
           }}>
           <Text
             style={[
@@ -234,7 +238,6 @@ const Home = ({navigation}: any) => {
       setFilterSubject(filteredData);
     }
   }, [selectedClass]);
-  console.log('filterSubject', filterSubject);
 
   return (
     <View
@@ -244,21 +247,27 @@ const Home = ({navigation}: any) => {
         height: '100%',
       }}>
       <Header navigation={navigation} drawerBtn notification />
-      <Text style={{color: Color.Primary, fontSize: 34, fontWeight: 'bold'}}>
-        Hello Zea!
+      <Text
+        style={{
+          color: Color.Primary,
+          fontSize: 34,
+          fontWeight: 'bold',
+          textTransform: 'capitalize',
+        }}>
+        {userInfo?.user?.name}
       </Text>
       <Text
         style={{color: Color.IronsideGrey, fontSize: 18, fontWeight: 'bold'}}>
         Let's Found your favorite {'\n'}Courses
       </Text>
       <ScrollView showsVerticalScrollIndicator={false}>
-        
         <View style={{marginTop: 20}}></View>
         <SearchBar />
         <View style={{marginTop: 20}}></View>
-        <Image source={require('../../Images/OFFER.png')}/>
+        {/* <Image source={require('../../Images/OFFER.png')} /> */}
+        <Carousel2/>
         <View
-          style={{  
+          style={{
             justifyContent: 'space-between',
             flexDirection: 'row',
             marginHorizontal: 10,
@@ -303,52 +312,7 @@ const Home = ({navigation}: any) => {
           )}
         </View>
 
-        {/* <View
-          style={{
-            backgroundColor: '#d7e5ffd9',
-            borderRadius: 16,
-            display: 'flex',
-            flexDirection: 'row',
-            marginVertical: 15,
-          }}>
-          <View
-            style={{position: 'relative', left: 20, justifyContent: 'center'}}>
-            <Text style={[styles.textType1]}>Methamatics</Text>
-            <View style={{flexDirection: 'row', gap: 20}}>
-              <View style={{flexDirection: 'row', gap: 10, marginTop: 10}}>
-                <FontAwesome
-                  name="star-half-empty"
-                  size={20}
-                  color={Color.Primary}
-                />
-                <Text style={styles.textType3}>4.4</Text>
-              </View>
-              <View style={{flexDirection: 'row', gap: 10, marginTop: 10}}>
-                <FontAwesome name="users" size={19} color={Color.Primary} />
-                <Text style={styles.textType3}>10</Text>
-              </View>
-            </View>
-            <TouchableOpacity
-              style={{
-                paddingHorizontal: 15,
-                height: 30,
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: 20,
-                backgroundColor: Color.Primary,
-                borderRadius: 30,
-              }}>
-              <Text
-                style={[styles.textType3, {color: Color.white, fontSize: 18}]}>
-                View Course
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <Image
-            source={require('../../Images/courses.png')}
-            style={{width: 200, height: 200}}
-          />
-        </View> */}
+   
       </ScrollView>
     </View>
   );

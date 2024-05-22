@@ -12,7 +12,6 @@ const RadioButton2 = ({options, onSelect, label, Required}: any) => {
     setSelectedOption(option.choice_text);
     onSelect(option);
   };
-console.log("selectedOption",selectedOption);
 
   return (
     <>

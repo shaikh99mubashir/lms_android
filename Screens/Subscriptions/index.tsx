@@ -15,13 +15,15 @@ import {BaseUrl} from '../../Constant/BaseUrl';
 import CustomButton from '../../Components/CustomButton';
 import Header from '../../Components/Header';
 import CustomButton3 from '../../Components/CustomButton3';
+import CustomLoader from '../../Components/CustomLoader';
 
 const Subscriptions = ({navigation}: any) => {
-  // const [getSubscriptions, setGetSubscriptions] = useState([]);
-
+  const [getSubscriptions, setGetSubscriptions] = useState([]);
+  const [loading, setLoading] = useState(false);
   // console.log('getSubscriptions', getSubscriptions);
 
   const getSubscriptionsData = async () => {
+    setLoading(true);
     try {
       const jsonValue = await AsyncStorage.getItem('studentAuth');
       if (jsonValue !== null) {
@@ -37,24 +39,28 @@ const Subscriptions = ({navigation}: any) => {
           .then(response => {
             //   console.log('response', response.data.subscriptions);
             let subscriptions = response.data.subscriptions;
-            // setGetSubscriptions(subscriptions);
+            setGetSubscriptions(subscriptions);
+            setLoading(false);
           })
           .catch(error => {
             console.log('error', error);
+            setLoading(false);
           });
       } else {
         console.log('No data found in AsyncStorage for key studentAuth');
         navigation.replace('Login');
+        setLoading(false);
       }
     } catch (error) {
       console.error('Error retrieving data from AsyncStorage:', error);
+      setLoading(false);
       return null;
     }
   };
 
-  // useEffect(() => {
-  //   getSubscriptionsData();
-  // }, []);
+  useEffect(() => {
+    getSubscriptionsData();
+  }, []);
   const handelSubscriptions = async (item: any) => {
     console.log('item', item.id);
     try {
@@ -88,29 +94,29 @@ const Subscriptions = ({navigation}: any) => {
     }
   };
 
-  const getSubscriptions = [
-    {
-      id: 1,
-      name: "Basic Subscription",
-      description: "Basic subscription plan with limited features",
-      price: "$10",
-      purchased: true,
-    },
-    {
-      id: 2,
-      name: "Standard Subscription",
-      description: "Standard subscription plan with moderate features",
-      price: "$20",
-      purchased: true,
-    },
-    {
-      id: 3,
-      name: "Premium Subscription",
-      description: "Premium subscription plan with full features",
-      price: "$30",
-      purchased: true,
-    },
-  ];
+  // const getSubscriptions = [
+  //   {
+  //     id: 1,
+  //     name: "Basic Subscription",
+  //     description: "Basic subscription plan with limited features",
+  //     price: "$10",
+  //     purchased: true,
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Standard Subscription",
+  //     description: "Standard subscription plan with moderate features",
+  //     price: "$20",
+  //     purchased: true,
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Premium Subscription",
+  //     description: "Premium subscription plan with full features",
+  //     price: "$30",
+  //     purchased: true,
+  //   },
+  // ];
   return (
     <View
       style={{
@@ -149,36 +155,44 @@ const Subscriptions = ({navigation}: any) => {
       </View> */}
         <FlatList
           data={getSubscriptions}
-          renderItem={({item}: any) => (
-            <View
-              style={{
-                backgroundColor: Color.white,
-                // height: 60,
-                borderRadius: 12,
-                justifyContent: 'center',
-                paddingHorizontal: 20,
-                paddingVertical: 20,
-                marginBottom: 10,
-              }}>
-              <Text style={styles.textType1}>{item.name}</Text>
-              <View style={{margin:5}}/>
-              <Text style={[styles.textType3,{color:Color.IronsideGrey}]}>
-                {item.description}
-              </Text>
-              {/* <View style={{margin:5}}/>
+          renderItem={({item}: any) => {
+            console.log('item', item);
+
+            return (
+              <View
+                style={{
+                  backgroundColor: Color.white,
+                  // height: 60,
+                  borderRadius: 12,
+                  justifyContent: 'center',
+                  paddingHorizontal: 20,
+                  paddingVertical: 20,
+                  marginBottom: 10,
+                }}>
+                <Text style={styles.textType1}>{item.name}</Text>
+                <View style={{margin: 5}} />
+                <Text style={[styles.textType3, {color: Color.IronsideGrey}]}>
+                  {item.description}
+                </Text>
+                {/* <View style={{margin:5}}/>
               <Text style={[styles.textType3,{fontSize:18}]}>Price: {item.price}</Text> */}
-              <View style={{margin: 10}}></View>
-              {item.purchased &&
-              <CustomButton3
-              btnTitle={`Buy Now ${item.price}`} 
-              onPress={() => handelSubscriptions(item)}
-              />
-            }
-            </View>
-          )}
+                <View style={{margin: 10}}></View>
+                {item.purchased == false && (
+                  <CustomButton3
+                    btnTitle={`Buy Now ${item.price}`}
+                    onPress={() => handelSubscriptions(item)}
+                  />
+                )}
+                {item.purchased === true && (
+                  <Text style={[styles.textType3, {color: Color.IronsideGrey}]}>You have purchased {item.name} already</Text>
+                )}
+              </View>
+            );
+          }}
           keyExtractor={(item, index) => index.toString()}
         />
       </ScrollView>
+      <CustomLoader visible={loading} />
     </View>
   );
 };

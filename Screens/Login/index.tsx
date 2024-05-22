@@ -70,7 +70,7 @@ const Login = ({navigation}: any) => {
         console.log('response', response.data);
         setLoading(false);
         if (response.data) {
-          ToastAndroid.show(`${response.message}`, ToastAndroid.SHORT);
+          ToastAndroid.show(`Welcome ${response.data.user.name}`, ToastAndroid.SHORT);
           setLogin({
             emailOrPhone: '',
             password: '',
@@ -83,15 +83,15 @@ const Login = ({navigation}: any) => {
       .catch(error => {
         if (error.response) {
           console.log(
-            'register Server responded with data:',
+            'login Server responded with data:',
             error.response.data,
           );
-          console.log('register Status code:', error.response.status);
-          console.log('register Headers:', error.response.headers);
+          console.log('login Status code:', error.response.status);
+          console.log('login Headers:', error.response.headers);
         } else if (error.request) {
-          console.log('register No response received:', error.request);
+          console.log('login No response received:', error.request);
         } else {
-          console.log('Error setting up the request: register', error.message);
+          console.log('Error setting up the request: login', error.message);
         }
         setLoading(false);
       });
@@ -175,8 +175,8 @@ const Login = ({navigation}: any) => {
           </View>
           <View style={{margin: 5}}></View>
           <View style={{marginVertical: 15}}>
-            {/* <CustomButton3 onPress={handelSignin} btnTitle="PROCEED" /> */}
-            <CustomButton3 onPress={()=>navigation.navigate('MyDrawer')} btnTitle="PROCEED" />
+            <CustomButton3 onPress={handelSignin} btnTitle="PROCEED" />
+            {/* <CustomButton3 onPress={()=>navigation.navigate('MyDrawer')} btnTitle="PROCEED" /> */}
           </View>
           {/* <View style={{margin: 5}}></View> */}
           <Text style={[styles.textType2, {textAlign: 'center'}]}>
