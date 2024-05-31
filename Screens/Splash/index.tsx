@@ -1,7 +1,8 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Color } from '../../Constant';
 
 const Splash = ({navigation}:any) => {
   const check = async () => {
@@ -20,14 +21,23 @@ const Splash = ({navigation}:any) => {
         }, 3000);
       }
       else{
-        setTimeout(() => {
-          navigation.replace('OnBoarding');
-        }, 3000);
+        navigateToHomeScreen()
       }
     } catch (error) {
       console.error('Error retrieving data from AsyncStorage:', error);
       return null;
     }
+  };
+
+  const navigateToHomeScreen = async () => {
+    let OnBoarding = await AsyncStorage.getItem('OnBoarding');
+    setTimeout(async () => {
+      if (OnBoarding === 'true') {
+        navigation.replace('GetStarted');
+      } else {
+        navigation.replace('OnBoarding');
+      }
+    }, 3000);
   };
 
   useEffect(() => {
@@ -37,18 +47,17 @@ const Splash = ({navigation}:any) => {
     // }, 3000);
   }, []);
   return (
-    <View>
-      <LinearGradient
-        colors={['#8154e2', '#4e22b5']}
-        useAngle={true}
-        angle={45}
-        style={{
-          height: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <Image source={require('../../Images/logo-white.png')} />
-      </LinearGradient>
+    <View style={{
+      height: '100%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor:Color.white
+    }}>
+     
+        <Image source={require('../../Images/Logo00.png')} 
+        resizeMode='contain'
+         style={{width:Dimensions.get('screen').width/1.5}}/>
+
     </View>
   );
 };

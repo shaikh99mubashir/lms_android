@@ -1,19 +1,25 @@
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Image, PermissionsAndroid, Platform, ScrollView, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Header from '../../Components/Header';
 import {Color} from '../../Constant';
 import InputText from '../../Components/InputText';
 import CustomButton from '../../Components/CustomButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {BaseUrl} from '../../Constant/BaseUrl';
+import {BaseUrl, profileImage} from '../../Constant/BaseUrl';
 import axios from 'axios';
 import InputText2 from '../../Components/InputText2';
 import CustomButton3 from '../../Components/CustomButton3';
+import CustomLoader from '../../Components/CustomLoader';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 const Profile = ({navigation}: any) => {
   const [profileData, setProfileData] = useState<any>();
-
+  const [loading, setLoading] = useState(false);
+  const [uri, setUri] = useState('');
+  const [type, setType] = useState('');
+  const [name, setName] = useState('');
   const getProfileData = async () => {
+    setLoading(true)
     try {
       const jsonValue = await AsyncStorage.getItem('studentAuth');
       if (jsonValue !== null) {
@@ -31,8 +37,10 @@ const Profile = ({navigation}: any) => {
             // console.log('profile',response.data);
             let profile = response.data.user;
             setProfileData(profile);
+            setLoading(false)
           })
           .catch(error => {
+            setLoading(false)
             console.log('error', error);
             if (error.response) {
               console.log(
@@ -48,15 +56,66 @@ const Profile = ({navigation}: any) => {
             }
           });
       } else {
+        setLoading(false)
         console.log('No data found in AsyncStorage for key studentAuth');
         return null;
       }
     } catch (error) {
+      setLoading(false)
       console.error('Error retrieving data from AsyncStorage:', error);
       return null;
     }
   };
 
+  const uploadProfilePicture = async () => {
+    if (Platform.OS === 'android') {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: 'Camera Permission',
+          message: 'App needs camera permission to upload profile picture',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+
+      if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('Camera permission denied');
+        return;
+      }
+    }
+
+    console.log('running');
+    const options: any = {
+      title: 'Select Picture',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+      maxWidth: 500,
+      maxHeight: 500,
+      quality: 0.5,
+    };
+
+    const result: any = await launchImageLibrary(options);
+
+    if (result.didCancel) {
+      console.log('Cancelled image selection');
+    } else if (result.errorCode === 'permission') {
+      console.log('Permission Not Satisfied');
+    } else if (result.errorCode === 'others') {
+      console.log(result.errorMessage);
+    } else if (result.assets && result.assets.length > 0) {
+      let selectedUri = result.assets[0].uri;
+      let selectedType = result.assets[0].type;
+      let selectedName = result.assets[0].fileName;
+
+      setUri(selectedUri);
+      setType(selectedType);
+      setName(selectedName);
+    }
+  };
   useEffect(() => {
     getProfileData();
   }, []);
@@ -73,7 +132,7 @@ const Profile = ({navigation}: any) => {
         <View style={{margin: 5}}></View>
         <View style={{alignItems: 'center'}}>
           <Image
-            source={require('../../Images/user-image.png')}
+            source={{uri:profileData?.full_image_url }} 
             style={{
               width: 95,
               height: 95,
@@ -93,21 +152,35 @@ const Profile = ({navigation}: any) => {
           <Text style={[styles.textType3]}>{profileData?.email}</Text>
         </View>
         <View style={{gap: 5, marginTop: 25}}>
-          <InputText2 label="Full Name*" placeholder={profileData?.name} editable={false}/>
+          <InputText2 label="Full Name*" 
+          placeholder={profileData?.name} editable={false}/>
         </View>
         <View style={{margin: 5}}></View>
         <View>
-          <InputText2 label="Email*" placeholder={profileData?.email} editable={false}/>
+          <InputText2 label="Email*" 
+          placeholder={profileData?.email} editable={false}/>
         </View>
         <View style={{margin: 8}}></View>
         <View>
-          <InputText2 label="Mobile Phone*" placeholder="+60 2168-5000-6789" editable={false}/>
+          <InputText2 label="Mobile Phone*" 
+          placeholder="+60 2168-5000-6789" editable={false}/>
+        </View>
+        <View style={{margin: 8}}></View>
+        <View>
+          <InputText2 label="Parent Name*" 
+          placeholder="Parent Name" editable={false}/>
+        </View>
+        <View style={{margin: 8}}></View>
+        <View>
+          <InputText2 label="Parent Email*" 
+          placeholder="Parent Email" editable={false}/>
         </View>
        
       </ScrollView>
         <View style={{marginBottom:40,marginTop:30}}>
           <CustomButton3 btnTitle='Save'/>
         </View>
+        <CustomLoader visible={loading} />
     </View>
   );
 };

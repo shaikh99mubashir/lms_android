@@ -8,6 +8,8 @@ import CustomButton3 from '../../Components/CustomButton3';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { BaseUrl } from '../../Constant/BaseUrl';
+import RNVideo from '../../Components/RNVideo';
+import Video from 'react-native-video';
 const OngoingDetail = ({navigation,route}: any) => {
   let courseVideos = route.params
   let courseId = courseVideos.id
@@ -72,7 +74,8 @@ const handelTrackVideo = async (item:any) => {
         .then(response => {
           console.log('response', response.data);
           const url = item.url;
-          Linking.openURL(url).catch((err:any) => console.error('An error occurred', err));
+          // Linking.openURL(url).catch((err:any) => console.error('An error occurred', err));
+          navigation.navigate('PlayVideo',item)
           getStudentCoursesVideos();
         })
         .catch(error => {
@@ -102,6 +105,7 @@ const handleVideoPress = (item:any) =>{
     {id: 3, title: 'Why Using Graphic De..'},
   ];
   const renderItem = ({item, index}: any) => (
+    <>
     <TouchableOpacity
       onPress={() => handelTrackVideo(item)}
       style={[
@@ -136,6 +140,7 @@ const handleVideoPress = (item:any) =>{
         <FontAwesome name="play-circle" size={25} color={Color.BrightBlue} />
       </TouchableOpacity>
     </TouchableOpacity>
+    </>
   );
   return (
     <View
@@ -155,14 +160,15 @@ const handleVideoPress = (item:any) =>{
           nestedScrollEnabled={true}
         />
       </ScrollView>
-      {/* {!isEligibleForQuiz && */}
+    
+      {isEligibleForQuiz &&
       <View style={{paddingVertical:30}}>
         <CustomButton3
           btnTitle="Attemp Quiz"
           onPress={() => navigation.navigate('Quizes', courseId)}
         />
       </View>
-      {/* } */}
+      }
     </View>
   );
 };
@@ -203,5 +209,11 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 15,
+  },
+  video: {
+    width: '99%',
+    height: 200,
+    borderRadius: 20,
+    overflow: 'hidden',
   },
 });

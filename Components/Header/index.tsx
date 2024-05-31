@@ -20,6 +20,7 @@ const Header = ({
   deleteBtn,
   modalText,
   search,
+  profileImage
 }: any) => {
 
   const routeToProfile = () => {
@@ -63,9 +64,12 @@ const Header = ({
             <Ionicons name="notifications-outline" size={25} color={'black'} />
           </TouchableOpacity>
           <TouchableOpacity
+          activeOpacity={0.8}
             onPress={() => routeToProfile()}
             style={{padding: 10, paddingLeft: 0}}>
-          <Image source={require('../../Images/user-image.png')} style={{width:50, height:50}}/>
+              <View style={{borderWidth:2,borderColor:Color.Primary, padding:2,borderRadius:50}}>
+          <Image source={{uri:profileImage ? profileImage : `${profileImage}/storage/users/UserImage.png` }} style={{width:50, height:50,borderRadius:50 }}/>
+              </View>
           </TouchableOpacity>
         </View>
       )}

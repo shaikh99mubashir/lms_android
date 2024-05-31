@@ -12,7 +12,7 @@ const CustomLoader = ({ visible}:any) => {
         backgroundColor: 'rgba(0,0,0,0.5)',
       }}>
       <Image
-        source={require('../../Images/logo.png')}
+        source={require('../../Images/LogoIcon.png')}
         style={{ width: 150, height: 150 }}
       />
     </View>

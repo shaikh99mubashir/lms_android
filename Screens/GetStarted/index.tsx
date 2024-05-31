@@ -1,4 +1,5 @@
 import {
+  Dimensions,
   Image,
   ScrollView,
   StyleSheet,
@@ -22,7 +23,10 @@ const GetStarted = ({navigation}: any) => {
             justifyContent: 'center',
             marginTop: 100,
           }}>
-          <Image source={require('../../Images/logo.png')} />
+          <Image source={require('../../Images/Logo00.png')} 
+          resizeMode='contain'
+           style={{width:Dimensions.get('screen').width/1.5}}
+          />
         </View>
         <View>
           <Text
@@ -32,7 +36,7 @@ const GetStarted = ({navigation}: any) => {
               textAlign: 'center',
               fontSize: 28,
               lineHeight: 40,
-              marginTop: 80,
+              marginTop: 20,
             }}>
             Let’s you in
           </Text>
@@ -97,7 +101,7 @@ const GetStarted = ({navigation}: any) => {
           </Text>
         </View>
 
-        <View style={{marginHorizontal: 20, marginBottom: 20}}>
+        <View style={{marginHorizontal: 30, marginBottom: 20, marginTop:10}}>
           <CustomButton3
             btnTitle="Login With Your Account"
             onPress={() => navigation.replace('Login')}
@@ -133,7 +137,7 @@ const GetStarted = ({navigation}: any) => {
               style={{
                 color: Color.IronsideGrey,
                 fontSize: 16,
-                fontFamily: 'Circular Std Medium',
+                fontFamily: 'Circular Std Book',
               }}>
               Let’s
             </Text>
@@ -143,7 +147,7 @@ const GetStarted = ({navigation}: any) => {
                 fontSize: 16,
                 borderBottomWidth: 2,
                 borderBottomColor: Color.Primary,
-                fontFamily: 'Circular Std Medium',
+                fontFamily: 'Circular Std Book',
               }}>
               Register
             </Text>

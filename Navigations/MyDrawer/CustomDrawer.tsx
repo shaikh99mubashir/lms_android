@@ -19,9 +19,9 @@ import {
 import { Color } from '../../Constant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
   
-  const CustomDrawer = (props: any) => {
-    console.log("props",props);
-    
+  const CustomDrawer = ({ userProfile,...props }:any) => {
+      console.log('usefsdfsdf',userProfile);
+      
     const height = Dimensions.get('window').height;
     const width = Dimensions.get('window').width;
     // const share = async () => {
@@ -70,10 +70,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
             height:'100%'
           }}>
           <View style={{alignItems: 'center', marginTop: 10}}>
+          <View style={{borderWidth:2,borderColor:Color.Primary, padding:2,marginBottom: 15,borderRadius:50}}>
             <Image
-              source={require('../../Images/user-image.png')}
-              style={{height: 80, width: 80, borderRadius: 5, marginBottom: 15}}
+              source={{uri:userProfile?.full_image_url}}
+              style={{height: 80, width: 80, borderRadius: 50, }}
             />
+            </View>
             <Text
               style={{
                 color: '#000',
@@ -81,7 +83,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
                 fontFamily: 'Circular Std Medium',
                 marginBottom: 5,
               }}>
-              John Doe
+              {userProfile?.name}
             </Text>
           </View>
   

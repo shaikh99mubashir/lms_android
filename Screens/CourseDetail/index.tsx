@@ -339,7 +339,7 @@ const CourseDetail = ({navigation, route}: any) => {
           <Header goBack title="Courses Detail" navigation={navigation} />
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Text style={[styles.textType3, {color: '#ff6b00', fontSize: 16}]}>
-              Tending
+              Trending
             </Text>
             <View style={{flexDirection: 'row', gap: 5}}>
               <FontAwesome

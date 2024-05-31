@@ -12,45 +12,48 @@ const CustomButton3 = ({
   fontSize,
 }: any) => {
   return (
-    <View>
-      <LinearGradient
-        colors={['#8154e2', '#4e22b5']}
-        useAngle={true}
-        angle={45}
-        style={{
-          borderRadius: 30,
-        }}>
-        <TouchableOpacity
-          onPress={onPress}
-          activeOpacity={0.8}
-          style={[styles.btn, {flexDirection: 'row',
-          justifyContent:'space-between',
-           paddingLeft: 15,gap:10,paddingRight:5}]}>
-          <Text
-            style={[
-              styles.textType1,
-              {
-                color: color ? color : Color.white,
-                textAlign: 'center',
-                fontSize: fontSize ? fontSize : 20,
-              },
-            ]}>
-            {' '}
-            {btnTitle}{' '}
-          </Text>
-          <View
-            style={{
-              backgroundColor: Color.white,
-              borderRadius: 100,
-              width: 50,
-              height: 50,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <AntDesign name="arrowright" size={25} color={Color.Primary} />
-          </View>
-        </TouchableOpacity>
-      </LinearGradient>
+    <View
+      style={{
+        borderRadius: 30,
+        backgroundColor: Color.Primary,
+      }}>
+      <TouchableOpacity
+        onPress={onPress}
+        activeOpacity={0.8}
+        style={[
+          styles.btn,
+          {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            paddingLeft: 15,
+            gap: 10,
+            paddingRight: 5,
+          },
+        ]}>
+        <Text
+          style={[
+            styles.textType1,
+            {
+              color: color ? color : Color.white,
+              textAlign: 'center',
+              fontSize: fontSize ? fontSize : 20,
+            },
+          ]}>
+          {' '}
+          {btnTitle}{' '}
+        </Text>
+        <View
+          style={{
+            backgroundColor: Color.white,
+            borderRadius: 100,
+            width: 50,
+            height: 50,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <AntDesign name="arrowright" size={25} color={Color.Primary} />
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };

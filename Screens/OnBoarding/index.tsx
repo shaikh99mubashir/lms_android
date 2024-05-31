@@ -16,6 +16,7 @@ import CustomButton from '../../Components/CustomButton';
 import {Color} from '../../Constant';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomButton3 from '../../Components/CustomButton3';
+import FastImage from 'react-native-fast-image';
 
 const {width, height} = Dimensions.get('window');
 
@@ -24,7 +25,7 @@ const COLORS = {primary: 'pink', white: 'black'};
 const slides = [
   {
     id: '1',
-    image: require('../../Images/OB1.png'),
+    image: require('../../Images/OB1.gif'),
     // image2: require('../../Images/Dot.png'),
     title: 'Online Learning',
     subtitle: 'We Provide Classes Online Classes and ',
@@ -32,7 +33,7 @@ const slides = [
   },
   {
     id: '2',
-    image: require('../../Images/OB2.png'),
+    image: require('../../Images/OB2.gif'),
     // image2: require('../../Images/Dot.png'),
     title: 'Learn from Anytime',
     subtitle: 'Booked or Same the Lectures for ',
@@ -40,7 +41,7 @@ const slides = [
   },
   {
     id: '3',
-    image: require('../../Images/OB3.png'),
+    image: require('../../Images/OB3.gif'),
     // image2: require('../../Images/Dot.png'),
     title: 'Get Online Certificate',
     subtitle: 'Analyse your scores and Track your ',
@@ -48,7 +49,10 @@ const slides = [
   },
 ];
 
-const Slide = ({item}: any) => {
+const Slide = ({item, index}: any) => {
+  console.log('index',index);
+  console.log('item',item);
+  
   return (
     <View style={{alignItems: 'center', marginTop: 40}}>
       <Text
@@ -57,21 +61,26 @@ const Slide = ({item}: any) => {
             marginTop: 20,
             fontFamily: 'Circular Std Medium',
             color: 'black',
-            fontSize: 24,
+            fontSize: 26,
             lineHeight: 24,
           },
         ]}>
         {item?.title}
       </Text>
-      <Image
+      <View style={{justifyContent:'center', alignItems:'center'}}>
+      <FastImage
         source={item?.image}
-        style={{height: '50%', width, resizeMode: 'contain', marginTop: 40}}
-      />
+        resizeMode={FastImage.resizeMode.contain}
+        style={{height: item.id == 1 ? '65%' : item.id == 2? '55%' :'75%', width,  
+        marginTop: item.id == 2 ? 80 : 40}}
+        />
+        </View>
+      <View style={{position:'absolute', bottom:50}}>
       <View
-        style={{alignItems: 'center', justifyContent: 'center', marginTop: 30}}>
+        style={{alignItems: 'center', justifyContent: 'center', marginTop: 60}}>
         <Text
           style={{
-            fontFamily: 'Circular Std Medium',
+            fontFamily: 'Circular Std Book',
             color: 'black',
             fontSize: 15,
             lineHeight: 23,
@@ -83,7 +92,7 @@ const Slide = ({item}: any) => {
         <View style={{alignItems: 'center', justifyContent: 'center'}}>
           <Text
             style={{
-              fontFamily: 'Circular Std Medium',
+              fontFamily: 'Circular Std Book',
               color: 'black',
               fontSize: 15,
             }}>
@@ -91,6 +100,7 @@ const Slide = ({item}: any) => {
           </Text>
         </View>
       )}
+      </View>
     </View>
   );
 };
@@ -121,7 +131,7 @@ const OnBoarding = ({navigation}: any) => {
   };
 
   const handleDonePress = () => {
-    AsyncStorage.setItem('OnBoarding', 'true');
+    
     navigation.replace('GetStarted');
   };
   const handleLoginPress = () => {

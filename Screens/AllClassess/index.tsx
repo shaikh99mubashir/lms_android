@@ -103,6 +103,8 @@ const AllClassess = ({navigation}: any) => {
         <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
           {classes.length > 0 ?
             classes.map((item:any, i:number) => {
+              console.log('item',item.full_image_url);
+              
               return (
                 <TouchableOpacity
                 onPress={()=>navigation.navigate('Subjects',item)}
@@ -115,7 +117,7 @@ const AllClassess = ({navigation}: any) => {
                     gap: 10,
                     marginBottom: 25,
                   }}>
-                  <Image source={require('../../Images/ICON.png')} />
+                  <Image source={{uri:item.full_image_url}} style={{width:60,height:60}} />
                   <Text
                     style={{
                       color: 'black',

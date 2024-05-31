@@ -92,7 +92,7 @@ const Subjects = ({navigation, route}: any) => {
             marginBottom: 10,
           }}>
           <Image
-            source={require('../../Images/login.png')}
+            source={{uri:item.full_image_url}}
             style={{
               width: 150,
               height: 150,
@@ -102,7 +102,7 @@ const Subjects = ({navigation, route}: any) => {
           />
           <View style={{flexDirection: 'column', paddingVertical: 10}}>
             <Text style={[styles.textType3, {color: '#ff6b00', fontSize: 16}]}>
-              Tending
+              Trending
             </Text>
             <View style={{margin: 3}} />
             <Text style={[styles.textType3, {fontSize: 18}]}>{item? item.name : '-'}</Text>

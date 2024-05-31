@@ -19,6 +19,7 @@ import Splash from '../../Screens/Splash';
 import OnBoarding from '../../Screens/OnBoarding';
 import GetStarted from '../../Screens/GetStarted';
 import OngoingDetail from '../../Screens/OngoingDetail';
+import PlayVideo from '../../Screens/PlayVideo';
 
 const MyStack = () => {
   const Stack = createStackNavigator();
@@ -41,6 +42,7 @@ const MyStack = () => {
         <Stack.Screen name="Quizes" component={Quizes} />
         <Stack.Screen name="QuizResult" component={QuizResult} />
         <Stack.Screen name="OngoingDetail" component={OngoingDetail} />
+        <Stack.Screen name="PlayVideo" component={PlayVideo} />
       </Stack.Navigator>
     </NavigationContainer>
   );

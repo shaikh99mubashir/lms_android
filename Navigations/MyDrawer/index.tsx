@@ -16,6 +16,7 @@ import {BaseUrl} from '../../Constant/BaseUrl';
 const MyDrawer = ({navigation}: any) => {
   const Drawer = createDrawerNavigator();
   const [isSessionIsALlow, setIsSessionIsAllow] = useState();
+  const [userProfile, setUserProfile] = useState<any>();
   console.log('isSessionIsALlow,', isSessionIsALlow);
 
   const checkAllowLiveSession = async () => {
@@ -38,6 +39,35 @@ const MyDrawer = ({navigation}: any) => {
           .catch(error => {
             console.log('error', error);
           });
+          axios
+          .get(`${BaseUrl}users`, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${data.token}`,
+            },
+          })
+          .then(response => {
+            console.log('response=====?', response.data);
+            setUserProfile(response.data.user);
+          })
+          .catch(error => {
+            if (error.response) {
+              console.log(
+                'register Server responded with data:',
+                error.response.data,
+              );
+              navigation.replace('Login');
+              console.log('register Status code:', error.response.status);
+              console.log('register Headers:', error.response.headers);
+            } else if (error.request) {
+              console.log('register No response received:', error.request);
+            } else {
+              console.log(
+                'Error setting up the request: register',
+                error.message,
+              );
+            }
+          });
       } else {
         console.log('No data found in AsyncStorage for key studentAuth');
         // navigation.replace('Login');
@@ -54,7 +84,7 @@ const MyDrawer = ({navigation}: any) => {
   return (
     <Drawer.Navigator
       initialRouteName="Home"
-      drawerContent={props => <CustomDrawer {...props} />}
+      drawerContent={props => <CustomDrawer {...props}  userProfile={userProfile} />}
       screenOptions={{
         headerShown: false,
         // drawerActiveBackgroundColor: '#aa18ea',

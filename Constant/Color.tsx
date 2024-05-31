@@ -6,7 +6,8 @@ export default {
     DarkBlue:'#034BD9',
     textHeading:'#034BD9',
     // Primary:'#1e97c8',
-    Primary:'#8154e2',
+    // Primary:'#8154e2',
+    Primary:'#0033ee',
     lightPrimary:'rgba(31, 192, 125, 0.20)',
     Black:'#000000',
     white:'#FFFFFF',
@@ -29,5 +30,6 @@ export default {
     background:'white',
     purple:'#271254',
     purpleLite:'rgba(39, 18, 84, 0.5)',
+    lmsBG:'#F6F8FF'
     
 };

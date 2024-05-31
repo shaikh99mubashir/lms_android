@@ -142,6 +142,8 @@ const Courses = ({navigation, route}: any) => {
     getSubjectData();
   }, []);
   const renderItem = ({item}: any) => {
+    console.log("item",item);
+    
     return (
       <TouchableOpacity
         activeOpacity={0.8}
@@ -155,7 +157,7 @@ const Courses = ({navigation, route}: any) => {
             marginBottom: 10,
           }}>
           <Image
-            source={require('../../Images/login.png')}
+             source={{uri:item.full_image_url}}
             style={{
               width: 150,
               height: 150,
@@ -165,10 +167,10 @@ const Courses = ({navigation, route}: any) => {
           />
           <View style={{flexDirection: 'column', paddingVertical: 10}}>
             <Text style={[styles.textType3, {color: '#ff6b00', fontSize: 16}]}>
-              Tending
+              Trending
             </Text>
             <View style={{margin: 3}} />
-            <Text style={[styles.textType3, {fontSize: 18}]}>{item.name}</Text>
+            <Text style={[styles.textType3, {fontSize: 18}]}>{item.name.slice(0, 20)}...</Text>
             <View style={{margin: 3}} />
             <Text style={[styles.textType3, {fontSize: 16, width: '100%'}]}>
               {item.description.slice(0, 20)} ...

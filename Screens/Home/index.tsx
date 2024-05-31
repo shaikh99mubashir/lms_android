@@ -1,6 +1,8 @@
 import {
+  Dimensions,
   FlatList,
   Image,
+  ImageBackground,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,18 +16,92 @@ import {Color} from '../../Constant';
 import SearchBar from '../../Components/SearchBar';
 import CustomButton from '../../Components/CustomButton';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
 import Carousel2 from '../../Components/Carousel2';
+import RNVideo from '../../Components/RNVideo';
+import axios from 'axios';
+import {BaseUrl} from '../../Constant/BaseUrl';
+import {useIsFocused} from '@react-navigation/native';
 
 const Home = ({navigation}: any) => {
   const [userInfo, setUserInfo] = useState<any>();
+  const [userProfile, setUserProfile] = useState<any>();
+  const focus = useIsFocused();
+  const [loading, setLoading] = useState(false);
+  const [slider, setSlider] = useState([]);
+  const width = Dimensions.get('window').width;
   const getDataFromStorage = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('studentAuth');
       if (jsonValue !== null) {
         const data = JSON.parse(jsonValue);
-        console.log('Retrieved data:', data);
-        setUserInfo(data);
-        return data;
+        console.log('Retrieved data:', data.token);
+        setUserInfo(data.user);
+        axios
+          .get(`${BaseUrl}getsliderimages`, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${data.token}`,
+            },
+          })
+          .then(response => {
+            console.log('response=====?', response.data);
+            setSlider(response.data);
+            setLoading(false);
+          })
+          .catch(error => {
+            setLoading(false);
+            if (error.response) {
+              console.log(
+                'register Server responded with data:',
+                error.response.data,
+              );
+              navigation.replace('Login');
+              console.log('register Status code:', error.response.status);
+              console.log('register Headers:', error.response.headers);
+            } else if (error.request) {
+              console.log('register No response received:', error.request);
+            } else {
+              console.log(
+                'Error setting up the request: register',
+                error.message,
+              );
+            }
+          });
+        axios
+          .get(`${BaseUrl}users`, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${data.token}`,
+            },
+          })
+          .then(response => {
+            console.log('response=====?', response.data);
+            setUserProfile(response.data.user);
+            setLoading(false);
+          })
+          .catch(error => {
+            setLoading(false);
+            if (error.response) {
+              console.log(
+                'register Server responded with data:',
+                error.response.data,
+              );
+              navigation.replace('Login');
+              console.log('register Status code:', error.response.status);
+              console.log('register Headers:', error.response.headers);
+            } else if (error.request) {
+              console.log('register No response received:', error.request);
+            } else {
+              console.log(
+                'Error setting up the request: register',
+                error.message,
+              );
+            }
+          });
       } else {
         console.log('No data found in AsyncStorage for key studentAuth');
         return null;
@@ -38,7 +114,7 @@ const Home = ({navigation}: any) => {
 
   useEffect(() => {
     getDataFromStorage();
-  }, []);
+  }, [focus]);
 
   const data = [
     {id: '1', title: 'Most Enroll Classes', jtuid: 'J9003428', mode: 'online'},
@@ -74,18 +150,20 @@ const Home = ({navigation}: any) => {
         style={{
           paddingHorizontal: 15,
           height: 30,
-          // borderBottomWidth: isSelected ? 3 : 2,
+          borderBottomWidth: isSelected ? 2 : 0,
           alignItems: 'center',
           justifyContent: 'center',
+          borderBottomColor:'#0033ff',
           // borderBottomColor: isSelected ? Color.Primary : Color.shinyGrey,
-          marginTop: 20,
-          backgroundColor: isSelected ? Color.Primary : Color.PattensBlue,
+          marginTop: 12,
+          // backgroundColor: isSelected ? Color.Primary : Color.PattensBlue,
           borderRadius: 30,
+          paddingBottom:10,
         }}>
         <Text
           style={[
             styles.textType3,
-            {color: isSelected ? Color.white : 'black'},
+            {color: isSelected ? '#0033ff' : '#A0A4AB'},
           ]}>
           {item.title}
         </Text>
@@ -100,7 +178,7 @@ const Home = ({navigation}: any) => {
       rating: 4.4,
       users: 10,
       image: require('../../Images/courses.png'),
-      type: 'tranding',
+      type: 'trending',
       class: 'class one',
     },
     {
@@ -109,7 +187,7 @@ const Home = ({navigation}: any) => {
       rating: 4.4,
       users: 10,
       image: require('../../Images/physic.png'),
-      type: 'top rated',
+      type: 'trending',
       class: 'class one',
     },
     {
@@ -118,7 +196,7 @@ const Home = ({navigation}: any) => {
       rating: 4.4,
       users: 10,
       image: require('../../Images/maths.png'),
-      type: 'most popular',
+      type: 'trending',
       class: 'class two',
     },
     {
@@ -127,7 +205,7 @@ const Home = ({navigation}: any) => {
       rating: 4.4,
       users: 10,
       image: require('../../Images/courses.png'),
-      type: 'most popular',
+      type: 'trending',
       class: 'class four',
     },
     {
@@ -136,27 +214,26 @@ const Home = ({navigation}: any) => {
       rating: 4.4,
       users: 10,
       image: require('../../Images/courses.png'),
-      type: 'most popular',
+      type: 'trending',
       class: 'class four',
     },
     // Add more dummy data objects as needed
   ];
   const renderItem = ({item}: any) => (
-    <View
+    <ImageBackground
+      source={require('../../Images/subjectbg.png')}
+      resizeMode="contain"
       style={{
-        backgroundColor: '#d7e5ffd9',
-        borderRadius: 16,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 15,
+        width: width / 1.13,
+        height: width / 2.1,
+        alignSelf: 'center',
       }}>
       <View
         style={{
-          position: 'relative',
-          left: 20,
-          justifyContent: 'center',
-          zIndex: 10,
+          flexDirection: 'row',
+          paddingVertical: 25,
+          paddingHorizontal: 12,
+          justifyContent: 'space-between',
         }}>
         <Text
           style={[
@@ -164,67 +241,234 @@ const Home = ({navigation}: any) => {
             {
               color: Color.white,
               backgroundColor:
-                item.type == 'tranding'
-                  ? Color.Yellow
+                item.type == 'trending'
+                  ? '#0033ff'
                   : item.type == 'top rated'
                   ? 'blue'
                   : item.type == 'most popular'
                   ? Color.Yellow
                   : Color.Primary,
 
-              fontSize: 14,
+              fontSize: 16,
               textTransform: 'capitalize',
               textAlign: 'center',
-              borderRadius: 5,
-              width: 120,
-              height: 20,
+              marginLeft: 5,
+              paddingHorizontal: 15,
+              paddingVertical: 5,
+              borderRadius: 30,
             },
           ]}>
           {item.type}
         </Text>
-
-        <View style={{margin: 10}}></View>
-        <Text style={[styles.textType1]}>{item.title}</Text>
-        <View style={{flexDirection: 'row', gap: 20}}>
-          <View style={{flexDirection: 'row', gap: 10, marginTop: 10}}>
-            <FontAwesome
-              name="star-half-empty"
-              size={20}
-              color={Color.Primary}
-            />
-            <Text style={styles.textType3}>{item.rating}</Text>
-          </View>
-          <View style={{flexDirection: 'row', gap: 10, marginTop: 10}}>
-            <FontAwesome
-              name="users"
-              size={19}
-              color={Color.Primary} // Make sure Color.Primary is defined or replace it with a color value
-            />
-            <Text style={styles.textType3}>{item.users}</Text>
+        <Ionicons name="bookmark-outline" size={19} color={Color.Black}
+        style={{right:-2, top:-5}}
+        />
+      </View>
+      <Text style={[styles.textType1, {marginLeft: 15, marginTop: 0}]}>
+        English
+      </Text>
+      <Text
+        style={[
+          styles.textType3,
+          {
+            fontFamily: 'Circular Std Book',
+            color: Color.DustyGrey,
+            marginLeft: 15,
+            marginTop: 4,
+            fontSize:14,
+          },
+        ]}>
+        Build a Strong Foundation in English
+      </Text>
+      <View style={{margin:5}}/>
+      <View style={{flexDirection:'row'}}>
+        <View style={{borderTopWidth: 1, borderColor:Color.lineColor, width:'60%'}}>
+          <View style={{flexDirection: 'row', gap: 20, marginLeft:15, marginTop:5}}>
+            <View style={{flexDirection: 'row', gap: 10, marginTop: 10}}>
+              <AntDesign
+                name="staro"
+                size={20}
+                color={Color.Primary}
+              />
+              <Text style={styles.textType3}>{item.rating}</Text>
+            </View>
+            <View style={{flexDirection: 'row', gap: 10, marginTop: 10}}>
+              <Feather
+                name="users"
+                size={19}
+                color={Color.Primary} // Make sure Color.Primary is defined or replace it with a color value
+              />
+              <Text style={styles.textType3}>{item.users}</Text>
+            </View>
           </View>
         </View>
-        <TouchableOpacity
-          style={{
-            // paddingHorizontal: 15,
-            height: 30,
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 20,
-            backgroundColor: Color.Primary,
-            borderRadius: 8,
-            width: 130,
-          }}>
-          <Text
-            style={[
-              styles.textType3,
-              {color: Color.white, fontSize: 18}, // Make sure Color.white is defined or replace it with a color value
-            ]}>
-            View Course
-          </Text>
-        </TouchableOpacity>
+        <View style={{backgroundColor:'#0033ff',flexDirection:"row",
+        gap:10,height:49, width:'40%', justifyContent:'center',alignItems:'center', borderBottomRightRadius:20}}>
+          <Text style={[styles.textType3,{color:Color.white}]}>View Course</Text>
+          <Ionicons name='arrow-forward-sharp' size={20} color={Color.white}/>
+        </View>
       </View>
-      <Image source={item.image} style={{width: 200, height: 200}} />
-    </View>
+    </ImageBackground>
+    // <View style={{alignItems:'center'}}>
+    // <ImageBackground
+    //   source={require('../../Images/bg.png')}
+    //   resizeMode="contain"
+    //   style={{width: width /1.13,
+    //   height: width/2.1, paddingHorizontal:20, paddingVertical:20 }}>
+    //     <View style={{}}>
+
+    //     </View>
+    //     <Text
+    //       style={[
+    //         styles.textType3,
+    //         {
+    //           color: Color.white,
+    //           backgroundColor:
+    //             item.type == 'tranding'
+    //               ? Color.Yellow
+    //               : item.type == 'top rated'
+    //               ? 'blue'
+    //               : item.type == 'most popular'
+    //               ? Color.Yellow
+    //               : Color.Primary,
+
+    //           fontSize: 14,
+    //           textTransform: 'capitalize',
+    //           textAlign: 'center',
+    //           borderRadius: 50,
+    //           width: 120,
+    //           height: 25,
+
+    //         },
+    //       ]}>
+    //       {item.type}
+    //     </Text>
+
+    //     <View style={{margin: 10}}></View>
+    //     <Text style={[styles.textType1,{color:Color.white}]}>{item.title}</Text>
+    //     <View style={{flexDirection: 'row', gap: 20}}>
+    //       <View style={{flexDirection: 'row', gap: 10, marginTop: 10}}>
+    //         <FontAwesome
+    //           name="star-half-empty"
+    //           size={20}
+    //           color={Color.white}
+    //         />
+    //         <Text style={[styles.textType3,{color:Color.white}]}>{item.rating}</Text>
+    //       </View>
+    //       <View style={{flexDirection: 'row', gap: 10, marginTop: 10}}>
+    //         <FontAwesome
+    //           name="users"
+    //           size={19}
+    //           color={Color.white} // Make sure Color.Primary is defined or replace it with a color value
+    //         />
+    //         <Text style={[styles.textType3,{color:Color.white}]}>{item.users}</Text>
+    //       </View>
+    //     </View>
+    //     <TouchableOpacity
+    //       style={{
+    //         // paddingHorizontal: 15,
+    //         height: 30,
+    //         alignItems: 'center',
+    //         justifyContent: 'center',
+    //         marginTop: 20,
+    //         backgroundColor: Color.Primary,
+    //         borderRadius: 8,
+    //         width: 130,
+    //       }}>
+    //       <Text
+    //         style={[
+    //           styles.textType3,
+    //           {color: Color.white, fontSize: 18}, // Make sure Color.white is defined or replace it with a color value
+    //         ]}>
+    //         View Course
+    //       </Text>
+    //     </TouchableOpacity>
+
+    // </ImageBackground>
+    // </View>
+    // <View
+    //   style={{
+    //     backgroundColor: '#d7e5ffd9',
+    //     borderRadius: 16,
+    //     display: 'flex',
+    //     flexDirection: 'row',
+    //     justifyContent: 'space-between',
+    //     marginBottom: 11,
+    //   }}>
+    //   <View
+    //     style={{
+    //       position: 'relative',
+    //       left: 20,
+    //       justifyContent: 'center',
+    //       zIndex: 10,
+    //     }}>
+    //     <Text
+    //       style={[
+    //         styles.textType3,
+    //         {
+    //           color: Color.white,
+    //           backgroundColor:
+    //             item.type == 'tranding'
+    //               ? Color.Yellow
+    //               : item.type == 'top rated'
+    //               ? 'blue'
+    //               : item.type == 'most popular'
+    //               ? Color.Yellow
+    //               : Color.Primary,
+
+    //           fontSize: 14,
+    //           textTransform: 'capitalize',
+    //           textAlign: 'center',
+    //           borderRadius: 5,
+    //           width: 120,
+    //           height: 20,
+    //         },
+    //       ]}>
+    //       {item.type}
+    //     </Text>
+
+    //     <View style={{margin: 10}}></View>
+    //     <Text style={[styles.textType1]}>{item.title}</Text>
+    //     <View style={{flexDirection: 'row', gap: 20}}>
+    //       <View style={{flexDirection: 'row', gap: 10, marginTop: 10}}>
+    //         <FontAwesome
+    //           name="star-half-empty"
+    //           size={20}
+    //           color={Color.Primary}
+    //         />
+    //         <Text style={styles.textType3}>{item.rating}</Text>
+    //       </View>
+    //       <View style={{flexDirection: 'row', gap: 10, marginTop: 10}}>
+    //         <FontAwesome
+    //           name="users"
+    //           size={19}
+    //           color={Color.Primary} // Make sure Color.Primary is defined or replace it with a color value
+    //         />
+    //         <Text style={styles.textType3}>{item.users}</Text>
+    //       </View>
+    //     </View>
+    //     <TouchableOpacity
+    //       style={{
+    //         // paddingHorizontal: 15,
+    //         height: 30,
+    //         alignItems: 'center',
+    //         justifyContent: 'center',
+    //         marginTop: 20,
+    //         backgroundColor: Color.Primary,
+    //         borderRadius: 8,
+    //         width: 130,
+    //       }}>
+    //       <Text
+    //         style={[
+    //           styles.textType3,
+    //           {color: Color.white, fontSize: 18}, // Make sure Color.white is defined or replace it with a color value
+    //         ]}>
+    //         View Course
+    //       </Text>
+    //     </TouchableOpacity>
+    //   </View>
+    //   <Image source={item.image} style={{width: 200, height: 200}} />
+    // </View>
   );
   const [filterSubject, setFilterSubject] = useState<any>([]);
   useEffect(() => {
@@ -242,56 +486,59 @@ const Home = ({navigation}: any) => {
   return (
     <View
       style={{
-        paddingHorizontal: 25,
-        backgroundColor: Color.GhostWhite,
+        backgroundColor: Color.lmsBG,
         height: '100%',
       }}>
-      <Header navigation={navigation} drawerBtn notification />
-      <Text
-        style={{
-          color: Color.Primary,
-          fontSize: 34,
-          fontWeight: 'bold',
-          textTransform: 'capitalize',
-        }}>
-        {userInfo?.user?.name}
-      </Text>
-      <Text
-        style={{color: Color.IronsideGrey, fontSize: 18, fontWeight: 'bold'}}>
-        Let's Found your favorite {'\n'}Courses
-      </Text>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{marginTop: 20}}></View>
-        <SearchBar />
-        <View style={{marginTop: 20}}></View>
-        {/* <Image source={require('../../Images/OFFER.png')} /> */}
-        <Carousel2/>
-        <View
-          style={{
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            marginHorizontal: 10,
-            marginTop: 15,
-          }}>
-          <Text style={[styles.textType1]}>Subjects</Text>
+        <View style={{paddingHorizontal: 25}}>
+          <Header
+            navigation={navigation}
+            drawerBtn
+            notification
+            profileImage={userProfile?.full_image_url}
+          />
           <Text
             style={[
-              styles.textType3,
-              {color: Color.BrightBlue, fontFamily: 'Circular Std Book'},
+              styles.textType1,
+              {color: Color.Primary, fontSize: 30, textTransform: 'capitalize'},
             ]}>
-            View All
+            {userProfile?.name}
           </Text>
+          <View style={{margin: 2}} />
+          <Text style={[styles.textType3, {fontSize: 16}]}>
+            Let's Found your favorite Courses
+          </Text>
+          <View style={{margin: 11}} />
+
+          <Carousel2 sliderData={slider} />
+          <View style={{margin: 11}} />
+          <View
+            style={{
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              marginHorizontal: 10,
+            }}>
+            <Text style={[styles.textType1]}>Classes</Text>
+            <Text
+              style={[
+                styles.textType3,
+                {color: Color.BrightBlue, fontFamily: 'Circular Std Book'},
+              ]}>
+              View All
+            </Text>
+          </View>
+
+          <View>
+            <FlatList
+              data={data}
+              renderItem={renderSubject}
+              keyExtractor={item => item.id.toString()}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+            />
+          </View>
         </View>
-        <View>
-          <FlatList
-            data={data}
-            renderItem={renderSubject}
-            keyExtractor={item => item.id.toString()}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-          />
-        </View>
-        <View style={{margin: 10}}></View>
+        <View style={{margin: 3}}></View>
         <View>
           {filterSubject.length > 0 ? (
             <FlatList
@@ -311,8 +558,6 @@ const Home = ({navigation}: any) => {
             </View>
           )}
         </View>
-
-   
       </ScrollView>
     </View>
   );
@@ -323,17 +568,12 @@ export default Home;
 const styles = StyleSheet.create({
   textType3: {
     color: Color.Dune,
-    fontWeight: '500',
     fontSize: 16,
     fontFamily: 'Circular Std Medium',
-    fontStyle: 'normal',
   },
   textType1: {
-    fontWeight: '500',
-    fontSize: 26,
+    fontSize: 22,
     color: Color.Black,
     fontFamily: 'Circular Std Medium',
-    lineHeight: 24,
-    fontStyle: 'normal',
   },
 });
