@@ -22,7 +22,7 @@ import CustomButton3 from '../../Components/CustomButton3';
 import CustomLoader from '../../Components/CustomLoader';
 const CourseDetail = ({navigation, route}: any) => {
   const courseDetail = route.params;
-  let courseId = courseDetail.id
+  let courseId = courseDetail.id;
   console.log('route================>', courseDetail);
   const [loading, setLoading] = useState(false);
   const handelEnrollNow = async () => {
@@ -46,9 +46,9 @@ const CourseDetail = ({navigation, route}: any) => {
             console.log('response', response.data);
             setLoading(false);
             ToastAndroid.show(`${response.data.message}`, ToastAndroid.SHORT);
-            navigation.replace('MyDrawer', {
-              screen: 'StudentCourses',
-            });
+            // navigation.replace('MyDrawer', {
+            //   screen: 'StudentCourses',
+            // });
 
             navigation.replace('StudentCourses');
           })
@@ -96,8 +96,8 @@ const CourseDetail = ({navigation, route}: any) => {
 
     const textContent = `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`;
 
-    const truncatedContent = textContent.split(' ').slice(0, 70).join(' ');
-    const remainingContent = textContent.split(' ').slice(70).join(' ');
+    const truncatedContent = textContent.split(' ').slice(0, 25).join(' ');
+    const remainingContent = textContent.split(' ').slice(25).join(' ');
 
     return (
       <View
@@ -105,6 +105,8 @@ const CourseDetail = ({navigation, route}: any) => {
           paddingHorizontal: 25,
           paddingVertical: 15,
           backgroundColor: Color.white,
+          marginTop: 10,
+          borderRadius: 10,
         }}>
         <Text
           style={[
@@ -112,7 +114,7 @@ const CourseDetail = ({navigation, route}: any) => {
             {color: Color.IronsideGrey, lineHeight: 20, textAlign: 'justify'},
           ]}>
           {showMore ? textContent : truncatedContent}
-          {textContent.length > 70 && (
+          {textContent.length > 25 && (
             <TouchableOpacity
               style={{padding: 0, margin: 0}}
               onPress={toggleShowMore}>
@@ -182,6 +184,8 @@ const CourseDetail = ({navigation, route}: any) => {
           paddingVertical: 15,
           width: '100%',
           backgroundColor: Color.white,
+          marginTop: 10,
+          borderRadius: 10,
         }}>
         <FlatList
           data={data}
@@ -338,8 +342,31 @@ const CourseDetail = ({navigation, route}: any) => {
         <View style={{paddingHorizontal: 25}}>
           <Header goBack title="Courses Detail" navigation={navigation} />
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={[styles.textType3, {color: '#ff6b00', fontSize: 16}]}>
-              Trending
+            <Text
+              style={[
+                styles.textType3,
+                {
+                  color: Color.white,
+                  backgroundColor:
+                    courseDetail?.type == 'trending'
+                      ? '#0033ff'
+                      : courseDetail?.type == 'top rated'
+                      ? 'blue'
+                      : courseDetail?.type == 'most popular'
+                      ? Color.Yellow
+                      : Color.Primary,
+
+                  fontSize: 16,
+                  textTransform: 'capitalize',
+                  textAlign: 'center',
+                  paddingHorizontal: 15,
+                  paddingVertical: 5,
+                  borderRadius: 30,
+                  width: 100,
+                  marginBottom: 10,
+                },
+              ]}>
+              trending
             </Text>
             <View style={{flexDirection: 'row', gap: 5}}>
               <FontAwesome
@@ -350,78 +377,141 @@ const CourseDetail = ({navigation, route}: any) => {
               <Text style={styles.textType3}>4.4</Text>
             </View>
           </View>
-          <View style={{margin: 3}} />
+          <View style={{margin: 5}} />
           <Text style={[styles.textType3, {fontSize: 22}]}>
-           {courseDetail.name}
+            {courseDetail.name}
           </Text>
-          <View style={{margin: 10}} />
+          <View style={{margin: 5}} />
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <View style={{flexDirection: 'row', gap: 8}}>
-              <View style={{flexDirection: 'row', gap: 5}}>
+            <View style={{flexDirection: 'row', gap: 8, alignItems: 'center'}}>
+              <View
+                style={{flexDirection: 'row', gap: 5, alignItems: 'center'}}>
                 <FontAwesome
                   name="video-camera"
-                  size={20}
+                  size={14}
                   color={Color.Black}
                 />
-                <Text style={styles.textType3}>21 Class</Text>
+                <Text
+                  style={[
+                    styles.textType3,
+                    {
+                      fontFamily: 'Circular Std Book',
+                      color: Color.DustyGrey,
+                      fontSize: 14,
+                    },
+                  ]}>
+                  21 Class
+                </Text>
               </View>
-              <View style={{flexDirection: 'row', gap: 5}}>
-                <FontAwesome name="clock-o" size={20} color={Color.Black} />
-                <Text style={styles.textType3}>42 Hours</Text>
+              <View
+                style={{flexDirection: 'row', gap: 5, alignItems: 'center'}}>
+                <FontAwesome name="clock-o" size={14} color={Color.Black} />
+                <Text
+                  style={[
+                    styles.textType3,
+                    {
+                      fontFamily: 'Circular Std Book',
+                      color: Color.DustyGrey,
+                      fontSize: 14,
+
+                    },
+                  ]}>
+                  42 Hours
+                </Text>
               </View>
             </View>
             {/* <Text style={[styles.textType1, {color: Color.BrightBlue}]}>
               499/-
             </Text> */}
           </View>
-          <View style={{margin: 15}} />
+          <View style={{margin: 10}} />
         </View>
-        <View
+        <View style={{paddingHorizontal: 25}}>
+          {/* <View
           style={{
             borderBottomWidth: 1,
             borderBottomColor: Color.lineColor,
-          }}></View>
-        <CustomTabView2
-          currentTab={currentTab}
-          firstRoute={firstRoute}
-          secondRoute={secondRoute}
-          activateTab={activateTab}
-          firstRouteTitle="About"
-          secondRouteTitle="Curriculcum"
-        />
+          }}></View> */}
+          <CustomTabView2
+            currentTab={currentTab}
+            firstRoute={firstRoute}
+            secondRoute={secondRoute}
+            activateTab={activateTab}
+            firstRouteTitle="About"
+            secondRouteTitle="Curriculcum"
+          />
+        </View>
         <View style={{paddingHorizontal: 25}}>
           <Text style={[styles.textType1, {fontSize: 22}]}>Instructor</Text>
           <View style={{margin: 5}} />
-          <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 10,
+              backgroundColor: Color.white,
+              paddingVertical: 10,
+              paddingHorizontal: 10,
+              borderRadius: 10,
+            }}>
             <Image
               source={require('../../Images/user-image.png')}
-              style={{width: 50, height: 50}}
+              style={{width: 50, height: 50, borderRadius: 50}}
             />
             <View>
               <Text style={[styles.textType1, {fontSize: 22}]}>Robert jr</Text>
-              <Text style={[styles.textType3, {fontSize: 14}]}>
+              <Text
+                style={[
+                  styles.textType3,
+                  {
+                    fontFamily: 'Circular Std Book',
+                    color: Color.DustyGrey,
+                    fontSize: 14,
+                  },
+                ]}>
                 Graphic Design
               </Text>
             </View>
           </View>
-          <View style={{margin: 5}} />
+          <View style={{margin: 10}} />
           <Text style={[styles.textType1, {fontSize: 18}]}>
             What You’ll Get
           </Text>
           <View style={{margin: 5}} />
-          <View style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
-            <FontAwesome name="copy" size={18} color={Color.Black} />
-            <Text style={[styles.textType3, {fontSize: 16}]}>100 Quizs</Text>
+          <View
+            style={{
+              backgroundColor: Color.white,
+              paddingVertical: 10,
+              paddingHorizontal: 10,
+              borderRadius: 10,
+            }}>
+            <View style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
+              <FontAwesome name="copy" size={14} color={Color.Black} />
+              <Text style={[
+            styles.textType3,
+            {
+              fontFamily: 'Circular Std Book',
+              color: Color.DustyGrey,
+              fontSize: 14,
+            },
+          ]}>100 Quizs</Text>
+            </View>
+            <View style={{margin: 5}} />
+            <View style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
+              <FontAwesome name="certificate" size={14} color={Color.Black} />
+              <Text style={[
+            styles.textType3,
+            {
+              fontFamily: 'Circular Std Book',
+              color: Color.DustyGrey,
+              fontSize: 14,
+            },
+          ]}>
+                Certificate of Completion
+              </Text>
+            </View>
           </View>
-          <View style={{margin: 5}} />
-          <View style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
-            <FontAwesome name="certificate" size={18} color={Color.Black} />
-            <Text style={[styles.textType3, {fontSize: 16}]}>
-              Certificate of Completion
-            </Text>
-          </View>
-
-          <View style={{marginTop: 25}}/>
+          <View style={{marginTop: 25}} />
           <Text style={[styles.textType1, {fontSize: 22}]}>Reviews</Text>
           <View style={{marginTop: 10}}>
             <FlatList
@@ -431,18 +521,17 @@ const CourseDetail = ({navigation, route}: any) => {
             />
           </View>
         </View>
+        <View>
+          <View
+            style={{paddingHorizontal: 25, paddingBottom: 20, paddingTop: 10}}>
+            <CustomButton3
+              btnTitle="Enroll Now"
+              onPress={() => handelEnrollNow()}
+            />
+          </View>
+        </View>
       </ScrollView>
-      <View
-        style={{
-          backgroundColor: Color.GhostWhite,
-          paddingHorizontal: 20,
-          paddingVertical: 40,
-        }}>
-        <CustomButton3 btnTitle="Enroll Now" 
-        onPress={() => handelEnrollNow()} 
-        // onPress={() => navigation.replace('MyDrawer')} 
-        />
-      </View>
+
       <CustomLoader visible={loading} />
     </View>
   );
@@ -484,11 +573,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 1, // for iOS
     shadowRadius: 20,
     flex: 1,
-    padding: 15,
     fontFamily: 'Circular Std Book',
     color: 'black',
     fontSize: 16,
     width: '100%',
+    // padding: 15,
     // justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,

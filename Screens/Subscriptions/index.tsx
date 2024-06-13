@@ -94,29 +94,6 @@ const Subscriptions = ({navigation}: any) => {
     }
   };
 
-  // const getSubscriptions = [
-  //   {
-  //     id: 1,
-  //     name: "Basic Subscription",
-  //     description: "Basic subscription plan with limited features",
-  //     price: "$10",
-  //     purchased: true,
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Standard Subscription",
-  //     description: "Standard subscription plan with moderate features",
-  //     price: "$20",
-  //     purchased: true,
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Premium Subscription",
-  //     description: "Premium subscription plan with full features",
-  //     price: "$30",
-  //     purchased: true,
-  //   },
-  // ];
   return (
     <View
       style={{
@@ -171,7 +148,7 @@ const Subscriptions = ({navigation}: any) => {
                 }}>
                 <Text style={styles.textType1}>{item.name}</Text>
                 <View style={{margin: 5}} />
-                <Text style={[styles.textType3, {color: Color.IronsideGrey}]}>
+                <Text style={[styles.textType3,]}>
                   {item.description}
                 </Text>
                 {/* <View style={{margin:5}}/>
@@ -203,16 +180,13 @@ const styles = StyleSheet.create({
   textType3: {
     color: Color.Dune,
     fontWeight: '500',
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Circular Std Medium',
-    fontStyle: 'normal',
   },
   textType1: {
-    fontWeight: '500',
-    fontSize: 26,
+    fontSize: 21,
     color: Color.Black,
     fontFamily: 'Circular Std Medium',
     lineHeight: 24,
-    fontStyle: 'normal',
   },
 });

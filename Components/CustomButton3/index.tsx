@@ -90,3 +90,67 @@ const styles = StyleSheet.create({
     borderBottomColor: Color.Primary,
   },
 });
+
+// import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+// import React, { useState } from 'react';
+// import { Color } from '../../Constant';
+// import Icon from 'react-native-vector-icons/FontAwesome';
+// import * as Animatable from 'react-native-animatable';
+
+// const CustomButton3 = ({ onPress, btnTitle, color, backgroundColor, height, fontSize }:any) => {
+//   const [arrowPosition, setArrowPosition] = useState('left');
+
+//   const handlePress = () => {
+//     setArrowPosition('right');
+//     setTimeout(() => {
+//       onPress();
+//       setArrowPosition('left');
+//     }, 500); // Adjust timing as needed
+//   };
+
+//   return (
+//     <TouchableOpacity
+//       onPress={handlePress}
+//       activeOpacity={0.8}
+//       style={[styles.btn, { backgroundColor: backgroundColor ? backgroundColor : Color.Primary }]}
+//     >
+//       <View style={styles.content}>
+//         <Text style={[styles.textType1, { color: color ? color : Color.white, fontSize: fontSize ? fontSize : 24 }]}>
+//           {btnTitle}
+//         </Text>
+//         <Animatable.View
+//           animation={arrowPosition === 'right' ? 'slideInRight' : 'slideInLeft'}
+//           style={styles.iconContainer}
+//         >
+//           <Icon name="arrow-right" size={20} color={color ? color : Color.white} />
+//         </Animatable.View>
+//       </View>
+//     </TouchableOpacity>
+//   );
+// };
+
+// export default CustomButton3;
+
+// const styles = StyleSheet.create({
+//   btn: {
+//     height: 50,
+//     borderRadius: 30,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     paddingHorizontal: 15,
+//   },
+//   content: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//   },
+//   textType1: {
+//     fontWeight: '500',
+//     fontSize: 24,
+//     color: Color.white,
+//     fontFamily: 'Circular Std Medium',
+//   },
+//   iconContainer: {
+//     marginLeft: 10,
+//   },
+// });
+

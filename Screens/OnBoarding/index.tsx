@@ -124,10 +124,11 @@ const OnBoarding = ({navigation}: any) => {
   };
 
   const skip = () => {
-    const lastSlideIndex = slides.length - 1;
-    const offset = lastSlideIndex * width;
-    ref?.current.scrollToOffset({offset});
-    setCurrentSlideIndex(lastSlideIndex);
+    // const lastSlideIndex = slides.length - 1;
+    // const offset = lastSlideIndex * width;
+    // ref?.current.scrollToOffset({offset});
+    // setCurrentSlideIndex(lastSlideIndex);
+    navigation.replace('GetStarted');
   };
 
   const handleDonePress = () => {

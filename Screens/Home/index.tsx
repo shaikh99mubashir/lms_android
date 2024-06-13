@@ -17,14 +17,16 @@ import SearchBar from '../../Components/SearchBar';
 import CustomButton from '../../Components/CustomButton';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Fontisto from 'react-native-vector-icons/Fontisto';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import Carousel2 from '../../Components/Carousel2';
 import RNVideo from '../../Components/RNVideo';
 import axios from 'axios';
-import {BaseUrl} from '../../Constant/BaseUrl';
+import {BaseUrl, profileImage} from '../../Constant/BaseUrl';
 import {useIsFocused} from '@react-navigation/native';
+import CustomLoader from '../../Components/CustomLoader';
+import SwipeableButton from '../../Components/SwipeableButton';
 
 const Home = ({navigation}: any) => {
   const [userInfo, setUserInfo] = useState<any>();
@@ -34,6 +36,7 @@ const Home = ({navigation}: any) => {
   const [slider, setSlider] = useState([]);
   const width = Dimensions.get('window').width;
   const getDataFromStorage = async () => {
+    setLoading(true);
     try {
       const jsonValue = await AsyncStorage.getItem('studentAuth');
       if (jsonValue !== null) {
@@ -153,12 +156,12 @@ const Home = ({navigation}: any) => {
           borderBottomWidth: isSelected ? 2 : 0,
           alignItems: 'center',
           justifyContent: 'center',
-          borderBottomColor:'#0033ff',
+          borderBottomColor: '#0033ff',
           // borderBottomColor: isSelected ? Color.Primary : Color.shinyGrey,
           marginTop: 12,
           // backgroundColor: isSelected ? Color.Primary : Color.PattensBlue,
           borderRadius: 30,
-          paddingBottom:10,
+          paddingBottom: 10,
         }}>
         <Text
           style={[
@@ -220,13 +223,12 @@ const Home = ({navigation}: any) => {
     // Add more dummy data objects as needed
   ];
   const renderItem = ({item}: any) => (
-    <ImageBackground
-      source={require('../../Images/subjectbg.png')}
-      resizeMode="contain"
+    <View
       style={{
-        width: width / 1.13,
-        height: width / 2.1,
-        alignSelf: 'center',
+        backgroundColor: Color.white,
+        marginBottom: 15,
+        marginHorizontal: 25,
+        borderRadius: 20,
       }}>
       <View
         style={{
@@ -260,8 +262,11 @@ const Home = ({navigation}: any) => {
           ]}>
           {item.type}
         </Text>
-        <Ionicons name="bookmark-outline" size={19} color={Color.Black}
-        style={{right:-2, top:-5}}
+        <Ionicons
+          name="bookmark-outline"
+          size={19}
+          color={Color.Black}
+          // style={{right: -2, top: -5}}
         />
       </View>
       <Text style={[styles.textType1, {marginLeft: 15, marginTop: 0}]}>
@@ -275,21 +280,28 @@ const Home = ({navigation}: any) => {
             color: Color.DustyGrey,
             marginLeft: 15,
             marginTop: 4,
-            fontSize:14,
+            fontSize: 14,
           },
         ]}>
         Build a Strong Foundation in English
       </Text>
-      <View style={{margin:5}}/>
-      <View style={{flexDirection:'row'}}>
-        <View style={{borderTopWidth: 1, borderColor:Color.lineColor, width:'60%'}}>
-          <View style={{flexDirection: 'row', gap: 20, marginLeft:15, marginTop:5}}>
+      <View style={{margin: 5}} />
+      <View style={{flexDirection: 'row'}}>
+        <View
+          style={{
+            borderTopWidth: 1,
+            borderColor: Color.lineColor,
+            width: '60%',
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              gap: 20,
+              marginLeft: 15,
+              marginTop: 5,
+            }}>
             <View style={{flexDirection: 'row', gap: 10, marginTop: 10}}>
-              <AntDesign
-                name="staro"
-                size={20}
-                color={Color.Primary}
-              />
+              <AntDesign name="staro" size={20} color={Color.Primary} />
               <Text style={styles.textType3}>{item.rating}</Text>
             </View>
             <View style={{flexDirection: 'row', gap: 10, marginTop: 10}}>
@@ -302,173 +314,31 @@ const Home = ({navigation}: any) => {
             </View>
           </View>
         </View>
-        <View style={{backgroundColor:'#0033ff',flexDirection:"row",
-        gap:10,height:49, width:'40%', justifyContent:'center',alignItems:'center', borderBottomRightRadius:20}}>
-          <Text style={[styles.textType3,{color:Color.white}]}>View Course</Text>
-          <Ionicons name='arrow-forward-sharp' size={20} color={Color.white}/>
+        <View
+          style={{
+            backgroundColor: Color.white,
+            flexDirection: 'row',
+            gap: 10,
+            height: 49,
+            width: '40%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderBottomRightRadius: 20,
+            borderTopWidth: 1,
+            borderColor: Color.lineColor,
+            borderLeftWidth: 1,
+          }}>
+          <Text style={[styles.textType3, {color: Color.Primary}]}>
+            View Course
+          </Text>
+          <Ionicons
+            name="arrow-forward-sharp"
+            size={20}
+            color={Color.Primary}
+          />
         </View>
       </View>
-    </ImageBackground>
-    // <View style={{alignItems:'center'}}>
-    // <ImageBackground
-    //   source={require('../../Images/bg.png')}
-    //   resizeMode="contain"
-    //   style={{width: width /1.13,
-    //   height: width/2.1, paddingHorizontal:20, paddingVertical:20 }}>
-    //     <View style={{}}>
-
-    //     </View>
-    //     <Text
-    //       style={[
-    //         styles.textType3,
-    //         {
-    //           color: Color.white,
-    //           backgroundColor:
-    //             item.type == 'tranding'
-    //               ? Color.Yellow
-    //               : item.type == 'top rated'
-    //               ? 'blue'
-    //               : item.type == 'most popular'
-    //               ? Color.Yellow
-    //               : Color.Primary,
-
-    //           fontSize: 14,
-    //           textTransform: 'capitalize',
-    //           textAlign: 'center',
-    //           borderRadius: 50,
-    //           width: 120,
-    //           height: 25,
-
-    //         },
-    //       ]}>
-    //       {item.type}
-    //     </Text>
-
-    //     <View style={{margin: 10}}></View>
-    //     <Text style={[styles.textType1,{color:Color.white}]}>{item.title}</Text>
-    //     <View style={{flexDirection: 'row', gap: 20}}>
-    //       <View style={{flexDirection: 'row', gap: 10, marginTop: 10}}>
-    //         <FontAwesome
-    //           name="star-half-empty"
-    //           size={20}
-    //           color={Color.white}
-    //         />
-    //         <Text style={[styles.textType3,{color:Color.white}]}>{item.rating}</Text>
-    //       </View>
-    //       <View style={{flexDirection: 'row', gap: 10, marginTop: 10}}>
-    //         <FontAwesome
-    //           name="users"
-    //           size={19}
-    //           color={Color.white} // Make sure Color.Primary is defined or replace it with a color value
-    //         />
-    //         <Text style={[styles.textType3,{color:Color.white}]}>{item.users}</Text>
-    //       </View>
-    //     </View>
-    //     <TouchableOpacity
-    //       style={{
-    //         // paddingHorizontal: 15,
-    //         height: 30,
-    //         alignItems: 'center',
-    //         justifyContent: 'center',
-    //         marginTop: 20,
-    //         backgroundColor: Color.Primary,
-    //         borderRadius: 8,
-    //         width: 130,
-    //       }}>
-    //       <Text
-    //         style={[
-    //           styles.textType3,
-    //           {color: Color.white, fontSize: 18}, // Make sure Color.white is defined or replace it with a color value
-    //         ]}>
-    //         View Course
-    //       </Text>
-    //     </TouchableOpacity>
-
-    // </ImageBackground>
-    // </View>
-    // <View
-    //   style={{
-    //     backgroundColor: '#d7e5ffd9',
-    //     borderRadius: 16,
-    //     display: 'flex',
-    //     flexDirection: 'row',
-    //     justifyContent: 'space-between',
-    //     marginBottom: 11,
-    //   }}>
-    //   <View
-    //     style={{
-    //       position: 'relative',
-    //       left: 20,
-    //       justifyContent: 'center',
-    //       zIndex: 10,
-    //     }}>
-    //     <Text
-    //       style={[
-    //         styles.textType3,
-    //         {
-    //           color: Color.white,
-    //           backgroundColor:
-    //             item.type == 'tranding'
-    //               ? Color.Yellow
-    //               : item.type == 'top rated'
-    //               ? 'blue'
-    //               : item.type == 'most popular'
-    //               ? Color.Yellow
-    //               : Color.Primary,
-
-    //           fontSize: 14,
-    //           textTransform: 'capitalize',
-    //           textAlign: 'center',
-    //           borderRadius: 5,
-    //           width: 120,
-    //           height: 20,
-    //         },
-    //       ]}>
-    //       {item.type}
-    //     </Text>
-
-    //     <View style={{margin: 10}}></View>
-    //     <Text style={[styles.textType1]}>{item.title}</Text>
-    //     <View style={{flexDirection: 'row', gap: 20}}>
-    //       <View style={{flexDirection: 'row', gap: 10, marginTop: 10}}>
-    //         <FontAwesome
-    //           name="star-half-empty"
-    //           size={20}
-    //           color={Color.Primary}
-    //         />
-    //         <Text style={styles.textType3}>{item.rating}</Text>
-    //       </View>
-    //       <View style={{flexDirection: 'row', gap: 10, marginTop: 10}}>
-    //         <FontAwesome
-    //           name="users"
-    //           size={19}
-    //           color={Color.Primary} // Make sure Color.Primary is defined or replace it with a color value
-    //         />
-    //         <Text style={styles.textType3}>{item.users}</Text>
-    //       </View>
-    //     </View>
-    //     <TouchableOpacity
-    //       style={{
-    //         // paddingHorizontal: 15,
-    //         height: 30,
-    //         alignItems: 'center',
-    //         justifyContent: 'center',
-    //         marginTop: 20,
-    //         backgroundColor: Color.Primary,
-    //         borderRadius: 8,
-    //         width: 130,
-    //       }}>
-    //       <Text
-    //         style={[
-    //           styles.textType3,
-    //           {color: Color.white, fontSize: 18}, // Make sure Color.white is defined or replace it with a color value
-    //         ]}>
-    //         View Course
-    //       </Text>
-    //     </TouchableOpacity>
-    //   </View>
-    //   <Image source={item.image} style={{width: 200, height: 200}} />
-    // </View>
+    </View>
   );
   const [filterSubject, setFilterSubject] = useState<any>([]);
   useEffect(() => {
@@ -483,6 +353,8 @@ const Home = ({navigation}: any) => {
     }
   }, [selectedClass]);
 
+  const [isLoading, setIsLoading] = useState(false);
+  const makeSomeRequest = () => {};
   return (
     <View
       style={{
@@ -491,13 +363,49 @@ const Home = ({navigation}: any) => {
       }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{paddingHorizontal: 25}}>
-          <Header
+          <View style={{margin: 12}} />
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}>
+            <View style={{}}>
+              {/* <Text style={styles.textType3}>Welcome Back!</Text> */}
+              <Text
+                style={[
+                  styles.textType1,
+                  {
+                    color: Color.Primary,
+                    fontSize: 30,
+                    textTransform: 'capitalize',
+                  },
+                ]}>
+                {userProfile?.name}
+              </Text>
+              <Text style={styles.textType3}>
+                Let's Found your favorite Courses
+              </Text>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center', gap: 15}}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('NotificationsList')}>
+                <Ionicons
+                  name="notifications-outline"
+                  size={25}
+                  color={'black'}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+         
+          {/* <Header
             navigation={navigation}
             drawerBtn
             notification
             profileImage={userProfile?.full_image_url}
-          />
-          <Text
+          /> */}
+          {/* <Text
             style={[
               styles.textType1,
               {color: Color.Primary, fontSize: 30, textTransform: 'capitalize'},
@@ -507,25 +415,29 @@ const Home = ({navigation}: any) => {
           <View style={{margin: 2}} />
           <Text style={[styles.textType3, {fontSize: 16}]}>
             Let's Found your favorite Courses
-          </Text>
-          <View style={{margin: 11}} />
+          </Text> */}
+          <View style={{margin: 20}} />
 
           <Carousel2 sliderData={slider} />
           <View style={{margin: 11}} />
           <View
-            style={{
+            style={{ 
               justifyContent: 'space-between',
               flexDirection: 'row',
               marginHorizontal: 10,
             }}>
             <Text style={[styles.textType1]}>Classes</Text>
-            <Text
-              style={[
-                styles.textType3,
-                {color: Color.BrightBlue, fontFamily: 'Circular Std Book'},
-              ]}>
-              View All
-            </Text>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => navigation.navigate('AllClassess')}>
+              <Text
+                style={[
+                  styles.textType3,
+                  {color: Color.BrightBlue, fontFamily: 'Circular Std Book'},
+                ]}>
+                View All
+              </Text>
+            </TouchableOpacity>
           </View>
 
           <View>
@@ -558,6 +470,7 @@ const Home = ({navigation}: any) => {
             </View>
           )}
         </View>
+        <CustomLoader visible={loading} />
       </ScrollView>
     </View>
   );

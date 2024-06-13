@@ -10,7 +10,8 @@ const InputText2 = ({
   error,
   keyboardType,
   isCorrect,
-  editable
+  editable,
+  style
 }: any) => {
   return (
     <View style={{gap: 5, marginTop: 10,}}>
@@ -20,8 +21,7 @@ const InputText2 = ({
       <View style={[styles.inputContainer, error && {borderWidth: 1, borderColor: 'red'},]}>
         <TextInput
           style={[
-            styles.input,
-            // Apply red border if there is an error
+            styles.input,{...style}
           ]}
           placeholder={placeholder}
           placeholderTextColor="#A9A9A9"
@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Medium',
     color: Color.DustyGrey,
     fontSize: 18,
-    width:'90%'
+    width:'90%',
+    
   },
   labelContainer: {
     // backgroundColor: 'white',

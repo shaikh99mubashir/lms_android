@@ -38,7 +38,15 @@ const getStudentCoursesVideos = async () => {
           setStudentCoursesDetail(coursesDetail);
         })
         .catch(error => {
-          console.log('error', error);
+          if (error.response) {
+            console.log('login Server responded with data:', error.response.data);
+            console.log('login Status code:', error.response.status);
+            console.log('login Headers:', error.response.headers);
+          } else if (error.request) {
+            console.log('login No response received:', error.request);
+          } else {
+            console.log('Error setting up the request: login', error.message);
+          }
         });
     } else {
       console.log('No data found in AsyncStorage for key studentAuth');
@@ -130,13 +138,13 @@ const handleVideoPress = (item:any) =>{
         </View>
         <View>
           <Text style={[styles.textType3, {fontSize: 18}]}>{item.title}</Text>
-          <View style={{flexDirection:"row", gap:10}}>
-          <Text style={[styles.textType3]}>15 min</Text>
-          <Text style={[styles.textType3]}>{item.viewed != null ? 'Viewed' : 'Not Viewed'}</Text>
+          <View style={{flexDirection:"row", gap:10, marginTop:5}}>
+          <Text style={[styles.textType3,{color:Color.DustyGrey, fontSize:12}]}>15 min</Text>
+          <Text style={[styles.textType3,{color:Color.DustyGrey, fontSize:12}]}>{item.viewed != null ? 'Viewed' : 'Not Viewed'}</Text>
           </View>
         </View>
       </View>
-      <TouchableOpacity onPress={()=>handleVideoPress(item)}>
+      <TouchableOpacity onPress={()=> handelTrackVideo(item)}>
         <FontAwesome name="play-circle" size={25} color={Color.BrightBlue} />
       </TouchableOpacity>
     </TouchableOpacity>
@@ -161,7 +169,7 @@ const handleVideoPress = (item:any) =>{
         />
       </ScrollView>
     
-      {isEligibleForQuiz &&
+      {!isEligibleForQuiz &&
       <View style={{paddingVertical:30}}>
         <CustomButton3
           btnTitle="Attemp Quiz"

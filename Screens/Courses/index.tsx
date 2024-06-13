@@ -17,6 +17,8 @@ import axios from 'axios';
 import {BaseUrl} from '../../Constant/BaseUrl';
 import {Image} from 'react-native';
 import CustomLoader from '../../Components/CustomLoader';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import RightArrowSvg from '../../Svgs/RightArrowSvg';
 
 const Courses = ({navigation, route}: any) => {
   const subjectData = route.params;
@@ -146,58 +148,44 @@ const Courses = ({navigation, route}: any) => {
     
     return (
       <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={() => navigation.navigate('CourseDetail', item)}>
-        <View
-          style={{
-            backgroundColor: Color.white,
-            borderRadius: 16,
-            flexDirection: 'row',
-            gap: 10,
-            marginBottom: 10,
-          }}>
-          <Image
-             source={{uri:item.full_image_url}}
-            style={{
-              width: 150,
-              height: 150,
-              borderTopLeftRadius: 16,
-              borderBottomLeftRadius: 16,
-            }}
-          />
-          <View style={{flexDirection: 'column', paddingVertical: 10}}>
-            <Text style={[styles.textType3, {color: '#ff6b00', fontSize: 16}]}>
-              Trending
-            </Text>
-            <View style={{margin: 3}} />
-            <Text style={[styles.textType3, {fontSize: 18}]}>{item.name.slice(0, 20)}...</Text>
-            <View style={{margin: 3}} />
-            <Text style={[styles.textType3, {fontSize: 16, width: '100%'}]}>
-              {item.description.slice(0, 20)} ...
-            </Text>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => navigation.navigate('CourseDetail', item)}
-              style={{
-                paddingHorizontal: 15,
-                height: 30,
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: 20,
-                backgroundColor: Color.Primary,
-                borderRadius: 16,
-              }}>
-              <Text
-                style={[
-                  styles.textType3,
-                  {color: Color.white, fontSize: 18}, // Make sure Color.white is defined or replace it with a color value
-                ]}>
-                View Details
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </TouchableOpacity>
+      onPress={() => navigation.navigate('CourseDetail', item)}
+      activeOpacity={0.8}
+      key={item.id}
+      style={{
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 15,
+        backgroundColor: Color.white,
+        borderRadius: 20,
+        padding: 10,
+        flexDirection: 'row',
+        paddingHorizontal: 20,
+        paddingVertical: 25,
+      }}>
+      <View>
+      
+        <Text style={[styles.textType1,]}>
+          {item.name}
+        </Text>
+        <Text
+          style={[
+            styles.textType3,
+            {
+              fontFamily: 'Circular Std Book',
+              color: Color.DustyGrey,
+
+              marginTop: 4,
+              fontSize: 14,
+            },
+          ]}>
+          Build a Strong Foundation in English
+        </Text>
+      </View>
+      <View>
+      <RightArrowSvg/>
+      </View>
+    </TouchableOpacity>
     );
   };
   return (
@@ -205,10 +193,13 @@ const Courses = ({navigation, route}: any) => {
       style={{
         backgroundColor: Color.PattensBlue,
         height: '100%',
-        paddingHorizontal: 25,
+        
       }}>
-      <Header goBack title="Courses" navigation={navigation} />
+
       <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={{paddingHorizontal: 25,}}>
+      <Header goBack title="Courses" navigation={navigation} />
+
         <View style={{marginTop: 20}}></View>
         <SearchBar />
         <View style={{marginTop: 20}}></View>
@@ -228,6 +219,7 @@ const Courses = ({navigation, route}: any) => {
             />
           </View>
         )}
+        </View>
       </ScrollView>
       <CustomLoader visible={loading} />
     </View>
@@ -239,18 +231,13 @@ export default Courses;
 const styles = StyleSheet.create({
   textType3: {
     color: Color.Dune,
-    fontWeight: '500',
     fontSize: 16,
     fontFamily: 'Circular Std Medium',
-    fontStyle: 'normal',
   },
   textType1: {
-    fontWeight: '500',
-    fontSize: 26,
+    fontSize: 21,
     color: Color.Black,
     fontFamily: 'Circular Std Medium',
-    lineHeight: 24,
-    fontStyle: 'normal',
   },
   BoxContainer: {
     flexDirection: 'row',

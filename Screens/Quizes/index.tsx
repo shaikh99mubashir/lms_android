@@ -11,6 +11,7 @@ import Header from '../../Components/Header';
 import CustomButton3 from '../../Components/CustomButton3';
 import Octicons from 'react-native-vector-icons/Octicons';
 import CustomLoader from '../../Components/CustomLoader';
+import { ScrollView } from 'react-native-gesture-handler';
 const Quizes = ({navigation, route}: any) => {
   let courseId = route.params;
   console.log('quizzes', courseId);
@@ -189,7 +190,7 @@ const Quizes = ({navigation, route}: any) => {
 
   const handleCloseModal = () => {
     setModalVisible(false);
-    navigation.replace('MyDrawer');
+    navigation.replace('BottomNav');
   };
   
 
@@ -198,8 +199,10 @@ const Quizes = ({navigation, route}: any) => {
       style={{
         backgroundColor: Color.GhostWhite,
         height: '100%',
-        paddingHorizontal: 25,
+        
       }}>
+        <ScrollView>
+          <View style={{paddingHorizontal: 25,}}>
       <Header title="Quiz Questions" navigation={navigation} />
       <FlatList
         data={quiz}
@@ -222,7 +225,8 @@ const Quizes = ({navigation, route}: any) => {
       <CustomButton3 btnTitle="Submit" onPress={() => submitQuiz()} />
       {/* <CustomButton3 btnTitle="Submit" onPress={handlePress} /> */}
       <View style={{margin: 20}} />
-
+      </View>
+      </ScrollView>
       <Modal
         visible={modalVisible}
         transparent={true}

@@ -16,6 +16,10 @@ import axios from 'axios';
 import {BaseUrl} from '../../Constant/BaseUrl';
 import Header from '../../Components/Header';
 import CustomLoader from '../../Components/CustomLoader';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Path, Svg} from 'react-native-svg';
+import BackIcon from '../../Svgs/RightArrowSvg';
+import RightArrowSvg from '../../Svgs/RightArrowSvg';
 
 const AllClassess = ({navigation}: any) => {
   const [loading, setLoading] = useState(false);
@@ -33,8 +37,8 @@ const AllClassess = ({navigation}: any) => {
   ];
 
   const [classes, setClasses] = useState([]);
-  console.log("classes",classes);
-  
+  console.log('classes', classes);
+
   const getClassesData = async () => {
     setLoading(true);
     try {
@@ -87,60 +91,79 @@ const AllClassess = ({navigation}: any) => {
     getClassesData();
   }, []);
 
-
   return (
     <View
       style={{
         backgroundColor: Color.GhostWhite,
         height: '100%',
-        paddingHorizontal: 25,
       }}>
-      <Header goBack title="Classess" navigation={navigation} />
       <ScrollView>
-        <View style={{marginTop: 20}}></View>
-        <SearchBar />
-        <View style={{marginTop: 20}}></View>
-        <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-          {classes.length > 0 ?
-            classes.map((item:any, i:number) => {
-              console.log('item',item.full_image_url);
-              
-              return (
-                <TouchableOpacity
-                onPress={()=>navigation.navigate('Subjects',item)}
-                activeOpacity={0.8}
-                  key={i}
-                  style={{
-                    width: '48%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 10,
-                    marginBottom: 25,
-                  }}>
-                  <Image source={{uri:item.full_image_url}} style={{width:60,height:60}} />
-                  <Text
+        <View style={{paddingHorizontal: 25}}>
+          <Header goBack title="Classess" navigation={navigation} />
+          <View style={{marginTop: 20}}></View>
+          <SearchBar />
+          <View style={{marginTop: 20}}></View>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 15}}>
+            {classes.length > 0 ? (
+              classes.map((item: any, i: number) => {
+                console.log('item', item.full_image_url);
+
+                return (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Subjects', item)}
+                    activeOpacity={0.8}
+                    key={i}
                     style={{
-                      color: 'black',
-                      fontFamily: 'Circular Std Book',
-                      fontSize: 18,
+                      width: '100%',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      marginBottom: 0,
+                      backgroundColor: Color.white,
+                      borderRadius: 20,
+                      padding: 10,
+                      flexDirection: 'row',
+                      paddingHorizontal: 20,
+                      paddingVertical: 15,
                     }}>
-                    {item?.name}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })
-          :
-          <View
-              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-              <Image
-                source={require('../../Images/nodatafound.png')}
-                resizeMode="cover"
-                style={{width: 350, height: 350}}
-              />
-            </View>
-          }
-        </View>
-        {/* <TouchableOpacity style={{backgroundColor:'red', width:'48%', alignItems:'center', justifyContent:"center"}}>
+                    <View>
+                      <Text style={[styles.textType1]}>{item.name}</Text>
+                      <Text
+                        style={[
+                          styles.textType3,
+                          {
+                            fontFamily: 'Circular Std Book',
+                            color: Color.DustyGrey,
+
+                            marginTop: 4,
+                            fontSize: 14,
+                          },
+                        ]}>
+                        Build a Strong Foundation in English
+                      </Text>
+                    </View>
+
+                    <View>
+                      <RightArrowSvg />
+                    </View>
+                  </TouchableOpacity>
+                );
+              })
+            ) : (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Image
+                  source={require('../../Images/nodatafound.png')}
+                  resizeMode="cover"
+                  style={{width: 350, height: 350}}
+                />
+              </View>
+            )}
+          </View>
+          {/* <TouchableOpacity style={{backgroundColor:'red', width:'48%', alignItems:'center', justifyContent:"center"}}>
           <Image source={require('../../Images/ICON.png')}/>
           <Text
             style={{
@@ -151,6 +174,7 @@ const AllClassess = ({navigation}: any) => {
               Hello
           </Text>
         </TouchableOpacity> */}
+        </View>
       </ScrollView>
       <CustomLoader visible={loading} />
     </View>
@@ -178,5 +202,15 @@ const styles = StyleSheet.create({
     fontFamily: 'Circular Std Book',
     color: 'black',
     fontSize: 18,
+  },
+  textType3: {
+    color: Color.Dune,
+    fontSize: 16,
+    fontFamily: 'Circular Std Medium',
+  },
+  textType1: {
+    fontSize: 21,
+    color: Color.Black,
+    fontFamily: 'Circular Std Medium',
   },
 });

@@ -85,8 +85,8 @@ export default RadioButton2;
 const styles = StyleSheet.create({
   textType1: {
     color: Color.Black,
-    fontSize: 17,
-    fontFamily: 'Circular Std Book',
+    fontSize: 16,
+    fontFamily: 'Circular Std Medium',
   },
   textType2: {
     color: Color.Black,

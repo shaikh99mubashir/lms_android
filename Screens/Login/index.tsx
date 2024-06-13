@@ -80,7 +80,7 @@ const Login = ({navigation}: any) => {
           });
           let mydata = JSON.stringify(studentData);
           AsyncStorage.setItem('studentAuth', mydata);
-          navigation.replace('MyDrawer');
+          navigation.replace('BottomNav');
         }
       })
       .catch(error => {
@@ -145,6 +145,7 @@ const Login = ({navigation}: any) => {
               value={login.emailOrPhone}
               error={errors.emailOrPhone}
               isCorrect={verifyEmail}
+              style={{textTransform:'lowercase'}}
             />
             <View style={{marginTop: 10}} />
             <PasswordInput2

@@ -16,7 +16,7 @@ const Splash = ({navigation}:any) => {
         setTimeout(() => {
           if (data.token) {
             console.log('data.token',data.token);
-            navigation.replace('MyDrawer');
+            navigation.replace('BottomNav');
           } 
         }, 3000);
       }

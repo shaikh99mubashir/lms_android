@@ -29,7 +29,7 @@ import {
             width:'100%',
             alignItems: 'center',
             flexDirection: 'row',
-            gap:6,
+            // gap:6,
             borderRadius:10,
           }}>
           <TouchableOpacity
@@ -39,10 +39,10 @@ import {
               width: 
               currentTab &&
                   currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
-                  ? '49%'
-                  : '49%'
+                  ? '50%'
+                  : '50%'
               ,
-              borderRadius:30,
+              // borderRadius:30,
               
               paddingVertical: 
               currentTab &&
@@ -61,6 +61,8 @@ import {
                   currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
                   ? Color.Primary
                   : Color.shinyGrey,
+                  borderTopLeftRadius:10,
+                  borderBottomLeftRadius:10,
             }}>
             <Text
               style={[
@@ -91,10 +93,12 @@ import {
               width: 
               currentTab &&
                   currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
-                  ? '49%'
-                  : '49%'
+                  ? '50%'
+                  : '50%'
               ,
-              borderRadius: 50,
+              // borderRadius: 50,
+              borderTopRightRadius:10,
+              borderBottomRightRadius:10,
               paddingVertical: 
               currentTab &&
               currentTab.some((e: any, i: any) => e.index == 0 && e.selected)

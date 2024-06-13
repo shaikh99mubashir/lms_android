@@ -22,13 +22,15 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomTabView3 from '../../Components/CustomTabView3';
 import CustomLoader from '../../Components/CustomLoader';
 import Icon from 'react-native-vector-icons/Ionicons';
+import RightArrowSvg from '../../Svgs/RightArrowSvg';
+import {useIsFocused} from '@react-navigation/native';
 const StudentCourses = ({navigation}: any) => {
   const [ongoing, setOngoing] = useState([]);
   const [completed, setCompleted] = useState([]);
   const [loading, setLoading] = useState(false);
   console.log('ongoing========>', ongoing);
   console.log('completed========>', completed);
-
+  const focus = useIsFocused();
   const getStudentCourses = async () => {
     setLoading(true);
     try {
@@ -77,7 +79,7 @@ const StudentCourses = ({navigation}: any) => {
 
   useEffect(() => {
     getStudentCourses();
-  }, []);
+  }, [focus]);
 
   const [currentTab, setCurrentTab]: any = useState([
     {
@@ -160,72 +162,39 @@ const StudentCourses = ({navigation}: any) => {
     const renderItem = ({item}: any) => {
       return (
         <TouchableOpacity
+          onPress={() => navigation.navigate('OngoingDetail', item)}
           activeOpacity={0.8}
-          onPress={() => navigation.navigate('OngoingDetail', item)}>
-          <View
-            style={{
-              backgroundColor: Color.white,
-              borderRadius: 16,
-              flexDirection: 'row',
-              gap: 10,
-              marginBottom: 10,
-            }}>
-            <Image
-              source={require('../../Images/login.png')}
-              style={{
-                width: 150,
-                height: 150,
-                borderTopLeftRadius: 16,
-                borderBottomLeftRadius: 16,
-              }}
-            />
-            <View
-              style={{
-                flexDirection: 'column',
-                paddingVertical: 10,
-                width: '100%',
-              }}>
-              <Text
-                style={[styles.textType3, {color: '#ff6b00', fontSize: 16}]}>
-                Tending
-              </Text>
-              <View style={{margin: 3}} />
-              <Text style={[styles.textType3, {fontSize: 18}]}>
-                {item.name}
-              </Text>
-              <View style={{margin: 3}} />
-              <Text style={[styles.textType3, {fontSize: 16, width: '100%'}]}>
-                {item.description.slice(0, 20)} ...
-              </Text>
-              <View style={{margin: 3}} />
-              <View style={{flexDirection: 'row', gap: 10}}>
-                <View style={{flexDirection: 'row', gap: 5}}>
-                  <FontAwesome name="star" size={20} color={Color.Yellow} />
-                  <Text style={styles.textType3}>4.4</Text>
-                </View>
-                <View style={{flexDirection: 'row', gap: 5}}>
-                  <FontAwesome name="clock-o" size={20} color={Color.Black} />
-                  <Text style={styles.textType3}>12 Hrs </Text>
-                </View>
-              </View>
-              <View style={{margin: 5}} />
-              <View
-                style={{
-                  backgroundColor: Color.lineColor,
-                  height: 10,
-                  borderRadius: 10,
-                  width: '50%',
-                }}>
-                <View
-                  style={{
-                    backgroundColor: Color.Primary,
-                    height: '100%',
-                    width: `${item.progress_percentage}%`,
-                    borderRadius: 10,
-                  }}
-                />
-              </View>
-            </View>
+          key={item.id}
+          style={{
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: 15,
+            backgroundColor: Color.white,
+            borderRadius: 20,
+            padding: 10,
+            flexDirection: 'row',
+            paddingHorizontal: 20,
+            paddingVertical: 15,
+          }}>
+          <View>
+            <Text style={[styles.textType1]}>{item.name}</Text>
+            <Text
+              style={[
+                styles.textType3,
+                {
+                  fontFamily: 'Circular Std Book',
+                  color: Color.DustyGrey,
+
+                  marginTop: 4,
+                  fontSize: 14,
+                },
+              ]}>
+              Build a Strong Foundation in English
+            </Text>
+          </View>
+          <View>
+            <RightArrowSvg />
           </View>
         </TouchableOpacity>
       );
@@ -260,98 +229,105 @@ const StudentCourses = ({navigation}: any) => {
     const renderItem = ({item}: any) => {
       return (
         <>
-          <TouchableOpacity activeOpacity={0.8} style={{paddingVertical: 15}}>
-            <View style={{position: 'absolute', right: 15, top: 3, zIndex: 1}}>
-              <AntDesign name="checkcircle" size={25} color={'green'} />
-            </View>
-            <View
-              style={{
-                backgroundColor: Color.white,
-                borderRadius: 16,
-                flexDirection: 'row',
-                gap: 10,
-                marginBottom: 10,
-              }}>
-              <Image
-                source={require('../../Images/login.png')}
+         <TouchableOpacity
+          activeOpacity={0.8}
+          key={item.id}
+          style={{
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: 15,
+            backgroundColor: Color.white,
+            borderRadius: 20,
+            padding: 10,
+            flexDirection: 'row',
+            paddingHorizontal: 20,
+            paddingVertical: 15,
+          }}>
+          <View>
+            <Text style={[styles.textType1]}>{item.name}</Text>
+            <Text
+              style={[
+                styles.textType3,
+                {
+                  fontFamily: 'Circular Std Book',
+                  color: Color.DustyGrey,
+
+                  marginTop: 4,
+                  fontSize: 14,
+                },
+              ]}>
+              Build a Strong Foundation in English
+            </Text>
+            <TouchableOpacity
+                activeOpacity={0.8}
                 style={{
-                  width: 150,
-                  height: 150,
-                  borderTopLeftRadius: 16,
-                  borderBottomLeftRadius: 16,
-                }}
-              />
-              <View
-                style={{
-                  flexDirection: 'column',
-                  paddingVertical: 10,
-                  width: '100%',
+                  backgroundColor: Color.Primary,
+                  padding: 10,
+                  borderRadius: 15,
+                  marginTop: 10,
+                  width: 130,
                 }}>
                 <Text
-                  style={[styles.textType3, {color: '#ff6b00', fontSize: 16}]}>
-                  Tending
+                  style={[
+                    styles.textType3,
+                    {
+                      fontFamily: 'Circular Std Book',
+                      color: Color.white,
+                      fontSize: 14,
+                      textAlign: 'center',
+                    },
+                  ]}>
+                  View Certificate
                 </Text>
-                <View style={{margin: 3}} />
-                <Text style={[styles.textType3, {fontSize: 18}]}>
-                  {item.name}
-                </Text>
-                <View style={{margin: 3}} />
-                <Text style={[styles.textType3, {fontSize: 16, width: '100%'}]}>
-                  {item.description.slice(0, 20)} ...
-                </Text>
-                <View style={{margin: 3}} />
-                <View style={{flexDirection: 'row', gap: 10}}>
-                  <View style={{flexDirection: 'row', gap: 5}}>
-                    <FontAwesome name="star" size={20} color={Color.Yellow} />
-                    <Text style={styles.textType3}>4.4</Text>
-                  </View>
-                  <View style={{flexDirection: 'row', gap: 5}}>
-                    <FontAwesome name="clock-o" size={20} color={Color.Black} />
-                    <Text style={styles.textType3}>12 Hrs </Text>
-                  </View>
-                </View>
-                <View style={{margin: 5}} />
-                <TouchableOpacity onPress={() => setModalVisible(true)}>
-                  <Text
-                    style={[
-                      styles.textType3,
-                      {color: Color.Primary, fontSize: 18}, // Make sure Color.white is defined or replace it with a color value
-                    ]}>
-                    View Certificate
+              </TouchableOpacity>
+          </View>
+          <View>
+            {/* <RightArrowSvg /> */}
+          </View>
+        </TouchableOpacity>
+          <View style={{position: 'absolute', right: 15, top: 22, zIndex: 1}}>
+            <AntDesign name="checkcircle" size={25} color={'green'} />
+          </View>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={closeModal}>
+            <View style={styles.modalContainer}>
+              <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
+                <Icon name="close-circle" size={30} color="#fff" />
+              </TouchableOpacity>
+              <View style={styles.certificate}>
+                <Text style={styles.header}>Certificate of Completion</Text>
+                <Text style={styles.subHeader}>This Certifies that</Text>
+                <Text style={styles.name}>Alex</Text>
+                <Text style={styles.details}>
+                  Has Successfully Completed the Wallace Training Program,{'\n'}
+                  Entitled{' '}
+                  <Text style={styles.course}>
+                    3D Design Illustration Course
                   </Text>
-                </TouchableOpacity>
+                  {'\n'}
+                  Issued on November 24, 2022{'\n'}
+                  ID: SKC2480806
+                </Text>
+                <View style={styles.signatureContainer}>
+                  <Image
+                    source={{uri: 'https://path-to-signature-image.png'}}
+                    style={styles.signature}
+                  />
+                  <Text style={styles.signatureName}>Calvin E. McGinnis</Text>
+                  <Text style={styles.signatureTitle}>
+                    Virginia M. Patterson
+                  </Text>
+                  <Text style={styles.issueDate}>
+                    Issued on November 24, 2022
+                  </Text>
+                </View>
               </View>
             </View>
-          </TouchableOpacity>
-          <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={closeModal}
-      >
-        <View style={styles.modalContainer}>
-          <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-            <Icon name="close-circle" size={30} color="#fff" />
-          </TouchableOpacity>
-          <View style={styles.certificate}>
-            <Text style={styles.header}>Certificate of Completion</Text>
-            <Text style={styles.subHeader}>This Certifies that</Text>
-            <Text style={styles.name}>Alex</Text>
-            <Text style={styles.details}>
-              Has Successfully Completed the Wallace Training Program,{'\n'}
-              Entitled <Text style={styles.course}>3D Design Illustration Course</Text>{'\n'}
-              Issued on November 24, 2022{'\n'}
-              ID: SKC2480806
-            </Text>
-            <View style={styles.signatureContainer}>
-              <Image source={{ uri: 'https://path-to-signature-image.png' }} style={styles.signature} />
-              <Text style={styles.signatureName}>Calvin E. McGinnis</Text>
-              <Text style={styles.signatureTitle}>Virginia M. Patterson</Text>
-              <Text style={styles.issueDate}>Issued on November 24, 2022</Text>
-            </View>
-          </View>
-        </View>
-      </Modal>
+          </Modal>
         </>
       );
     };
@@ -383,19 +359,21 @@ const StudentCourses = ({navigation}: any) => {
       style={{
         backgroundColor: Color.GhostWhite,
         height: '100%',
-        paddingHorizontal: 25,
+       
       }}>
-      <Header goBack title="My Courses" navigation={navigation} />
       <ScrollView>
-        <View style={{marginTop: 10}}>
-          <CustomTabView3
-            currentTab={currentTab}
-            firstRoute={firstRoute}
-            secondRoute={secondRoute}
-            activateTab={activateTab}
-            firstRouteTitle="Ongoing"
-            secondRouteTitle={`Completed`}
-          />
+        <View style={{paddingHorizontal: 25}}>
+          <Header goBack title="My Courses" navigation={navigation} />
+          <View style={{marginTop: 10}}>
+            <CustomTabView3
+              currentTab={currentTab}
+              firstRoute={firstRoute}
+              secondRoute={secondRoute}
+              activateTab={activateTab}
+              firstRouteTitle="Ongoing"
+              secondRouteTitle={`Completed`}
+            />
+          </View>
         </View>
       </ScrollView>
       <CustomLoader visible={loading} />
@@ -429,18 +407,13 @@ const styles = StyleSheet.create({
   },
   textType3: {
     color: Color.Dune,
-    fontWeight: '500',
     fontSize: 16,
     fontFamily: 'Circular Std Medium',
-    fontStyle: 'normal',
   },
   textType1: {
-    fontWeight: '500',
-    fontSize: 26,
+    fontSize: 21,
     color: Color.Black,
     fontFamily: 'Circular Std Medium',
-    lineHeight: 24,
-    fontStyle: 'normal',
   },
   modalBackground: {
     flex: 1,

@@ -32,10 +32,10 @@ const CustomTabView2 = (Props: any): any => {
 
   return (
     <View>
-      <View style={{marginBottom: 20, alignItems: 'center'}}>
+      <View style={{marginBottom: 20, alignItems: 'center',}}>
         <View
           style={{
-            width: Dimensions.get('window').width / 1,
+            width: Dimensions.get('window').width / 1.14,
             alignItems: 'center',
             flexDirection: 'row',
             //   gap:10
@@ -48,8 +48,10 @@ const CustomTabView2 = (Props: any): any => {
               backgroundColor:
                 currentTab &&
                 currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
-                  ? '#E8F1FF'
-                  : Color.GhostWhite,
+                  ? Color.Primary
+                  : Color.white,
+                  borderTopLeftRadius:10,
+                  borderBottomLeftRadius:10,
             }}>
             <Text
               style={[
@@ -60,11 +62,11 @@ const CustomTabView2 = (Props: any): any => {
                     currentTab.some(
                       (e: any, i: any) => e.index == 0 && e.selected,
                     )
-                      ? 'black'
+                      ? Color.white
                       : Color.Black,
-                  borderBottomWidth:1,
+                  // borderBottomWidth:1,
                   paddingVertical: 15,
-                  borderBottomColor:Color.lineColor
+                  // borderBottomColor:Color.lineColor
                   // borderBottomColor:
                   //   currentTab &&
                   //   currentTab.some(
@@ -85,8 +87,10 @@ const CustomTabView2 = (Props: any): any => {
               backgroundColor:
                 currentTab &&
                 currentTab.some((e: any, i: any) => e.index == 1 && e.selected)
-                  ? '#E8F1FF'
-                  : Color.GhostWhite,
+                  ? Color.Primary
+                  : Color.white,
+                  borderTopRightRadius:10,
+                  borderBottomRightRadius:10,
             }}>
             <Text
               style={[
@@ -97,10 +101,10 @@ const CustomTabView2 = (Props: any): any => {
                     currentTab.some(
                       (e: any, i: any) => e.index == 1 && e.selected,
                     )
-                      ? 'black'
+                      ? Color.white
                       : Color.Black,
-                  borderBottomWidth: 1,
-                  borderBottomColor:Color.lineColor,
+                  // borderBottomWidth: 1,
+                  // borderBottomColor:Color.lineColor,
                   paddingVertical: 15,
                   // borderBottomColor:
                   //   currentTab &&

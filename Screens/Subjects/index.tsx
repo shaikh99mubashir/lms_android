@@ -17,7 +17,8 @@ import {BaseUrl} from '../../Constant/BaseUrl';
 import Header from '../../Components/Header';
 import {Image} from 'react-native';
 import CustomLoader from '../../Components/CustomLoader';
-
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import RightArrowSvg from '../../Svgs/RightArrowSvg';
 const Subjects = ({navigation, route}: any) => {
   const classData = route.params;
   const [subjects, setSubjects] = useState([]);
@@ -79,58 +80,68 @@ const Subjects = ({navigation, route}: any) => {
   }, []);
 
   const renderItem = ({item}: any) => {
+    console.log(item);
+
     return (
       <TouchableOpacity
         activeOpacity={0.8}
-        onPress={() => navigation.navigate('Courses', item)}>
-        <View
-          style={{
-            backgroundColor: Color.white,
-            borderRadius: 16,
-            flexDirection: 'row',
-            gap: 10,
-            marginBottom: 10,
-          }}>
-          <Image
-            source={{uri:item.full_image_url}}
-            style={{
-              width: 150,
-              height: 150,
-              borderTopLeftRadius: 16,
-              borderBottomLeftRadius: 16,
-            }}
-          />
-          <View style={{flexDirection: 'column', paddingVertical: 10}}>
-            <Text style={[styles.textType3, {color: '#ff6b00', fontSize: 16}]}>
-              Trending
-            </Text>
-            <View style={{margin: 3}} />
-            <Text style={[styles.textType3, {fontSize: 18}]}>{item? item.name : '-'}</Text>
+        onPress={() => navigation.navigate('Courses', item)}
+        key={item.id}
+        style={{
+          width: '100%',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: 15,
+          backgroundColor: Color.white,
+          borderRadius: 20,
+          padding: 10,
+          flexDirection: 'row',
+          paddingHorizontal: 20,
+          paddingVertical: 15,
+        }}>
+        <View>
+        <Text
+          style={[
+            styles.textType3,
+            {
+              color: Color.white,
+              backgroundColor:
+                item.type == 'trending'
+                  ? '#0033ff'
+                  : item.type == 'top rated'
+                  ? 'blue'
+                  : item.type == 'most popular'
+                  ? Color.Yellow
+                  : Color.Primary,
 
-            <View style={{margin: 3}} />
-            <Text style={[styles.textType3, {fontSize: 18}]}>100+ Courses</Text>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => navigation.navigate('Courses', item)}
-              style={{
-                paddingHorizontal: 15,
-                height: 30,
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: 20,
-                backgroundColor: Color.Primary,
-                borderRadius: 16,
-              }}>
-              <Text
-                style={[
-                  styles.textType3,
-                  {color: Color.white, fontSize: 18}, // Make sure Color.white is defined or replace it with a color value
-                ]}>
-                View Courses
-              </Text>
-            </TouchableOpacity>
-          </View>
+              fontSize: 16,
+              textTransform: 'capitalize',
+              textAlign: 'center',
+              paddingHorizontal: 15,
+              paddingVertical: 5,
+              borderRadius: 30,
+              width:100,
+              marginBottom:10
+            },
+          ]}>
+          trending
+        </Text>
+          <Text style={[styles.textType1]}>{item.name}</Text>
+          <Text
+            style={[
+              styles.textType3,
+              {
+                fontFamily: 'Circular Std Book',
+                color: Color.DustyGrey,
+
+                marginTop: 4,
+                fontSize: 14,
+              },
+            ]}>
+            Build a Strong Foundation in English
+          </Text>
         </View>
+        <RightArrowSvg/>
       </TouchableOpacity>
     );
   };
@@ -139,10 +150,11 @@ const Subjects = ({navigation, route}: any) => {
       style={{
         backgroundColor: Color.GhostWhite,
         height: '100%',
-        paddingHorizontal: 25,
+        
       }}>
-      <Header goBack title="Subjects" navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={{paddingHorizontal: 25,}}>
+      <Header goBack title="Subjects" navigation={navigation} />
         <View style={{marginTop: 20}}></View>
         <SearchBar />
         <View style={{marginTop: 20}}></View>
@@ -162,6 +174,7 @@ const Subjects = ({navigation, route}: any) => {
             />
           </View>
         )}
+        </View>
       </ScrollView>
       <CustomLoader visible={loading} />
     </View>
@@ -173,18 +186,13 @@ export default Subjects;
 const styles = StyleSheet.create({
   textType3: {
     color: Color.Dune,
-    fontWeight: '500',
     fontSize: 16,
     fontFamily: 'Circular Std Medium',
-    fontStyle: 'normal',
   },
   textType1: {
-    fontWeight: '500',
-    fontSize: 26,
+    fontSize: 22,
     color: Color.Black,
     fontFamily: 'Circular Std Medium',
-    lineHeight: 24,
-    fontStyle: 'normal',
   },
   BoxContainer: {
     flexDirection: 'row',

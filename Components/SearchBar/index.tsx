@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: 'white',
     height: 60,
-    borderRadius: 12,
+    borderRadius: 20,
     elevation: 4, // for Android
     shadowColor: 'rgba(213, 226, 245, 0.40)', // for iOS
     shadowOffset: {width: 0, height: 4}, // for iOS

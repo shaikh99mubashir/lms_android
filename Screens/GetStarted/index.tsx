@@ -13,7 +13,39 @@ import CustomButton from '../../Components/CustomButton';
 import GoogleSignInButton from '../../Components/GoogleSignInButton';
 import FacebookSigninButton from '../../Components/FacebookSigninButton';
 import CustomButton3 from '../../Components/CustomButton3';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Animated, { useAnimatedGestureHandler, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { Gesture, GestureDetector, PanGestureHandler } from 'react-native-gesture-handler';
+import CustomButton4 from '../../Components/CustomButton4';
+import SwipeableButton from '../../Components/SwipeableButton';
 const GetStarted = ({navigation}: any) => {
+
+
+  const translateX = useSharedValue(0);
+  const { width } = Dimensions.get('window');
+  const panGesture = Gesture.Pan()
+    .onUpdate((event) => {
+      translateX.value = event.translationX;
+      if (translateX.value < 0) {
+        translateX.value = 0;
+      } else if (translateX.value > width - 80) { // Adjust according to your button width
+        translateX.value = width - 70;
+      }
+    })
+    .onEnd(() => {
+      // Optional: Add snapping behavior or any other logic when the gesture ends
+    });
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: translateX.value }],
+    };
+  });
+  const [isLoading, setIsLoading] = useState(false)
+const makeSomeRequest = () => {
+
+}
+  
   return (
     <View style={{backgroundColor: Color.GhostWhite, height: '100%'}}>
       <ScrollView showsHorizontalScrollIndicator={false}>
@@ -23,9 +55,10 @@ const GetStarted = ({navigation}: any) => {
             justifyContent: 'center',
             marginTop: 100,
           }}>
-          <Image source={require('../../Images/Logo00.png')} 
-          resizeMode='contain'
-           style={{width:Dimensions.get('screen').width/1.5}}
+          <Image
+            source={require('../../Images/Logo00.png')}
+            resizeMode="contain"
+            style={{width: Dimensions.get('screen').width / 1.5}}
           />
         </View>
         <View>
@@ -101,11 +134,11 @@ const GetStarted = ({navigation}: any) => {
           </Text>
         </View>
 
-        <View style={{marginHorizontal: 30, marginBottom: 20, marginTop:10}}>
-          <CustomButton3
+        <View style={{marginHorizontal: 30, marginBottom: 20, marginTop: 10}}>
+          {/* <CustomButton3
             btnTitle="Login With Your Account"
             onPress={() => navigation.replace('Login')}
-          />
+          /> */}
         </View>
 
         <View
@@ -153,6 +186,32 @@ const GetStarted = ({navigation}: any) => {
             </Text>
           </TouchableOpacity>
         </View>
+        {/* <View style={styles.btn}>
+          <PanGestureHandler onGestureEvent={animatedGestureHandler}>
+          <Animated.View
+            style={{
+              backgroundColor: Color.white,
+              borderRadius: 100,
+              width: 50,
+              height: 50,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <AntDesign name="arrowright" size={25} color={Color.Primary} />
+          </Animated.View>
+          </PanGestureHandler>
+        </View> */}
+         {/* <View style={styles.btn}>
+      <GestureDetector gesture={panGesture}>
+        <Animated.View style={[styles.draggable, animatedStyle]}>
+          <AntDesign name="arrowright" size={25} color={Color.Primary} />
+        </Animated.View>
+      </GestureDetector>
+    </View> */}
+    {/* <CustomButton4/> */}
+    <View style={{display:'flex',alignItems:'center'}}>
+    <SwipeableButton btnTitle={'Continue with Login'} onSwipe={makeSomeRequest} isLoading={isLoading} />
+    </View>
       </ScrollView>
     </View>
   );
@@ -162,15 +221,24 @@ export default GetStarted;
 
 const styles = StyleSheet.create({
   btn: {
-    // flex: 1,
-    height: 50,
-    // width:360,
+    height: 60,
     borderRadius: 30,
     flexShrink: 0,
-    backgroundColor: '#000',
-    justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 15,
+    flexDirection: 'row',
+    paddingLeft: 5,
+    gap: 10,
+    paddingRight: 5,
+    backgroundColor: Color.Primary,
+  },
+  draggable: {
+    backgroundColor: Color.white,
+    borderRadius: 100,
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   textType1: {
     fontWeight: '500',

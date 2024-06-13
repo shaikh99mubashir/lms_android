@@ -1,4 +1,12 @@
-import {Image, PermissionsAndroid, Platform, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  PermissionsAndroid,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Header from '../../Components/Header';
 import {Color} from '../../Constant';
@@ -10,8 +18,9 @@ import axios from 'axios';
 import InputText2 from '../../Components/InputText2';
 import CustomButton3 from '../../Components/CustomButton3';
 import CustomLoader from '../../Components/CustomLoader';
-import { launchImageLibrary } from 'react-native-image-picker';
-
+import {launchImageLibrary} from 'react-native-image-picker';
+import InputText3 from '../../Components/TextInput3';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 const Profile = ({navigation}: any) => {
   const [profileData, setProfileData] = useState<any>();
   const [loading, setLoading] = useState(false);
@@ -19,7 +28,7 @@ const Profile = ({navigation}: any) => {
   const [type, setType] = useState('');
   const [name, setName] = useState('');
   const getProfileData = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const jsonValue = await AsyncStorage.getItem('studentAuth');
       if (jsonValue !== null) {
@@ -34,13 +43,12 @@ const Profile = ({navigation}: any) => {
             },
           })
           .then(response => {
-            // console.log('profile',response.data);
             let profile = response.data.user;
             setProfileData(profile);
-            setLoading(false)
+            setLoading(false);
           })
           .catch(error => {
-            setLoading(false)
+            setLoading(false);
             console.log('error', error);
             if (error.response) {
               console.log(
@@ -56,12 +64,12 @@ const Profile = ({navigation}: any) => {
             }
           });
       } else {
-        setLoading(false)
+        setLoading(false);
         console.log('No data found in AsyncStorage for key studentAuth');
         return null;
       }
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
       console.error('Error retrieving data from AsyncStorage:', error);
       return null;
     }
@@ -128,11 +136,11 @@ const Profile = ({navigation}: any) => {
         paddingHorizontal: 25,
       }}>
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <Header title={'Profile'} goBack navigation={navigation} />
+        <Header title={'Edit Profile'} goBack navigation={navigation} />
         <View style={{margin: 5}}></View>
         <View style={{alignItems: 'center'}}>
           <Image
-            source={{uri:profileData?.full_image_url }} 
+            source={{uri: profileData?.full_image_url}}
             style={{
               width: 95,
               height: 95,
@@ -141,10 +149,19 @@ const Profile = ({navigation}: any) => {
               borderColor: Color.Primary,
             }}
           />
-          <Image
-            source={require('../../Images/gallery.png')}
-            style={{position: 'absolute', top: 60, right: 130}}
-          />
+          <View
+            style={{
+              position: 'absolute',
+              top: 60,
+              right: 130,
+              backgroundColor: Color.Primary,
+              padding:7, borderRadius:50,
+              alignItems:'center',
+              justifyContent:'center'
+            }}>
+            <FontAwesome name="camera" size={18} color={Color.white} />
+          </View>
+          
           <View style={{margin: 8}}></View>
           <Text style={[styles.textType1, {lineHeight: 35}]}>
             {profileData?.name}
@@ -152,35 +169,28 @@ const Profile = ({navigation}: any) => {
           <Text style={[styles.textType3]}>{profileData?.email}</Text>
         </View>
         <View style={{gap: 5, marginTop: 25}}>
-          <InputText2 label="Full Name*" 
-          placeholder={profileData?.name} editable={false}/>
+          <InputText3 label="Full Name*" placeholder={profileData?.name} />
         </View>
         <View style={{margin: 5}}></View>
+
+        <View style={{margin: 8}}></View>
         <View>
-          <InputText2 label="Email*" 
-          placeholder={profileData?.email} editable={false}/>
+          <InputText3
+            label="Mobile Phone*"
+            placeholder="+60 2168-5000-6789"
+            editable={false}
+          />
         </View>
         <View style={{margin: 8}}></View>
         <View>
-          <InputText2 label="Mobile Phone*" 
-          placeholder="+60 2168-5000-6789" editable={false}/>
+          <InputText3 label="NRIC*" placeholder="651651-611" editable={false} />
         </View>
         <View style={{margin: 8}}></View>
-        <View>
-          <InputText2 label="Parent Name*" 
-          placeholder="Parent Name" editable={false}/>
-        </View>
-        <View style={{margin: 8}}></View>
-        <View>
-          <InputText2 label="Parent Email*" 
-          placeholder="Parent Email" editable={false}/>
-        </View>
-       
       </ScrollView>
-        <View style={{marginBottom:40,marginTop:30}}>
-          <CustomButton3 btnTitle='Save'/>
-        </View>
-        <CustomLoader visible={loading} />
+      <View style={{marginBottom: 40, marginTop: 30}}>
+        <CustomButton3 btnTitle="Save" />
+      </View>
+      <CustomLoader visible={loading} />
     </View>
   );
 };

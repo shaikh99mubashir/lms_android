@@ -20,6 +20,20 @@ import OnBoarding from '../../Screens/OnBoarding';
 import GetStarted from '../../Screens/GetStarted';
 import OngoingDetail from '../../Screens/OngoingDetail';
 import PlayVideo from '../../Screens/PlayVideo';
+import BottomNav from '../BottomNav';
+import StudentCourses from '../../Screens/StudentCourses';
+import ProfileMenu from '../../Screens/ProfileMenu';
+import Wishlist from '../../Screens/Wishlist';
+import CourseProgress from '../../Screens/CourseProgress';
+import LiveSessionsList from '../../Screens/LiveSessionsList';
+import Subscriptions from '../../Screens/Subscriptions';
+import GuardianDetail from '../../Screens/GuardianDetail';
+import NotificationsList from '../../Screens/Notifications';
+import TermsandConditions from '../../Screens/TermsandConditions';
+import PrivacyPolicy from '../../Screens/PrivacyPolicy';
+import FAQs from '../../Screens/FAQs';
+import About from '../../Screens/About';
+import AllClassess from '../../Screens/AllClassess';
 
 const MyStack = () => {
   const Stack = createStackNavigator();
@@ -31,7 +45,7 @@ const MyStack = () => {
         <Stack.Screen name="GetStarted" component={GetStarted} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="MyDrawer" component={MyDrawer} />
+        <Stack.Screen name="BottomNav" component={BottomNav} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="Subjects" component={Subjects} />
         <Stack.Screen name="CoursesVideos" component={CoursesVideos} />
@@ -43,6 +57,19 @@ const MyStack = () => {
         <Stack.Screen name="QuizResult" component={QuizResult} />
         <Stack.Screen name="OngoingDetail" component={OngoingDetail} />
         <Stack.Screen name="PlayVideo" component={PlayVideo} />
+        <Stack.Screen name="StudentCourses" component={StudentCourses} />
+        <Stack.Screen name="ProfileMenu" component={ProfileMenu} />
+        <Stack.Screen name="Wishlist" component={Wishlist} />
+        <Stack.Screen name="CourseProgress" component={CourseProgress} />
+        <Stack.Screen name="LiveSessionsList" component={LiveSessionsList} />
+        <Stack.Screen name="Subscriptions" component={Subscriptions} />
+        <Stack.Screen name="GuardianDetail" component={GuardianDetail} />
+        <Stack.Screen name="NotificationsList" component={NotificationsList} />
+        <Stack.Screen name="TermsandConditions" component={TermsandConditions} />
+        <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+        <Stack.Screen name="FAQs" component={FAQs} />
+        <Stack.Screen name="About" component={About} />
+        <Stack.Screen name="AllClassess" component={AllClassess} />
       </Stack.Navigator>
     </NavigationContainer>
   );
