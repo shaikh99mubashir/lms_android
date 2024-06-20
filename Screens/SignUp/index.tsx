@@ -23,6 +23,7 @@ import CustomButton2 from '../../Components/CustomButton2';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomButton3 from '../../Components/CustomButton3';
 import {launchImageLibrary} from 'react-native-image-picker';
+import SwipeableButton from '../../Components/SwipeableButton';
 
 const SignUp = ({navigation}: any) => {
   let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -303,7 +304,14 @@ const SignUp = ({navigation}: any) => {
             </View>
             <View style={{margin: 5}}></View>
             <View style={{marginVertical: 15}}>
-              <CustomButton3 onPress={handelSignup} btnTitle="PROCEED" />
+              {/* <CustomButton3 onPress={} btnTitle="PROCEED" /> */}
+              <SwipeableButton
+            btnTitle={'Proceed'}
+            customWidth={Dimensions.get('screen').width / 1.18}
+            customSwipRange={280}
+            onSwipe={() => handelSignup()}
+            isLoading={loading}
+          />
             </View>
             {/* <View style={{margin: 5}}></View> */}
             <Text style={[styles.textType2, {textAlign: 'center'}]}>

@@ -14,21 +14,28 @@ import GoogleSignInButton from '../../Components/GoogleSignInButton';
 import FacebookSigninButton from '../../Components/FacebookSigninButton';
 import CustomButton3 from '../../Components/CustomButton3';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Animated, { useAnimatedGestureHandler, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
-import { Gesture, GestureDetector, PanGestureHandler } from 'react-native-gesture-handler';
+import Animated, {
+  useAnimatedGestureHandler,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
+import {
+  Gesture,
+  GestureDetector,
+  PanGestureHandler,
+} from 'react-native-gesture-handler';
 import CustomButton4 from '../../Components/CustomButton4';
 import SwipeableButton from '../../Components/SwipeableButton';
 const GetStarted = ({navigation}: any) => {
-
-
   const translateX = useSharedValue(0);
-  const { width } = Dimensions.get('window');
+  const {width} = Dimensions.get('window');
   const panGesture = Gesture.Pan()
-    .onUpdate((event) => {
+    .onUpdate(event => {
       translateX.value = event.translationX;
       if (translateX.value < 0) {
         translateX.value = 0;
-      } else if (translateX.value > width - 80) { // Adjust according to your button width
+      } else if (translateX.value > width - 80) {
+        // Adjust according to your button width
         translateX.value = width - 70;
       }
     })
@@ -38,14 +45,12 @@ const GetStarted = ({navigation}: any) => {
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: translateX.value }],
+      transform: [{translateX: translateX.value}],
     };
   });
-  const [isLoading, setIsLoading] = useState(false)
-const makeSomeRequest = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const makeSomeRequest = () => {};
 
-}
-  
   return (
     <View style={{backgroundColor: Color.GhostWhite, height: '100%'}}>
       <ScrollView showsHorizontalScrollIndicator={false}>
@@ -139,6 +144,12 @@ const makeSomeRequest = () => {
             btnTitle="Login With Your Account"
             onPress={() => navigation.replace('Login')}
           /> */}
+          <SwipeableButton
+            btnTitle={'Continue with Login'}
+            customWidth={Dimensions.get('screen').width / 1.18}
+            customSwipRange={280}
+            onSwipe={() => navigation.replace('Login')}
+          />
         </View>
 
         <View
@@ -201,17 +212,22 @@ const makeSomeRequest = () => {
           </Animated.View>
           </PanGestureHandler>
         </View> */}
-         {/* <View style={styles.btn}>
+        {/* <View style={styles.btn}>
       <GestureDetector gesture={panGesture}>
         <Animated.View style={[styles.draggable, animatedStyle]}>
           <AntDesign name="arrowright" size={25} color={Color.Primary} />
         </Animated.View>
       </GestureDetector>
     </View> */}
-    {/* <CustomButton4/> */}
-    <View style={{display:'flex',alignItems:'center'}}>
-    <SwipeableButton btnTitle={'Continue with Login'} onSwipe={makeSomeRequest} isLoading={isLoading} />
-    </View>
+        {/* <CustomButton4/> */}
+        <View style={{display: 'flex', alignItems: 'center'}}>
+          {/* <SwipeableButton 
+                 btnTitle={'Continue with Login'} 
+                 customWidth={290} 
+                 customSwipRange={230}
+                 onSwipe={handleDonePress}  /> */}
+          {/* <SwipeableButton btnTitle={'Continue with Login'} onSwipe={makeSomeRequest} isLoading={isLoading} /> */}
+        </View>
       </ScrollView>
     </View>
   );

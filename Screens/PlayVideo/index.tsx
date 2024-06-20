@@ -9,7 +9,7 @@ const PlayVideo = ({navigation,route}:any) => {
     
   return (
     <View style={{justifyContent:'center',  height:'100%', backgroundColor:Color.GhostWhite}}>
-      <RNVideo  videoUrl={data.url}/>
+      <RNVideo  videoUrl={data.url} navigation={navigation}/>
     </View>
   )
 }

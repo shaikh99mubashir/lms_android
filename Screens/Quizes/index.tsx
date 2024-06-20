@@ -1,4 +1,4 @@
-import {Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {BaseUrl} from '../../Constant/BaseUrl';
 import axios from 'axios';
@@ -12,6 +12,7 @@ import CustomButton3 from '../../Components/CustomButton3';
 import Octicons from 'react-native-vector-icons/Octicons';
 import CustomLoader from '../../Components/CustomLoader';
 import { ScrollView } from 'react-native-gesture-handler';
+import SwipeableButton from '../../Components/SwipeableButton';
 const Quizes = ({navigation, route}: any) => {
   let courseId = route.params;
   console.log('quizzes', courseId);
@@ -86,7 +87,9 @@ const Quizes = ({navigation, route}: any) => {
   };
   console.log('allQuizes0',allQuizes);
   const [quizResult, setQuizResult] = useState<any>('')
+  const [isLoading, setIsLoading] = useState(false)
   const submitQuiz = async () => {
+    setIsLoading(true)
     try {
       const jsonValue = await AsyncStorage.getItem('studentAuth');
       if (jsonValue !== null) {
@@ -107,10 +110,12 @@ const Quizes = ({navigation, route}: any) => {
             console.log('Quiz result', quizResult);
             setQuizResult(quizResult)
             setModalVisible(true);
+            setIsLoading(false)
             // navigation.replace('QuizResult', quizResult);
           })
           .catch((error: any) => {
             console.log('error', error);
+            setIsLoading(false)
             if (error.response) {
               console.log(
                 'Courses Server responded with data:',
@@ -192,6 +197,11 @@ const Quizes = ({navigation, route}: any) => {
     setModalVisible(false);
     navigation.replace('BottomNav');
   };
+
+ 
+  const makeSomeRequest = () => {
+    submitQuiz()
+  }
   
 
   return (
@@ -222,8 +232,15 @@ const Quizes = ({navigation, route}: any) => {
       />
       <CustomLoader visible={loading} />
       <View style={{margin: 10}} />
-      <CustomButton3 btnTitle="Submit" onPress={() => submitQuiz()} />
+      {/* <CustomButton3 btnTitle="Submit" /> */}
+      {/* <SwipeableButton btnTitle={'Submit'} onSwipe={makeSomeRequest} isLoading={isLoading} /> */}
       {/* <CustomButton3 btnTitle="Submit" onPress={handlePress} /> */}
+      <SwipeableButton
+            btnTitle={'Submit'}
+            customWidth={Dimensions.get('screen').width / 1.18}
+            customSwipRange={280}
+            onSwipe={makeSomeRequest}
+          />
       <View style={{margin: 20}} />
       </View>
       </ScrollView>
@@ -250,6 +267,13 @@ const Quizes = ({navigation, route}: any) => {
               btnTitle="Back To Dashboard"
               onPress={handleCloseModal}
             />
+                {/* <SwipeableButton
+            btnTitle={'Back To Dashboard'}
+            customWidth={Dimensions.get('screen').width / 1.6}
+            customSwipRange={280}
+            onSwipe={handleCloseModal}
+          /> */}
+              {/* <SwipeableButton btnTitle={'Back To Dashboard'} onSwipe={makeSomeRequest} isLoading={isLoading} /> */}
           </View>
         </View>
       </Modal>

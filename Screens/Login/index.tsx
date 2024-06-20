@@ -21,6 +21,7 @@ import CustomButton2 from '../../Components/CustomButton2';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomButton3 from '../../Components/CustomButton3';
 import MyDrawer from '../../Navigations/MyDrawer';
+import SwipeableButton from '../../Components/SwipeableButton';
 
 const Login = ({navigation}: any) => {
   const [login, setLogin] = useState<any>({
@@ -175,7 +176,14 @@ const Login = ({navigation}: any) => {
             </View>
             <View style={{margin: 5}}></View>
             <View style={{marginVertical: 15}}>
-              <CustomButton3 onPress={handelSignin} btnTitle="PROCEED" />
+            <SwipeableButton
+            btnTitle={'Proceed'}
+            customWidth={Dimensions.get('screen').width / 1.18}
+            customSwipRange={280}
+            onSwipe={() => handelSignin()}
+            isLoading={loading}
+          />
+              {/* <CustomButton3 onPress={handelSignin} btnTitle="PROCEED" /> */}
               {/* <CustomButton3 onPress={()=>navigation.navigate('MyDrawer')} btnTitle="PROCEED" /> */}
             </View>
             {/* <View style={{margin: 5}}></View> */}

@@ -17,6 +17,7 @@ import {Color} from '../../Constant';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomButton3 from '../../Components/CustomButton3';
 import FastImage from 'react-native-fast-image';
+import SwipeableButton from '../../Components/SwipeableButton';
 
 const {width, height} = Dimensions.get('window');
 
@@ -155,11 +156,15 @@ const OnBoarding = ({navigation}: any) => {
           {currentSlideIndex == slides.length - 1 ? (
             <>
               <View
-                style={{height: 50,width:'100%', paddingHorizontal: 15, marginBottom: 20}}>
-                <CustomButton3
+                style={{height: 50,width:350, paddingHorizontal: 15, marginBottom: 20}}>
+                {/* <CustomButton3
                   onPress={() => handleDonePress()}
                   btnTitle="Get Started"
-                />
+                /> */}
+                 <SwipeableButton 
+                 btnTitle={'Get Started'} 
+                 customWidth={290} 
+                 customSwipRange={230} onSwipe={handleDonePress}  />
               </View>
               {/* <TouchableOpacity
             activeOpacity={0.8}

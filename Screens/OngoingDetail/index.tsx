@@ -1,4 +1,4 @@
-import {FlatList, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Dimensions, FlatList, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import {Color} from '../../Constant';
 import Header from '../../Components/Header';
@@ -10,6 +10,7 @@ import axios from 'axios';
 import { BaseUrl } from '../../Constant/BaseUrl';
 import RNVideo from '../../Components/RNVideo';
 import Video from 'react-native-video';
+import SwipeableButton from '../../Components/SwipeableButton';
 const OngoingDetail = ({navigation,route}: any) => {
   let courseVideos = route.params
   let courseId = courseVideos.id
@@ -63,6 +64,7 @@ useEffect(() => {
 }, []);
 const handelTrackVideo = async (item:any) => {
   console.log('item',item.id);
+  navigation.navigate('PlayVideo',item)
   try {
     const jsonValue = await AsyncStorage.getItem('studentAuth');
     if (jsonValue !== null) {
@@ -150,6 +152,12 @@ const handleVideoPress = (item:any) =>{
     </TouchableOpacity>
     </>
   );
+
+  const [isLoading, setIsLoading] = useState(false)
+  const makeSomeRequest = () => {
+    setIsLoading(true)
+    navigation.navigate('Quizes', courseId)
+  }
   return (
     <View
       style={{
@@ -171,10 +179,18 @@ const handleVideoPress = (item:any) =>{
     
       {!isEligibleForQuiz &&
       <View style={{paddingVertical:30}}>
-        <CustomButton3
-          btnTitle="Attemp Quiz"
+        {/* <CustomButton3
+          btnTitle=""
           onPress={() => navigation.navigate('Quizes', courseId)}
-        />
+        /> */}
+         {/* <SwipeableButton btnTitle={'Attemp Quiz'} onSwipe={makeSomeRequest} isLoading={isLoading} /> */}
+         <SwipeableButton
+            btnTitle={'Continue with Login'}
+            customWidth={Dimensions.get('screen').width / 1.18}
+            customSwipRange={280}
+            onSwipe={makeSomeRequest}
+          />
+      
       </View>
       }
     </View>
